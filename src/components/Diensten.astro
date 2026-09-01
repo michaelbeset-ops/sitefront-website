@@ -1,0 +1,110 @@
+---
+import Check from './Check.astro';
+import Icoon from './Icoon.astro';
+import SectionHead from './SectionHead.astro';
+import { diensten } from '../data/site';
+
+/**
+ * Twee blokken, en dat is een bewuste rangorde.
+ *
+ * De eerste drie zijn waar het werk vandaan komt. Die krijgen een volle
+ * kaart en schuiven met een negatieve marge het blauwe hero-blok in,
+ * wat de twee vlakken aan elkaar knoopt.
+ *
+ * De andere drie zijn aanvullend en krijgen een lichtere vorm: geen
+ * opsommingen en geen kaart. Alle zes even zwaar opmaken maakte deze
+ * sectie op een telefoon ruim vier schermen lang, en dan leest niemand
+ * het verschil nog.
+ */
+const primair = diensten.slice(0, 3);
+const aanvullend = diensten.slice(3);
+---
+
+<!-- De uitgelichte drie. Eigen sectie met een kop die alleen
+     schermlezers horen: boven kaarten die het hero-vlak in schuiven is
+     geen plek voor een zichtbare kop, maar zonder kop springt de
+     koppenstructuur van h1 naar h3. -->
+<section
+  id="diensten"
+  aria-labelledby="kop-uitgelicht"
+  class="bg-paper relative scroll-mt-24"
+>
+  <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+    <h2 id="kop-uitgelicht" class="sr-only">Wat ik vooral bouw</h2>
+
+    <ul data-reveal-groep class="grid gap-6 pt-16 md:grid-cols-3 md:pt-20">
+      {
+        primair.map((d) => {
+          const Wrapper = d.link ? 'a' : 'div';
+          const linkProps = d.link ? { href: d.link } : {};
+          return (
+          <li>
+          <Wrapper
+            {...linkProps}
+            class:list={[
+              'group bg-paper shadow-card border-line-soft flex h-full flex-col rounded-xl border p-7 md:p-8',
+              d.link && 'kaart-lift hover:shadow-lift',
+            ]}
+          >
+            <span class="bg-accent/12 text-accent-ink grid size-14 place-items-center rounded-lg">
+              <Icoon naam={d.icoon} />
+            </span>
+
+            <h3 class="text-2xl mt-6 font-black">
+              {d.titel}
+              {d.link && (
+                <span
+                  class="text-accent-ink ease-soft ml-1 inline-block transition-transform duration-200 group-hover:translate-x-1"
+                  aria-hidden="true"
+                >
+                  &rarr;
+                </span>
+              )}
+            </h3>
+            <p class="text-ink mt-2 font-semibold">{d.haak}</p>
+            <p class="text-body mt-3 leading-[1.6]">{d.tekst}</p>
+
+            <ul class="border-line-soft mt-6 space-y-2.5 border-t pt-6 text-base">
+              {d.punten.map((punt) => (
+                <li class="text-body flex items-start gap-2.5">
+                  <Check class="text-mint mt-0.5" />
+                  {punt}
+                </li>
+              ))}
+            </ul>
+          </Wrapper>
+          </li>
+        );
+        })
+      }
+    </ul>
+  </div>
+</section>
+
+<section class="bg-paper py-20 md:py-28">
+  <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+    <SectionHead
+      label="Wat ik doe"
+      titel="Van wat er kan naar wat er draait"
+      lead="Het grootste deel van mijn werk is software op maat en websites. Daaromheen komt vaak nog dit voorbij, meestal omdat er ergens nog te veel met de hand gebeurt."
+    />
+
+    <ul
+      data-reveal-groep
+      class="border-line-soft mt-12 grid gap-x-10 gap-y-9 border-t pt-10 md:grid-cols-3"
+    >
+      {
+        aanvullend.map((d) => (
+          <li>
+            <span class="text-accent-ink block">
+              <Icoon naam={d.icoon} class="size-6" />
+            </span>
+            <h3 class="text-xl mt-4 font-black">{d.titel}</h3>
+            <p class="text-ink mt-1.5 text-base font-semibold">{d.haak}</p>
+            <p class="text-body mt-2 text-base leading-[1.6]">{d.tekst}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

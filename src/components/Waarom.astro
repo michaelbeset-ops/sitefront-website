@@ -1,0 +1,45 @@
+---
+import SectionHead from './SectionHead.astro';
+import { bedrijf, waarom } from '../data/site';
+
+/**
+ * Zodra er een portretfoto is: importeer hem hier, zet bedrijf.portret
+ * op true en haal het commentaar bij <Image> weg.
+ *
+ *   import { Image } from 'astro:assets';
+ *   import portret from '../assets/michael.jpg';
+ */
+---
+
+<section id="waarom" class="bg-paper scroll-mt-24 py-20 md:py-28">
+  <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
+      <div>
+        <SectionHead
+          label="Waarom Sitefront"
+          titel="Waarom ondernemers bij mij uitkomen"
+          lead="Geen bureau met lagen ertussen, maar één iemand die het bouwt en er ook over vier jaar nog aan te herkennen is."
+        />
+
+        {
+          bedrijf.portret && (
+            <div class="border-line-soft shadow-card mt-9 aspect-4/5 max-w-xs overflow-hidden rounded-xl border">
+              {/* <Image src={portret} alt="Michael" widths={[320, 640]} class="size-full object-cover" /> */}
+            </div>
+          )
+        }
+      </div>
+
+      <ul data-reveal-groep class="grid gap-x-10 gap-y-9 sm:grid-cols-2">
+        {
+          waarom.map((r) => (
+            <li>
+              <h3 class="text-xl font-black">{r.titel}</h3>
+              <p class="text-body mt-2.5 text-base leading-[1.6]">{r.tekst}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

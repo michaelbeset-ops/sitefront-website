@@ -1,0 +1,81 @@
+---
+import JuridischLayout from '../layouts/JuridischLayout.astro';
+import { bedrijf } from '../data/site';
+
+/**
+ * DOOR MIJ GESCHREVEN, NIET DOOR EEN JURIST.
+ *
+ * Alles hieronder beschrijft precies wat deze site technisch doet, dus
+ * het klopt met de werkelijkheid. Maar het blijft een juridische tekst
+ * over jouw bedrijf: lees hem na en pas aan waar jouw praktijk anders
+ * is. Verandert de site (statistieken, een andere formulierdienst),
+ * dan moet deze pagina mee.
+ */
+const bijgewerkt = new Intl.DateTimeFormat('nl-NL', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(new Date());
+---
+
+<JuridischLayout
+  titel="Privacybeleid | Sitefront"
+  omschrijving="Welke gegevens Sitefront verwerkt, waarom, hoe lang en wat jouw rechten zijn."
+  kop="Privacybeleid"
+  intro="Kort samengevat: deze site volgt je niet. Er staan geen advertentienetwerken op en je bezoek wordt niet geanalyseerd. Alleen als je zelf iets invult, verwerk ik gegevens."
+  bijgewerkt={`Laatst bijgewerkt op ${bijgewerkt}`}
+>
+  <h2>Wie verwerkt je gegevens</h2>
+  <p>
+    Sitefront, eenmanszaak gevestigd in {bedrijf.plaats}, ingeschreven bij de Kamer van Koophandel
+    onder nummer {bedrijf.kvk}. Vragen over je gegevens kun je stellen via
+    <a href={`mailto:${bedrijf.email}`}>{bedrijf.email}</a>.
+  </p>
+
+  <h2>Wat ik verwerk als je het contactformulier gebruikt</h2>
+  <p>
+    Je naam, je e-mailadres, het gekozen type project en je bericht. Die gegevens gebruik ik
+    alleen om je vraag te beantwoorden en eventueel een offerte uit te brengen. Ze worden niet
+    gebruikt voor reclame en niet verkocht of gedeeld met anderen.
+  </p>
+  <p>
+    De grondslag daarvoor is jouw verzoek om contact, en daarna de uitvoering van of voorbereiding
+    op een overeenkomst. Ik bewaar de berichtenwisseling zolang dat nodig is om je te kunnen
+    helpen, en daarna niet langer dan de wettelijke bewaartermijnen vragen. Vraag je het eerder,
+    dan verwijder ik het eerder.
+  </p>
+
+  <h2>Statistieken en volgen</h2>
+  <p>
+    Deze site gebruikt geen analytics, geen advertentiepixels en geen volgcookies. Er wordt geen
+    profiel van je opgebouwd. Lettertypen worden vanaf deze site zelf geladen, dus ook daarvoor
+    gaat er geen verzoek naar een externe partij.
+  </p>
+
+  <h2>Wie je gegevens nog meer kan zien</h2>
+  <p>
+    De partij die deze site host, en de e-maildienst waarmee ik je bericht ontvang. Die verwerken
+    gegevens uitsluitend om hun dienst te kunnen leveren. Verder deel ik niets, tenzij de wet mij
+    daartoe verplicht.
+  </p>
+
+  <h2>Je rechten</h2>
+  <ul>
+    <li>Inzage in de gegevens die ik van je heb.</li>
+    <li>Correctie als er iets niet klopt.</li>
+    <li>Verwijdering, tenzij ik iets wettelijk moet bewaren.</li>
+    <li>Bezwaar tegen de verwerking.</li>
+    <li>Overdracht van je gegevens naar een andere partij.</li>
+  </ul>
+  <p>
+    Een mailtje naar <a href={`mailto:${bedrijf.email}`}>{bedrijf.email}</a> is genoeg. Kom je er
+    met mij niet uit, dan kun je een klacht indienen bij de Autoriteit Persoonsgegevens.
+  </p>
+
+  <h2>Beveiliging</h2>
+  <p>
+    De site is uitsluitend via een beveiligde verbinding bereikbaar. Gegevens die je invult gaan
+    versleuteld over de lijn. Toegang tot de mailbox waarin je bericht aankomt is beveiligd met
+    tweestapsverificatie.
+  </p>
+</JuridischLayout>

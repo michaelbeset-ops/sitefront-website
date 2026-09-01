@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Snelheidstest from '../components/islands/Snelheidstest.vue';
+
+/**
+ * GEPARKEERD op verzoek van Michael. Dit was de pagina /snelheidstest.
+ * Terugzetten: dit bestand naar src/pages/snelheidstest.astro, het
+ * Vue-bestand hiernaast terug naar src/components/islands/, en de
+ * verwijzingen in voet, privacybeleid en Snelheidsregel herstellen.
+ *
+ * Losse pagina met de snelheidstest.
+ *
+ * De sleutel komt uit PUBLIC_PAGESPEED_KEY. Die staat in de client-code,
+ * en dat mag ook: een PageSpeed-sleutel is daarvoor bedoeld. Zet in de
+ * Google Cloud Console wel een verwijzerbeperking op je eigen domein,
+ * anders kan iemand anders je quotum opmaken.
+ */
+const apiKey = import.meta.env.PUBLIC_PAGESPEED_KEY;
+---
+
+<BaseLayout
+  title="Gratis snelheidstest voor je website | Sitefront"
+  description="Test in een halve minuut hoe snel je website is. Echte meting van Google, met uitleg in gewone taal over wat de cijfers betekenen."
+>
+  <SiteHeader />
+
+  <main>
+    <section id="main" class="bg-brand relative">
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-16 md:px-8 md:pt-40 md:pb-20 xl:px-10">
+        <div class="max-w-3xl">
+          <p class="label text-accent">Gratis en direct</p>
+          <h1 class="text-hero leading-hero tracking-hero mt-5 font-heavy text-white">
+            Hoe snel is{' '}
+            <span class="text-accent">jouw site</span>{' '}
+            eigenlijk?
+          </h1>
+          <p class="mt-7 max-w-2xl text-xl leading-[1.55] text-white/85">
+            Vul je adres in en je krijgt binnen een halve minuut de echte cijfers, rechtstreeks van
+            Google. Met uitleg erbij, want aan een score zonder context heb je niets.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-paper pb-20 md:pb-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="-mt-12 max-w-3xl">
+          {
+            apiKey ? (
+              <Snelheidstest client:load apiKey={apiKey} />
+            ) : (
+              <div class="bg-paper shadow-lift rounded-xl p-6 md:p-8">
+                <p class="font-display text-ink text-xl font-black">
+                  De test staat nog niet aan
+                </p>
+                <p class="text-body mt-3">
+                  Er is een gratis API-sleutel van Google nodig. Zet die als
+                  <code class="bg-sand rounded px-1.5 py-0.5 text-sm">PUBLIC_PAGESPEED_KEY</code>
+                  in een .env bestand, dan werkt de test meteen. Zonder sleutel weigert Google na
+                  een paar metingen, en dan zou de uitslag onbetrouwbaar zijn.
+                </p>
+              </div>
+            )
+          }
+
+          <p class="text-soft mt-6 text-sm">
+            De meting wordt uitgevoerd door Google PageSpeed Insights. Het adres dat je invult gaat
+            daarvoor naar Google. Sitefront slaat niets op.
+          </p>
+        </div>
+
+        <div class="mt-16 max-w-3xl">
+          <h2 class="text-3xl font-black">Wat betekenen die cijfers</h2>
+          <dl class="mt-6 space-y-5">
+            <div>
+              <dt class="text-ink font-semibold">Snelheid</dt>
+              <dd class="text-body mt-1">
+                Het rapportcijfer van Google voor hoe snel je site laadt op een gemiddelde
+                telefoon. Onder de 50 haken bezoekers af voordat ze iets gezien hebben.
+              </dd>
+            </div>
+            <div>
+              <dt class="text-ink font-semibold">Toegankelijkheid</dt>
+              <dd class="text-body mt-1">
+                Of iedereen je site kan gebruiken, ook met een schermlezer of alleen een
+                toetsenbord. Te weinig contrast is hier de meest gemaakte fout.
+              </dd>
+            </div>
+            <div>
+              <dt class="text-ink font-semibold">Best practices</dt>
+              <dd class="text-body mt-1">
+                Of de site technisch netjes in elkaar zit. Denk aan een geldig certificaat en
+                afbeeldingen in de juiste maat.
+              </dd>
+            </div>
+            <div>
+              <dt class="text-ink font-semibold">SEO</dt>
+              <dd class="text-body mt-1">
+                Of Google je pagina goed kan lezen en begrijpen. Dit gaat over de techniek eronder,
+                niet over hoe goed je teksten zijn.
+              </dd>
+            </div>
+          </dl>
+
+          <div class="bg-sand mt-10 rounded-xl p-6 md:p-8">
+            <p class="font-display text-ink text-xl font-black">
+              Slechte cijfers gezien en geen idee waar te beginnen?
+            </p>
+            <p class="text-body mt-3">
+              Stuur me de uitslag, dan zeg ik je gratis waar de winst zit. Ook als je die zelf wilt
+              gaan halen.
+            </p>
+            <a
+              href="/#contact"
+              class="bg-accent text-ink shadow-btn font-display mt-6 inline-block rounded-full px-7 py-3.5 text-lg font-bold transition-colors duration-150 ease-soft hover:bg-navy hover:text-white"
+            >
+              Plan een gesprek
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

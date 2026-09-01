@@ -1,0 +1,87 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+/**
+ * Opmaak voor de juridische pagina's. Smalle kolom, rustige typografie,
+ * geen kaarten of accenten: hier komt niemand voor de vormgeving.
+ */
+interface Props {
+  titel: string;
+  omschrijving: string;
+  kop: string;
+  intro: string;
+  bijgewerkt?: string;
+}
+
+const { titel, omschrijving, kop, intro, bijgewerkt } = Astro.props;
+---
+
+<BaseLayout title={titel} description={omschrijving}>
+  <SiteHeader />
+
+  <main>
+    <section id="main" class="bg-brand">
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-14 md:px-8 md:pt-40 md:pb-16 xl:px-10">
+        <div class="max-w-3xl">
+          <h1 class="text-4xl font-heavy text-white">{kop}</h1>
+          <p class="mt-5 max-w-2xl text-xl leading-[1.55] text-white/85">{intro}</p>
+          {bijgewerkt && <p class="mt-5 text-base text-white/60">{bijgewerkt}</p>}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-paper py-16 md:py-20">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="juridisch max-w-3xl">
+          <slot />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style is:global>
+  .juridisch h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-black);
+    color: var(--color-ink);
+    margin-block-start: 2.5rem;
+  }
+
+  .juridisch h2:first-child {
+    margin-block-start: 0;
+  }
+
+  .juridisch p {
+    margin-block-start: 0.875rem;
+    color: var(--color-body);
+    line-height: 1.7;
+  }
+
+  .juridisch ul {
+    margin-block-start: 0.875rem;
+    padding-inline-start: 1.25rem;
+    list-style: disc;
+    color: var(--color-body);
+  }
+
+  .juridisch li {
+    margin-block-start: 0.5rem;
+    line-height: 1.7;
+  }
+
+  .juridisch a {
+    color: var(--color-accent-ink);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .juridisch strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+</style>

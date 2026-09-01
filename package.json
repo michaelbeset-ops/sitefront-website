@@ -1,0 +1,24 @@
+{
+  "name": "sitefront",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview --port 4322",
+    "astro": "astro",
+    "audit": "npx --yes lighthouse@12 http://localhost:4322/ --preset=desktop --quiet --output=html --output=json --output-path=./lighthouse-report --chrome-flags=\"--headless=new\""
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/vue": "^7.0.2",
+    "@fontsource-variable/archivo": "^5.2.5",
+    "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.2.5",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.2",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.42"
+  }
+}

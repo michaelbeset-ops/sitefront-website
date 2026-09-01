@@ -1,0 +1,48 @@
+---
+import SectionHead from './SectionHead.astro';
+import { vragen } from '../data/site';
+---
+
+<section id="vragen" class="bg-paper scroll-mt-24 py-20 md:py-28">
+  <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,24rem)_1fr] lg:gap-16">
+      <SectionHead
+        label="Veelgestelde vragen"
+        titel="Wat mensen meestal willen weten"
+        lead="Staat je vraag er niet bij? Stel hem gerust, je krijgt gewoon antwoord."
+      />
+
+      <div data-reveal class="space-y-3">
+        {
+          vragen.map((v) => (
+            <details class="faq bg-sand rounded-lg">
+              <summary class="text-ink font-display flex cursor-pointer list-none items-center justify-between gap-6 rounded-lg p-5 text-lg font-bold md:p-6">
+                {v.vraag}
+                <span
+                  class="border-line text-ink relative grid size-7 shrink-0 place-items-center rounded-full border"
+                  aria-hidden="true"
+                >
+                  <span class="bg-ink absolute h-0.5 w-3 rounded-full" />
+                  <span class="faq-bar bg-ink absolute h-3 w-0.5 rounded-full" />
+                </span>
+              </summary>
+              <p class="text-body px-5 pb-5 leading-[1.6] md:px-6 md:pb-6">{v.antwoord}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq[open] .faq-bar {
+    transform: scaleY(0);
+  }
+  .faq-bar {
+    transition: transform 150ms var(--ease-soft);
+  }
+</style>

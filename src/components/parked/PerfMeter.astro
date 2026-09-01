@@ -1,0 +1,533 @@
+---
+/**
+ * GEPARKEERD, wordt nergens gerenderd.
+ *
+ * Dit was het signatuurelement van de vorige hero-richting. De signatuur
+ * is nu de vrijgehouden plek voor het vlaggenschipproject, en twee
+ * opvallende elementen naast elkaar werkt niet. Bewaard omdat het als
+ * klein trust-element verderop de pagina nog van pas kan komen.
+ *
+ * LET OP bij hergebruik: de CSS hieronder gebruikt nog de oude
+ * tokennamen (--panel, --line, --text-3, --space-*). Die bestaan niet
+ * meer. Herschrijven naar Tailwind-utilities op de tokens uit app.css
+ * voordat je dit terugzet.
+ *
+ * PerfMeter — het signatuurelement van de hero.
+ *
+ * Alles wat hier staat is een échte meting:
+ *  - LCP, serverreactie, laadtijd en paginagewicht komen live uit de
+ *    Performance API van de bezoeker zelf, bij deze paginaweergave.
+ *  - De Lighthouse-cijfers komen uit src/data/lighthouse.json en worden
+ *    daar alleen ingevuld na een echte audit. Geen meting = een streepje.
+ */
+import lighthouse from '../data/lighthouse.json';
+
+const scores = lighthouse.scores;
+const hasAudit = typeof scores.performance === 'number';
+
+const categories = [
+  { key: 'performance', label: 'Prestatie', value: scores.performance },
+  { key: 'accessibility', label: 'Toegankelijk', value: scores.accessibility },
+  { key: 'bestPractices', label: 'Best practices', value: scores.bestPractices },
+  { key: 'seo', label: 'SEO', value: scores.seo },
+] as const;
+
+const auditDate = lighthouse.measuredAt
+  ? new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' }).format(
+      new Date(lighthouse.measuredAt),
+    )
+  : null;
+
+// PageSpeed Insights kan geen localhost bereiken; zolang de audit lokaal is,
+// linken we naar het formulier in plaats van naar een analyse die faalt.
+const verifyUrl =
+  lighthouse.url && lighthouse.isPublicUrl
+    ? `https://pagespeed.web.dev/analysis?url=${encodeURIComponent(lighthouse.url)}`
+    : 'https://pagespeed.web.dev/';
+
+const auditNote = !hasAudit
+  ? 'Nog niet gemeten — daarom streepjes.'
+  : lighthouse.isPublicUrl
+    ? `Uitslag van een echte ${lighthouse.tool}-run op deze site.`
+    : `Echte ${lighthouse.tool}-run op de productiebuild, nog niet op het live domein.`;
+---
+
+<figure class="meter" data-meter data-status="pending">
+  <figcaption class="meter__head">
+    <span class="meter__live">
+      <span class="meter__dot" aria-hidden="true"></span>
+      Live
+    </span>
+    <span class="meter__source">gemeten in jouw browser</span>
+  </figcaption>
+
+  <div class="meter__primary">
+    <p class="label meter__label">Grootste element zichtbaar</p>
+
+    <div class="meter__readout">
+      <output class="meter__value" data-out="lcp">–,––</output>
+      <span class="meter__unit" data-out="lcp-unit">s</span>
+      <span class="meter__verdict" data-out="verdict">meten…</span>
+    </div>
+
+    <div class="gauge" aria-hidden="true">
+      <div class="gauge__track">
+        <div class="gauge__fill" data-gauge></div>
+        <div class="gauge__tick" style="--at: 62.5%"></div>
+      </div>
+      <div class="gauge__scale">
+        <span>0</span>
+        <span class="gauge__threshold" style="--at: 62.5%">2,5s = goed</span>
+        <span>4s</span>
+      </div>
+    </div>
+  </div>
+
+  <dl class="meter__grid">
+    <div class="meter__cell">
+      <dt class="label">Serverreactie</dt>
+      <dd data-out="ttfb">–</dd>
+    </div>
+    <div class="meter__cell">
+      <dt class="label">Volledig geladen</dt>
+      <dd data-out="load">–</dd>
+    </div>
+    <div class="meter__cell">
+      <dt class="label">Paginagewicht</dt>
+      <dd data-out="weight">–</dd>
+    </div>
+  </dl>
+
+  <div class="meter__audit">
+    <p class="label meter__label">Lighthouse{auditDate ? ` · ${auditDate}` : ''}</p>
+    <ul class="scores">
+      {
+        categories.map((c) => (
+          <li class="scores__item">
+            <span class="scores__value" data-full={c.value === 100 ? 'true' : 'false'}>
+              {c.value ?? '–'}
+            </span>
+            <span class="scores__label">{c.label}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="meter__verify">
+      {auditNote}{' '}
+      <a href={verifyUrl} rel="noopener">Meet zelf na<span aria-hidden="true"> →</span></a>
+    </p>
+  </div>
+
+  <p class="visually-hidden" data-out="summary" aria-live="polite"></p>
+</figure>
+
+<style>
+  .meter {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-1);
+    display: grid;
+    /* Geen shadow, geen gradient: dit moet als meetinstrument lezen. */
+  }
+
+  /* Snijtekens op twee hoeken — subtiel signaal 'meetapparaat'. */
+  .meter::before,
+  .meter::after {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--accent);
+  }
+  .meter::before {
+    inset-block-start: -1px;
+    inset-inline-start: -1px;
+    border-inline-end: 0;
+    border-block-end: 0;
+  }
+  .meter::after {
+    inset-block-end: -1px;
+    inset-inline-end: -1px;
+    border-inline-start: 0;
+    border-block-start: 0;
+  }
+
+  .meter__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-5);
+    border-block-end: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  .meter__live {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-2);
+  }
+
+  .meter__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-pill);
+    background: var(--good);
+    animation: pulse 2.6s var(--ease-inout) infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.35;
+      transform: scale(0.8);
+    }
+  }
+
+  .meter__primary {
+    padding: var(--space-5) var(--space-5) var(--space-6);
+  }
+
+  .meter__label {
+    font-size: var(--step--2);
+  }
+
+  .meter__readout {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin-block: var(--space-3) var(--space-5);
+  }
+
+  .meter__value {
+    font-family: var(--font-mono);
+    font-size: clamp(3rem, 2rem + 4.5vw, 4.5rem);
+    font-weight: var(--w-medium);
+    line-height: 0.85;
+    letter-spacing: -0.045em;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+
+  .meter__unit {
+    font-family: var(--font-mono);
+    font-size: var(--step-1);
+    color: var(--text-3);
+  }
+
+  .meter__verdict {
+    margin-inline-start: auto;
+    align-self: center;
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--track-label);
+    text-transform: uppercase;
+    color: var(--text-3);
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-1);
+  }
+
+  [data-status='good'] .meter__verdict {
+    color: var(--good);
+    border-color: color-mix(in oklab, var(--good) 40%, transparent);
+  }
+  [data-status='ok'] .meter__verdict {
+    color: var(--warn);
+    border-color: color-mix(in oklab, var(--warn) 40%, transparent);
+  }
+  [data-status='slow'] .meter__verdict {
+    color: var(--bad);
+    border-color: color-mix(in oklab, var(--bad) 40%, transparent);
+  }
+
+  /* --- gauge --- */
+  .gauge__track {
+    position: relative;
+    height: 3px;
+    background: color-mix(in oklab, var(--paper) 8%, transparent);
+    overflow: visible;
+  }
+
+  .gauge__fill {
+    height: 100%;
+    width: 0%;
+    min-width: 3px; /* bij een heel snelle LCP blijft er tóch iets zichtbaar */
+    background: var(--text-3);
+    transition: width var(--dur-slow) var(--ease-out);
+  }
+
+  [data-status='good'] .gauge__fill {
+    background: var(--good);
+  }
+  [data-status='ok'] .gauge__fill {
+    background: var(--warn);
+  }
+  [data-status='slow'] .gauge__fill {
+    background: var(--bad);
+  }
+
+  .gauge__tick {
+    position: absolute;
+    inset-block: -4px;
+    inset-inline-start: var(--at);
+    width: 1px;
+    background: var(--line-strong);
+  }
+
+  .gauge__scale {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin-block-start: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    color: var(--text-3);
+  }
+
+  /* Zit exact onder het streepje op de balk, niet zomaar in het midden. */
+  .gauge__threshold {
+    position: absolute;
+    inset-inline-start: var(--at);
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  /* --- drie kleine uitlezingen ---
+     Op smalle schermen als rijen (label links, waarde rechts). Drie
+     kolommen naast elkaar vragen ~393px en passen niet op een telefoon;
+     een grid-item krimpt namelijk niet onder zijn min-content. */
+  .meter__grid {
+    border-block-start: 1px solid var(--line);
+  }
+
+  .meter__cell {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-5);
+  }
+  .meter__cell + .meter__cell {
+    border-block-start: 1px solid var(--line);
+  }
+
+  .meter__cell dt {
+    font-size: 0.625rem;
+  }
+
+  .meter__cell dd {
+    font-family: var(--font-mono);
+    font-size: var(--step-1);
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  /* Vanaf hier is er ruimte voor de instrumentenrij van drie. */
+  @media (min-width: 30rem) {
+    .meter__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .meter__cell {
+      display: block;
+      padding: var(--space-4) var(--space-3) var(--space-4) var(--space-5);
+    }
+
+    .meter__cell + .meter__cell {
+      border-block-start: 0;
+      border-inline-start: 1px solid var(--line);
+    }
+
+    .meter__cell dd {
+      margin-block-start: var(--space-2);
+    }
+  }
+
+  /* --- Lighthouse --- */
+  .meter__audit {
+    padding: var(--space-5);
+    border-block-start: 1px solid var(--line);
+    background: color-mix(in oklab, var(--ink) 45%, transparent);
+  }
+
+  .scores {
+    list-style: none;
+    padding: 0;
+    margin-block: var(--space-4) var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  @media (min-width: 26rem) {
+    .scores {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .scores__item {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .scores__value {
+    font-family: var(--font-mono);
+    font-size: var(--step-2);
+    font-weight: var(--w-medium);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--text-3);
+  }
+
+  .scores__value[data-full='true'] {
+    color: var(--accent);
+  }
+
+  .scores__label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  .meter__verify {
+    font-size: var(--step--1);
+    line-height: 1.5;
+    color: var(--text-3);
+  }
+
+  .meter__verify a {
+    color: var(--accent-text);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+  .meter__verify a:hover {
+    color: var(--paper);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meter__dot {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-meter]');
+
+  if (root && 'performance' in window) {
+    const nl = (n: number, d = 0) =>
+      n.toLocaleString('nl-NL', { minimumFractionDigits: d, maximumFractionDigits: d });
+
+    const set = (key: string, text: string) => {
+      const el = root.querySelector<HTMLElement>(`[data-out="${key}"]`);
+      if (el) el.textContent = text;
+    };
+
+    // Onder 1 seconde in milliseconden, daarboven in seconden — leest prettiger.
+    const duration = (ms: number) => (ms < 1000 ? `${nl(ms)} ms` : `${nl(ms / 1000, 2)} s`);
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let lcp = 0;
+    try {
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) lcp = entry.startTime;
+      }).observe({ type: 'largest-contentful-paint', buffered: true });
+    } catch {
+      /* Safari < 16 kent LCP niet; we vallen terug op first paint. */
+    }
+
+    const countTo = (el: HTMLElement, target: number, render: (v: number) => string) => {
+      // Altijd eerst de eindwaarde neerzetten: in een achtergrondtab draait
+      // requestAnimationFrame niet, en dan moet het cijfer er tóch staan.
+      el.textContent = render(target);
+      if (reduced) return;
+
+      const start = performance.now();
+      const dur = 650;
+      const tick = (now: number) => {
+        const t = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        el.textContent = render(target * eased);
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    const report = () => {
+      const nav = performance.getEntriesByType('navigation')[0] as
+        | PerformanceNavigationTiming
+        | undefined;
+      if (!nav) return;
+
+      if (!lcp) {
+        const fcp = performance.getEntriesByName('first-contentful-paint')[0];
+        lcp = fcp ? fcp.startTime : nav.domContentLoadedEventEnd;
+      }
+
+      const ttfb = Math.max(0, nav.responseStart - nav.requestStart);
+      const loaded = nav.loadEventEnd || nav.domComplete;
+
+      const bytes =
+        performance
+          .getEntriesByType('resource')
+          .reduce((sum, r) => sum + ((r as PerformanceResourceTiming).transferSize || 0), 0) +
+        (nav.transferSize || 0);
+
+      const status = lcp <= 2500 ? 'good' : lcp <= 4000 ? 'ok' : 'slow';
+      const verdict = { good: 'snel', ok: 'matig', slow: 'traag' }[status];
+
+      root.dataset.status = status;
+      set('verdict', verdict);
+
+      // Grote uitlezing: seconden met 2 decimalen, of milliseconden onder 1s.
+      const value = root.querySelector<HTMLElement>('[data-out="lcp"]');
+      const unit = root.querySelector<HTMLElement>('[data-out="lcp-unit"]');
+      if (value && unit) {
+        if (lcp < 1000) {
+          unit.textContent = 'ms';
+          countTo(value, lcp, (v) => nl(v));
+        } else {
+          unit.textContent = 's';
+          countTo(value, lcp / 1000, (v) => nl(v, 2));
+        }
+      }
+
+      const gauge = root.querySelector<HTMLElement>('[data-gauge]');
+      if (gauge) gauge.style.width = `${Math.min((lcp / 4000) * 100, 100)}%`;
+
+      set('ttfb', duration(ttfb));
+      set('load', duration(loaded));
+      set('weight', bytes > 0 ? `${nl(bytes / 1024)} kB` : 'n.v.t.');
+
+      set(
+        'summary',
+        `Deze pagina is zojuist gemeten: grootste element zichtbaar na ${duration(lcp)} (${verdict}), serverreactie ${duration(ttfb)}, volledig geladen na ${duration(loaded)}.`,
+      );
+    };
+
+    // loadEventEnd bestaat pas ná het load-event; vandaar de timeout van 0.
+    if (document.readyState === 'complete') {
+      setTimeout(report, 0);
+    } else {
+      window.addEventListener('load', () => setTimeout(report, 0), { once: true });
+    }
+  }
+</script>

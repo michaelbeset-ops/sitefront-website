@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Beeldmerk from '../components/Beeldmerk.astro';
+import { bedrijf } from '../data/site';
+
+/**
+ * Over ons.
+ *
+ * LET OP, MICHAEL: dit verhaal heb ik geschreven op basis van wat we
+ * eerder hebben vastgelegd (freelance, Dordrecht, software en websites,
+ * meedenken, alles op naam van de klant). Ik heb bewust geen feiten
+ * verzonnen die ik niet kan weten: geen jarenaantallen, geen vorige
+ * banen, geen opleidingen. Lees het na en maak het persoonlijker waar
+ * je kunt; een echt detail van jou verslaat elke zin van mij.
+ *
+ * Naast het verhaal staat voorlopig alleen een koppeling naar
+ * LinkedIn, zonder portret. De KvK-foto en de gezichtsuitsnede staan
+ * nog in src/assets/ (michael-kvk.jpg en michael-gezicht.jpg) voor als
+ * er later wel een foto op mag.
+ */
+
+const overtuigingen = [
+  {
+    titel: 'Geen bureau, wel de aandacht',
+    tekst:
+      'Bij een bureau praat je met een accountmanager en bouwt iemand die je nooit spreekt. Bij mij is dat dezelfde persoon. Je praat rechtstreeks met degene die je systeem kent, tot op de laatste regel.',
+  },
+  {
+    titel: 'Korte lijnen, echte antwoorden',
+    tekst:
+      'Geen ticketsysteem, geen wachtrij, geen doorverbinden. Een vraag is gewoon een mailtje of een belletje, en het antwoord komt van iemand die precies weet hoe jouw project in elkaar zit.',
+  },
+  {
+    titel: 'Meetbaar, niet mooipraterij',
+    tekst:
+      'Snelheid en vindbaarheid zijn bij mij geen beloftes maar metingen. Deze site laat op de homepage zijn eigen laadtijd zien, live gemeten in jouw browser. Zo behandel ik ook jouw project.',
+  },
+];
+---
+
+<BaseLayout
+  title="Over ons | Sitefront"
+  description="Sitefront, dat ben ik: Michael. Software op maat en websites, gebouwd door een persoon die luistert, meedenkt en zelf bouwt. Geen tussenlagen, geen tickets."
+>
+  <SiteHeader />
+
+  <main>
+    <section
+      id="main"
+      class="bg-brand relative isolate overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]"
+    >
+      <Beeldmerk
+        class="pointer-events-none absolute -top-16 -right-24 -z-10 hidden h-[38rem] w-auto text-white opacity-[0.05] sm:block lg:-right-16 lg:h-[46rem]"
+      />
+
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-20 md:px-8 md:pt-44 md:pb-28 xl:px-10">
+        <div class="max-w-3xl">
+          <p class="label text-accent">Over ons</p>
+
+          <!-- Vaste regels: met text-wrap: balance brak deze kop
+               midden in een woordgroep. -->
+          <h1 style="--regel: 8.65" class="kop-past leading-hero tracking-hero mt-6 font-heavy text-white">
+            <span class="block">Wie er achter</span>
+            <span class="text-accent block">Sitefront zit.</span>
+          </h1>
+
+          <p class="text-lg mt-8 max-w-[50ch] leading-[1.6] text-white/75">
+            Sitefront, dat ben ik: Michael. Ik luister, denk mee, bouw en lever op. Dat ik dat
+            allemaal zelf doe is geen beperking maar de opzet: er gaat niets verloren tussen ons
+            gesprek en de code.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-paper py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="grid gap-12 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
+          <div>
+            <SectionHead
+              label="Het verhaal"
+              titel="Waarom Sitefront bestaat"
+            />
+
+            <!-- Neutrale koppeling naar LinkedIn. Zodra er een goede
+                 foto is, kan hier een portret bij. -->
+            <a
+              href={bedrijf.linkedin}
+              target="_blank"
+              rel="noopener"
+              class="kaart-lift bg-paper border-line-soft shadow-card hover:shadow-lift mt-9 flex max-w-xs items-center gap-4 rounded-xl border p-5"
+            >
+              <span class="bg-sand text-ink grid size-11 shrink-0 place-items-center rounded-lg">
+                <svg viewBox="0 0 24 24" class="size-5" fill="currentColor" aria-hidden="true">
+                  <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0z" />
+                </svg>
+              </span>
+
+              <span class="min-w-0">
+                <span class="text-ink font-display block font-black">Michael Beset</span>
+                <span class="text-soft block text-sm">Bekijk het profiel op LinkedIn</span>
+              </span>
+            </a>
+          </div>
+
+          <div class="max-w-[62ch] space-y-5 text-lg leading-[1.65]">
+            <p>
+              Ik ben Sitefront begonnen vanuit een simpele ergernis: ondernemers die vastzitten aan
+              software die net niet past, of aan een website die er wel is maar niets oplevert. Er
+              wordt dan omheen gewerkt, met Excel, met briefjes, met dubbele invoer. Iedereen went
+              eraan, en niemand rekent uit wat het eigenlijk kost.
+            </p>
+            <p>
+              Daarom begin ik nooit bij de techniek, maar bij de vraag ervoor: waar loopt het vast,
+              en wat zou er gebeuren als dat weg was? Soms is het antwoord een website die eindelijk
+              gevonden wordt. Soms een systeem dat het handwerk overneemt. En soms is het antwoord
+              dat je helemaal niets hoeft te laten bouwen, en dan zeg ik dat ook.
+            </p>
+            <p>
+              Wat je krijgt is werk waar ik mijn naam onder zet. De broncode, het domein en de
+              hosting staan op jouw naam, en ik blijf aanspreekbaar op wat ik heb gebouwd. Kijk
+              gerust bij het werk hoe dat er in de praktijk uitziet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-sand py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <SectionHead
+          label="Waar ik voor sta"
+          titel="Drie dingen die je mag verwachten"
+        />
+
+        <ul data-reveal-groep class="mt-12 grid gap-x-10 gap-y-9 md:grid-cols-3">
+          {
+            overtuigingen.map((o) => (
+              <li class="border-line-soft border-t pt-6">
+                <h3 class="text-xl font-black">{o.titel}</h3>
+                <p class="text-body mt-2.5 text-base leading-[1.6]">{o.tekst}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-paper py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="grid gap-10 md:grid-cols-2 md:items-center">
+          <SectionHead
+            label="Kennismaken"
+            titel="Gewoon even bellen"
+            lead="Een eerste gesprek is gratis en verplicht je tot niets. Vertel waar het schuurt, dan hoor je eerlijk wat er kan."
+          />
+
+          <div class="flex flex-wrap items-center gap-4 md:justify-end">
+            <a
+              href="/#contact"
+              class="bg-accent text-ink shadow-btn font-display rounded-full px-7 py-3.5 text-lg font-bold transition-colors duration-150 ease-soft hover:bg-navy hover:text-white"
+            >
+              Plan een gesprek
+            </a>
+            <a
+              href="/#werk"
+              class="border-line text-ink font-display hover:bg-sand rounded-full border px-7 py-3.5 text-lg font-bold transition-colors duration-150 ease-soft"
+            >
+              Bekijk het werk
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

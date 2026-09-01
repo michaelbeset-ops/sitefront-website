@@ -1,0 +1,13 @@
+---
+/** Alleen het beeldmerk, de drie balken. Voor krappe plekken. */
+interface Props {
+  class?: string;
+}
+const { class: klasse = '' } = Astro.props;
+---
+
+<svg viewBox="16 17 75 85" class={klasse} fill="currentColor" aria-hidden="true">
+  <path d="M 24.5 18 L 62.5 18 L 63 19.5 L 56 40 L 17.5 40 L 17 37.5 L 24.5 18 Z" />
+  <path d="M 33 48 L 75.5 48 L 76 50.5 L 68.5 70 L 26 69.5 L 33 48 Z" />
+  <path d="M 43.5 79 L 90 79.5 L 83 101 L 36.5 101 L 36 98.5 L 43.5 79 Z" />
+</svg>

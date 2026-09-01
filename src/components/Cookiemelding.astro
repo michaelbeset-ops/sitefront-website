@@ -1,0 +1,105 @@
+---
+import { cookieInstellingen } from '../data/site';
+
+/**
+ * Cookiemelding. Verschijnt alleen wanneer cookieInstellingen.melding
+ * aan staat, zie de toelichting in src/data/site.ts.
+ *
+ * Bewust geen scherm dat de pagina blokkeert: dat is niet nodig zolang
+ * er pas iets geplaatst wordt nadat je op accepteren klikt, en het is
+ * een stuk minder vervelend. Weigeren is even makkelijk als accepteren,
+ * want een weigerknop die verstopt zit mag niet.
+ *
+ * De keuze staat in localStorage van de bezoeker zelf en gaat nergens
+ * heen. Er wordt pas iets geladen na een expliciete keuze.
+ */
+const { melding } = cookieInstellingen;
+---
+
+{
+  melding && (
+    <div
+      data-cookiemelding
+      hidden
+      class="fixed inset-x-0 bottom-0 z-50 p-4 md:p-6"
+      role="region"
+      aria-label="Cookiemelding"
+    >
+      <div class="bg-paper shadow-lift border-line-soft mx-auto flex w-full max-w-page flex-col gap-4 rounded-xl border p-5 md:flex-row md:items-center md:gap-6 md:p-6">
+        <p class="text-body min-w-0 flex-1 text-base leading-[1.6]">
+          Ik wil graag bijhouden welke pagina's bezocht worden, zodat ik de site kan verbeteren.
+          Alleen als jij dat goedvindt. Zonder toestemming wordt er niets geplaatst.
+          <a
+            href="/cookiebeleid"
+            class="text-accent-ink underline underline-offset-4 whitespace-nowrap"
+          >
+            Meer hierover
+          </a>
+        </p>
+
+        <div class="flex shrink-0 gap-3">
+          <button
+            type="button"
+            data-cookie-weigeren
+            class="border-line text-ink hover:bg-sand font-display rounded-full border px-5 py-2.5 text-base font-bold transition-colors duration-150 ease-soft"
+          >
+            Weigeren
+          </button>
+          <button
+            type="button"
+            data-cookie-accepteren
+            class="bg-accent text-ink shadow-btn hover:bg-navy font-display rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 ease-soft hover:text-white"
+          >
+            Accepteren
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  const balk = document.querySelector<HTMLElement>('[data-cookiemelding]');
+
+  if (balk) {
+    const SLEUTEL = 'sitefront:cookies';
+
+    /* localStorage kan gooien in een privévenster of wanneer opslag
+       geblokkeerd is. Dan tonen we de balk gewoon en onthouden we niets,
+       in plaats van dat de pagina stukloopt. */
+    const lees = () => {
+      try {
+        return localStorage.getItem(SLEUTEL);
+      } catch {
+        return null;
+      }
+    };
+
+    const bewaar = (waarde: string) => {
+      try {
+        localStorage.setItem(SLEUTEL, waarde);
+      } catch {
+        /* niets te doen, de keuze geldt dan alleen voor dit bezoek */
+      }
+    };
+
+    const kiezen = (waarde: 'ja' | 'nee') => {
+      bewaar(waarde);
+      balk.hidden = true;
+      if (waarde === 'ja') {
+        /* Hier komt het laden van de statistieken, en nergens anders.
+           Zo staat vast dat er niets gebeurt zonder toestemming. */
+        document.dispatchEvent(new CustomEvent('cookies-geaccepteerd'));
+      }
+    };
+
+    if (!lees()) balk.hidden = false;
+
+    balk
+      .querySelector('[data-cookie-accepteren]')
+      ?.addEventListener('click', () => kiezen('ja'));
+    balk
+      .querySelector('[data-cookie-weigeren]')
+      ?.addEventListener('click', () => kiezen('nee'));
+  }
+</script>

@@ -1,0 +1,68 @@
+---
+import JuridischLayout from '../layouts/JuridischLayout.astro';
+import { bedrijf } from '../data/site';
+import { cookieInstellingen } from '../data/site';
+
+/**
+ * DOOR MIJ GESCHREVEN, NIET DOOR EEN JURIST. Zie de toelichting op
+ * privacybeleid.astro; hetzelfde geldt hier.
+ *
+ * Deze pagina beschrijft de situatie zoals die nu is: geen cookies.
+ * Zet je statistieken aan, dan moet hier een tabel bij met welke
+ * cookies dat zijn, van wie en hoe lang ze blijven staan.
+ */
+const bijgewerkt = new Intl.DateTimeFormat('nl-NL', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(new Date());
+---
+
+<JuridischLayout
+  titel="Cookiebeleid | Sitefront"
+  omschrijving="Welke cookies Sitefront plaatst. Op dit moment: geen."
+  kop="Cookiebeleid"
+  intro="Deze site plaatst op dit moment geen cookies. Geen volgcookies, geen advertentiecookies, en ook geen statistieken."
+  bijgewerkt={`Laatst bijgewerkt op ${bijgewerkt}`}
+>
+  <h2>Wat een cookie is</h2>
+  <p>
+    Een klein bestandje dat een website in je browser achterlaat om iets te onthouden. Dat kan
+    nuttig zijn, bijvoorbeeld om te onthouden dat je ingelogd bent, en het kan vervelend zijn,
+    bijvoorbeeld om je over meerdere sites te volgen.
+  </p>
+
+  <h2>Wat deze site doet</h2>
+  <p>
+    Niets van dat alles. Er staat geen analytics op, geen advertentienetwerk en geen social media
+    pixel. De lettertypen komen van deze site zelf en niet van een externe partij, dus ook
+    daarvoor wordt niets geplaatst.
+  </p>
+  {
+    cookieInstellingen.melding ? (
+      <p>
+        De enige uitzondering is je keuze in de cookiemelding. Die bewaar ik in de opslag van je
+        eigen browser, zodat je niet bij elk bezoek opnieuw hoeft te klikken. Die gegevens
+        verlaten je apparaat niet.
+      </p>
+    ) : (
+      <p>
+        Omdat er niets te kiezen valt, staat er ook geen cookiemelding op deze site. Een balk die
+        toestemming vraagt voor iets wat niet gebeurt, is alleen maar in de weg.
+      </p>
+    )
+  }
+
+  <h2>Als dat verandert</h2>
+  <p>
+    Komen er later wel statistieken op de site, dan verschijnt er een melding waarin je zelf kiest
+    of dat mag, voordat er iets geplaatst wordt. Deze pagina wordt dan bijgewerkt met een
+    overzicht van welke cookies het zijn, van wie ze komen en hoe lang ze blijven staan.
+  </p>
+
+  <h2>Vragen</h2>
+  <p>
+    Stel ze gerust via <a href={`mailto:${bedrijf.email}`}>{bedrijf.email}</a>. In het
+    <a href="/privacybeleid">privacybeleid</a> staat wat er gebeurt met gegevens die je zelf invult.
+  </p>
+</JuridischLayout>

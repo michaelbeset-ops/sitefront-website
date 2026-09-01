@@ -1,0 +1,75 @@
+---
+/**
+ * Lijniconen, zelf getekend en geometrisch. Een gedownloade set of
+ * emoji is precies waar een pagina generiek van wordt.
+ */
+interface Props {
+  naam: 'site' | 'app' | 'koppeling' | 'automatiseren' | 'betalen' | 'beheer';
+  class?: string;
+}
+const { naam, class: klasse = '' } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 32 32"
+  class={`size-7 ${klasse}`}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  {
+    naam === 'app' && (
+      <>
+        <rect x="3" y="5" width="26" height="22" rx="3" />
+        <path d="M12 5v22" />
+        <path d="M17 12h7M17 17h7M17 22h4" />
+      </>
+    )
+  }
+  {
+    naam === 'koppeling' && (
+      <>
+        <path d="M13 19a5 5 0 0 1 0-7l3-3a5 5 0 0 1 7 7l-1.5 1.5" />
+        <path d="M19 13a5 5 0 0 1 0 7l-3 3a5 5 0 0 1-7-7l1.5-1.5" />
+      </>
+    )
+  }
+  {
+    naam === 'automatiseren' && (
+      <>
+        <path d="M6 12a11 11 0 0 1 19-3" />
+        <path d="M26 20a11 11 0 0 1-19 3" />
+        <path d="M25 4v5h-5M7 28v-5h5" />
+      </>
+    )
+  }
+  {
+    naam === 'betalen' && (
+      <>
+        <rect x="3" y="7" width="26" height="18" rx="3" />
+        <path d="M3 13h26" />
+        <path d="M8 19h5" />
+      </>
+    )
+  }
+  {
+    naam === 'site' && (
+      <>
+        <rect x="3" y="6" width="26" height="21" rx="3" />
+        <path d="M3 12h26" />
+        <path d="M7.5 9.2h.01M11 9.2h.01" />
+      </>
+    )
+  }
+  {
+    naam === 'beheer' && (
+      <>
+        <path d="M16 3.5 27 7v8c0 6.5-4.6 11.6-11 13.5C9.6 26.6 5 21.5 5 15V7l11-3.5Z" />
+        <path d="M11.5 15.5 15 19l6-6.5" />
+      </>
+    )
+  }
+</svg>

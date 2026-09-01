@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Beeldmerk from '../components/Beeldmerk.astro';
+import Check from '../components/Check.astro';
+import { techniek } from '../data/site';
+
+/**
+ * De pagina achter de kaart "Software op maat". Doel: laten zien dat
+ * alle kanten op kan worden gebouwd, dat er wordt meegedacht met de
+ * situatie van het bedrijf, en uitnodigen tot een gesprek.
+ */
+
+const oplossingen = [
+  {
+    titel: 'Webapplicaties',
+    tekst:
+      'Een systeem waar je team in werkt, gewoon in de browser. Inloggen, rollen en rechten, en iedereen ziet precies wat voor hem bedoeld is. Niets installeren, overal bij te werken.',
+    voorbeelden: ['Planning en urenregistratie', 'Offertes en facturatie', 'Werkbonnen en voorraad'],
+  },
+  {
+    titel: 'Dashboards en rapportage',
+    tekst:
+      'Alle cijfers die nu verspreid staan over mailtjes, Excel en losse pakketten, op een scherm dat altijd klopt. Zodat je beslist op wat er echt gebeurt in plaats van op gevoel.',
+    voorbeelden: ['Omzet en marge per week', 'Live overzicht van lopende projecten', 'Automatische rapporten per mail'],
+  },
+  {
+    titel: 'Klantportalen',
+    tekst:
+      'Een plek waar jouw klanten zelf inloggen: bestellingen volgen, documenten inzien, een afspraak plannen. Minder telefoontjes voor jou, meer duidelijkheid voor hen.',
+    voorbeelden: ['Reserveren en boeken', 'Documenten en facturen inzien', 'Status van een aanvraag volgen'],
+  },
+  {
+    titel: 'Koppelingen en automatisering',
+    tekst:
+      'Je pakketten met elkaar laten praten en terugkerend handwerk laten verdwijnen. Vaak de kleinste ingreep met het grootste effect: geen overtypwerk meer, geen fouten meer.',
+    voorbeelden: ['Boekhouding aan webshop koppelen', 'Bestellingen automatisch verwerken', 'Meldingen op het juiste moment'],
+  },
+  {
+    titel: 'Betalen en facturatie',
+    tekst:
+      'Online betalen met iDEAL of creditcard, abonnementen die vanzelf verlengen, facturen die de deur uit gaan zonder dat je eraan denkt. Gekoppeld aan je administratie.',
+    voorbeelden: ['iDEAL en creditcard', 'Abonnementen en termijnen', 'Facturen automatisch verstuurd'],
+  },
+  {
+    titel: 'Iets wat hier niet tussen staat',
+    tekst:
+      'Dit zijn voorbeelden, geen menukaart. Software op maat betekent letterlijk dat we alle kanten op kunnen. Beschrijf wat er in jouw bedrijf schuurt, dan bedenk ik hoe het beter kan.',
+    voorbeelden: ['Vertel het in een gesprek', 'Vrijblijvend en gratis', 'Eerlijk advies, ook als het nee is'],
+  },
+];
+---
+
+<BaseLayout
+  title="Software op maat | Sitefront"
+  description="Webapplicaties, dashboards, klantportalen, koppelingen en automatisering. Op maat gebouwd rond de manier waarop jouw bedrijf werkt. Gebouwd met Laravel, Vue en Inertia."
+>
+  <SiteHeader />
+
+  <main>
+    <section id="main" class="bg-brand relative isolate overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
+      <Beeldmerk
+        class="pointer-events-none absolute -top-16 -right-24 -z-10 hidden h-[38rem] w-auto text-white opacity-[0.05] sm:block lg:-right-16 lg:h-[46rem]"
+      />
+
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-20 md:px-8 md:pt-44 md:pb-28 xl:px-10">
+        <div class="max-w-3xl">
+          <p class="label text-accent">Software op maat</p>
+
+          <!-- Vaste regels, net als op de andere twee hero's. Vrij laten
+               afbreken gaf vijf regels op een smalle telefoon. -->
+          <h1 style="--regel: 9.05" class="kop-past leading-hero tracking-hero mt-6 font-heavy text-white">
+            <span class="block">Gebouwd rond de</span>
+            <span class="block">manier waarop</span>
+            <span class="text-accent block">jij werkt.</span>
+          </h1>
+
+          <p class="text-lg mt-8 max-w-[50ch] leading-[1.6] text-white/75">
+            De meeste software dwingt je in haar werkwijze. Ik draai het om: we beginnen bij hoe
+            jouw bedrijf draait en waar het schuurt, en bouwen daar het systeem omheen. Ik denk mee
+            over de oplossing, niet alleen over de techniek.
+          </p>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="/#contact"
+              class="bg-accent text-ink shadow-btn font-display rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 ease-soft hover:bg-white"
+            >
+              Plan een gesprek
+            </a>
+            <a
+              href="#oplossingen"
+              class="border-line-navy font-display rounded-full border px-5 py-2.5 text-base font-bold text-white transition-colors duration-150 ease-soft hover:bg-white/10"
+            >
+              Bekijk wat er kan
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="oplossingen" class="bg-paper scroll-mt-24 py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <SectionHead
+          label="Oplossingen"
+          titel="Alle kanten op"
+          lead="Van een los koppelstuk tot een compleet systeem waar je hele bedrijf in werkt. Dit is wat er zoal voorbijkomt, met voorbeelden van wat het voor jou kan betekenen."
+        />
+
+        <ul data-reveal-groep class="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+          {
+            oplossingen.map((o) => (
+              <li class="border-line-soft flex flex-col border-t pt-6">
+                <h3 class="text-xl font-black">{o.titel}</h3>
+                <p class="text-body mt-2.5 text-base leading-[1.6]">{o.tekst}</p>
+
+                <ul class="mt-5 space-y-2 text-base">
+                  {o.voorbeelden.map((v) => (
+                    <li class="text-body flex items-start gap-2.5">
+                      <Check class="text-mint mt-0.5" />
+                      {v}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-sand py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="grid gap-12 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
+          <SectionHead
+            label="Meedenken"
+            titel="Eerst het probleem, dan pas de techniek"
+            lead="Een systeem laten bouwen begint niet met een wensenlijst, maar met een goed gesprek over hoe je werkt."
+          />
+
+          <div class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+            <div>
+              <h3 class="text-xl font-black">Ik kijk mee in je bedrijf</h3>
+              <p class="text-body mt-2 text-base leading-[1.6]">
+                Waar gaat tijd verloren, wat wordt dubbel ingevoerd, waar wacht iedereen op elkaar.
+                Vaak zie je dat zelf niet meer, omdat het altijd al zo ging.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-xl font-black">Klein beginnen mag</h3>
+              <p class="text-body mt-2 text-base leading-[1.6]">
+                We bouwen eerst het deel dat het meeste oplevert en zetten dat live. Werkt het, dan
+                bouwen we verder. Zo blijft het overzichtelijk, ook in kosten.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-xl font-black">Gewone taal</h3>
+              <p class="text-body mt-2 text-base leading-[1.6]">
+                Je krijgt een plan waarin staat wat het systeem doet, wat het kost en wanneer het er
+                staat. Technische termen leg ik uit, of ik laat ze gewoon weg.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-xl font-black">Eerlijk advies</h3>
+              <p class="text-body mt-2 text-base leading-[1.6]">
+                Is er een bestaand pakket dat prima past, dan hoor je dat van mij. Maatwerk moet
+                zich terugverdienen, anders moet je er niet aan beginnen.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-paper py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="grid gap-10 lg:grid-cols-[minmax(0,26rem)_1fr] lg:gap-16">
+          <SectionHead
+            label="Techniek"
+            titel="Waar ik mee bouw"
+            lead="Beproefde techniek waar duizenden ontwikkelaars mee werken. Belangrijk voor jou, want daardoor zit je nooit aan mij vast."
+          />
+
+          <ul class="flex flex-wrap content-start items-start gap-2.5 self-center">
+            {
+              techniek.map((naam) => (
+                <li class="border-line text-ink rounded-full border px-4 py-2 text-base font-medium">
+                  {naam}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-brand relative isolate overflow-hidden">
+      <div class="mx-auto w-full max-w-page px-5 py-20 md:px-8 md:py-24 xl:px-10">
+        <div class="max-w-2xl">
+          <h2 class="text-4xl font-heavy text-white">Benieuwd wat er in jouw bedrijf kan?</h2>
+          <p class="mt-5 text-xl leading-[1.55] text-white/80">
+            Vertel in een half uur waar het schuurt. Ik zeg je eerlijk of software daar het
+            antwoord op is, en zo ja hoe dat eruitziet.
+          </p>
+          <a
+            href="/#contact"
+            class="bg-accent text-ink shadow-btn font-display mt-8 inline-block rounded-full px-7 py-3.5 text-lg font-bold transition-colors duration-150 ease-soft hover:bg-white"
+          >
+            Plan een gesprek
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

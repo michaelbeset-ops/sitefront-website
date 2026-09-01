@@ -1,0 +1,15 @@
+{
+  "_comment": "Echte Lighthouse-uitslag van de volledige pagina. Alleen invullen met cijfers uit een daadwerkelijke run (npm run build, npm run preview, npm run audit). Null = nog niet gemeten. Wordt op dit moment nergens getoond: het component dat dit uitleest staat geparkeerd in src/components/parked/.",
+  "measuredAt": "2026-08-31T16:56:00.000Z",
+  "url": "http://localhost:4322/",
+  "isPublicUrl": false,
+  "tool": "Lighthouse 12.8.2",
+  "strategy": "desktop",
+  "scores": {
+    "performance": 100,
+    "accessibility": 100,
+    "bestPractices": 100,
+    "seo": 100
+  },
+  "note": "Gemeten op de tweede ontwerprichting (licht). 4 requests, 94 kB totaal."
+}

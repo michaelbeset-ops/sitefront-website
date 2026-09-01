@@ -1,0 +1,359 @@
+---
+import { Image } from 'astro:assets';
+import SectionHead from './SectionHead.astro';
+import { projecten } from '../data/site';
+
+/**
+ * Werk. De schermafbeelding staat bovenaan en volledig in beeld, de
+ * tekst staat eronder op wit.
+ *
+ * Er heeft hier een variant gestaan waarbij de tekst over de
+ * schermafbeelding heen lag, met een donker verloop eroverheen. Dat
+ * oogde rijk, maar het dekte de onderste zestig procent van elke site
+ * af. In een sectie die juist het werk moet tonen is dat de verkeerde
+ * afweging: de site moet je kunnen zien.
+ *
+ * Het browserkadertje eromheen maakt meteen duidelijk dat je naar een
+ * website kijkt en niet naar een foto van de klant.
+ *
+ * Schuiven is pure CSS (overflow-x met scroll-snap): vegen werkt op een
+ * telefoon en met een trackpad, en met het toetsenbord tab je door de
+ * links. Het script doet alleen de pijltjes en de stipjes.
+ *
+ * De beelden komen uit src/assets/werk. De bestandsnaam zonder extensie
+ * moet gelijk zijn aan "sleutel" in src/data/site.ts.
+ */
+const bestanden = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/werk/*.{png,jpg,jpeg,webp,avif}',
+  { eager: true },
+);
+
+const beelden: Record<string, ImageMetadata> = {};
+for (const [pad, mod] of Object.entries(bestanden)) {
+  const naam = pad.split('/').pop()!.replace(/\.\w+$/, '');
+  beelden[naam] = mod.default;
+}
+---
+
+<section id="werk" class="bg-sand scroll-mt-24 overflow-hidden py-20 md:py-28">
+  <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+    <SectionHead
+      label="Werk"
+      titel="Opgeleverd en in gebruik"
+      lead="Geen voorbeeldplaatjes maar sites die dagelijks draaien. Schuif erdoorheen en kijk zelf."
+    />
+  </div>
+
+  <div data-reveal class="mt-12">
+    <ul
+      data-rij
+      class="rij mx-auto w-full max-w-page px-5 md:px-8 xl:px-10"
+      aria-label="Projecten, van links naar rechts te schuiven"
+    >
+      {
+        projecten.map((project) => {
+          const beeld = beelden[project.sleutel];
+          const Wrapper = project.url ? 'a' : 'div';
+          const linkProps = project.url
+            ? { href: project.url, target: '_blank', rel: 'noopener' }
+            : {};
+
+          return (
+            <li class="kaart">
+              <Wrapper
+                {...linkProps}
+                class:list={[
+                  'group bg-paper border-line-soft shadow-card flex h-full flex-col overflow-hidden rounded-2xl border',
+                  project.url && 'kaart-lift hover:shadow-lift',
+                ]}
+              >
+                {/* Browserkadertje: drie stipjes en het adres */}
+                <div class="border-line-soft bg-sand flex items-center gap-2 border-b px-4 py-2.5">
+                  <span class="flex gap-1.5" aria-hidden="true">
+                    <span class="bg-line-strong size-2.5 rounded-full" />
+                    <span class="bg-line-strong size-2.5 rounded-full" />
+                    <span class="bg-line-strong size-2.5 rounded-full" />
+                  </span>
+                  <span class="bg-paper border-line-soft text-soft mx-auto rounded-full border px-3 py-0.5 text-xs">
+                    {project.domein}
+                  </span>
+                </div>
+
+                <div class="bg-sand relative aspect-16/10 overflow-hidden">
+                  {beeld ? (
+                    <Image
+                      src={beeld}
+                      alt={project.alt}
+                      widths={[420, 620, 900]}
+                      sizes="(min-width: 1280px) 26rem, (min-width: 768px) 46vw, 84vw"
+                      class="ease-soft size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div class="text-soft grid h-full place-items-center text-sm">
+                      Schermafbeelding volgt
+                    </div>
+                  )}
+
+                  {project.status === 'preview' && (
+                    <p class="bg-accent text-ink tracking-label absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-black uppercase">
+                      Binnenkort live
+                    </p>
+                  )}
+                </div>
+
+                <div class="flex flex-1 flex-col p-6">
+                  <p class="label text-accent-ink">{project.soort}</p>
+
+                  <h3 class="text-2xl mt-2.5 font-black">
+                    {project.naam}
+                    {project.url && (
+                      <span
+                        class="text-accent-ink ease-soft ml-1 inline-block transition-transform duration-200 group-hover:translate-x-1"
+                        aria-hidden="true"
+                      >
+                        &rarr;
+                      </span>
+                    )}
+                  </h3>
+
+                  <p class="text-body mt-2.5 text-base leading-[1.6]">{project.tekst}</p>
+
+                  <div class="border-line-soft mt-auto flex flex-wrap items-baseline gap-x-3 gap-y-2 border-t pt-4">
+                    <p class="text-soft text-sm">{project.feit}</p>
+                    {project.stack.length > 0 && (
+                      <ul class="flex flex-wrap gap-1.5">
+                        {project.stack.map((t) => (
+                          <li class="bg-sand text-body rounded-full px-2.5 py-0.5 text-xs font-medium">
+                            {t}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              </Wrapper>
+            </li>
+          );
+        })
+      }
+    </ul>
+
+    <!-- Stipjes links, pijltjes rechts. Verborgen zolang het script niet
+         draait, want dan doen ze niets. Op een telefoon veeg je toch. -->
+    <div class="mx-auto mt-8 w-full max-w-page px-5 md:px-8 xl:px-10">
+      <div data-bediening class="bediening items-center justify-between gap-6">
+        <div data-stippen class="flex gap-0.5"></div>
+
+        <div class="flex gap-2">
+          <button
+            type="button"
+            data-vorige
+            aria-label="Vorige projecten"
+            class="border-line text-ink hover:bg-paper ease-soft grid size-11 place-items-center rounded-full border transition-colors duration-150 disabled:opacity-35"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="size-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M15 5 8 12l7 7"></path>
+            </svg>
+          </button>
+          <button
+            type="button"
+            data-volgende
+            aria-label="Volgende projecten"
+            class="border-line text-ink hover:bg-paper ease-soft grid size-11 place-items-center rounded-full border transition-colors duration-150 disabled:opacity-35"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="size-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bediening {
+    display: none;
+  }
+  .bediening[data-actief] {
+    display: flex;
+  }
+
+  .rij {
+    display: flex;
+    align-items: stretch;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1.25rem;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    padding-block-end: 0.5rem;
+  }
+
+  .rij::-webkit-scrollbar {
+    display: none;
+  }
+
+  .kaart {
+    flex: 0 0 auto;
+    /* Net geen volle breedte, zodat de volgende kaart erbuiten piept.
+       Dat randje vertelt mensen dat er meer is. */
+    width: 84%;
+    scroll-snap-align: start;
+    /* Kaarten die uit beeld staan dimmen weg. */
+    opacity: 0.5;
+    transition: opacity 300ms var(--ease-soft);
+  }
+
+  .kaart[data-inbeeld] {
+    opacity: 1;
+  }
+
+  /* Zonder JavaScript worden die attributen nooit gezet, dus dan moet
+     alles gewoon op volle sterkte staan. */
+  html:not(.js-aan) .kaart {
+    opacity: 1;
+  }
+
+  .kaart-lift {
+    transition:
+      transform 220ms var(--ease-soft),
+      box-shadow 220ms var(--ease-soft);
+  }
+  .kaart-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  @media (min-width: 48rem) {
+    .rij {
+      gap: 1.75rem;
+      scroll-padding-inline: 2rem;
+    }
+    .kaart {
+      width: 46%;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .rij {
+      scroll-padding-inline: 2.5rem;
+    }
+    .kaart {
+      width: 31%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kaart,
+    .kaart-lift:hover {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const rij = document.querySelector<HTMLElement>('[data-rij]');
+  const bediening = document.querySelector<HTMLElement>('[data-bediening]');
+  const stippenBak = document.querySelector<HTMLElement>('[data-stippen]');
+
+  if (rij && bediening && stippenBak) {
+    document.documentElement.classList.add('js-aan');
+
+    const vorige = bediening.querySelector<HTMLButtonElement>('[data-vorige]')!;
+    const volgende = bediening.querySelector<HTMLButtonElement>('[data-volgende]')!;
+    const kaarten = [...rij.querySelectorAll<HTMLElement>('.kaart')];
+    const rustig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* De stipjes staan niet in de HTML: zonder script kun je er toch
+       niet op klikken, en dan zijn het alleen maar bolletjes. */
+    const stippen = kaarten.map((kaart, i) => {
+      const knop = document.createElement('button');
+      knop.type = 'button';
+      knop.className = 'stip';
+      knop.setAttribute('aria-label', 'Ga naar project ' + (i + 1));
+      knop.addEventListener('click', () => {
+        rij.scrollTo({
+          left: kaart.offsetLeft - rij.offsetLeft,
+          behavior: rustig ? 'auto' : 'smooth',
+        });
+      });
+      stippenBak.append(knop);
+      return knop;
+    });
+
+    const kanSchuiven = () => rij.scrollWidth > rij.clientWidth + 4;
+
+    const bijwerken = () => {
+      const zichtbaar = kanSchuiven();
+      bediening.toggleAttribute('data-actief', zichtbaar);
+
+      if (!zichtbaar) {
+        for (const k of kaarten) k.setAttribute('data-inbeeld', '');
+        return;
+      }
+
+      const max = rij.scrollWidth - rij.clientWidth;
+      vorige.disabled = rij.scrollLeft <= 2;
+      volgende.disabled = rij.scrollLeft >= max - 2;
+
+      const links = rij.scrollLeft;
+      const rechts = links + rij.clientWidth;
+      let dichtstbij = 0;
+      let kleinste = Infinity;
+
+      kaarten.forEach((kaart, i) => {
+        const start = kaart.offsetLeft - rij.offsetLeft;
+        const eind = start + kaart.offsetWidth;
+        kaart.toggleAttribute('data-inbeeld', eind > links + 8 && start < rechts - 8);
+
+        const afstand = Math.abs(start - links);
+        if (afstand < kleinste) {
+          kleinste = afstand;
+          dichtstbij = i;
+        }
+      });
+
+      stippen.forEach((stip, i) => stip.toggleAttribute('data-actief', i === dichtstbij));
+    };
+
+    const stap = () => {
+      const kaart = kaarten[0];
+      if (!kaart) return rij.clientWidth * 0.8;
+      const gat = parseFloat(getComputedStyle(rij).columnGap || '0');
+      return kaart.getBoundingClientRect().width + gat;
+    };
+
+    const schuif = (richting: number) =>
+      rij.scrollBy({ left: stap() * richting, behavior: rustig ? 'auto' : 'smooth' });
+
+    vorige.addEventListener('click', () => schuif(-1));
+    volgende.addEventListener('click', () => schuif(1));
+
+    rij.addEventListener('scroll', bijwerken, { passive: true });
+    window.addEventListener('resize', bijwerken, { passive: true });
+
+    bijwerken();
+    window.addEventListener('load', bijwerken, { once: true });
+  }
+</script>

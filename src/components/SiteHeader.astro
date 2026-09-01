@@ -1,0 +1,167 @@
+---
+/**
+ * Sitehoofd. Ligt bovenop de hero in plaats van als losse witte balk
+ * erboven, zodat de pagina met het blauwe vlak begint. Zodra je scrolt
+ * wordt hij wit, want daaronder liggen lichte secties.
+ *
+ * De klasse "geschoven" wordt gezet door het script in BaseLayout.
+ * Zonder JavaScript blijft de balk gewoon leesbaar op het blauw.
+ *
+ * Het mobiele menu draait op <details>, dus ook zonder JavaScript.
+ */
+import Logo from './Logo.astro';
+import { navigatie } from '../data/site';
+---
+
+<header data-header class="kop fixed inset-x-0 top-0 z-40">
+  <div
+    class="mx-auto flex w-full max-w-page items-center justify-between gap-6 px-5 py-3.5 md:px-8 xl:px-10"
+  >
+    <a href="/#main" class="kop-logo kop-logo-hover shrink-0 rounded-md">
+      <Logo class="h-8 w-auto md:h-9" />
+    </a>
+
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex items-center gap-8 text-base font-medium">
+        {
+          navigatie.map((item) => (
+            <li>
+              <a href={item.href} class="kop-link rounded-md">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href="/#contact"
+        class="bg-accent text-ink shadow-btn font-display hidden rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 ease-soft hover:bg-white sm:inline-block"
+      >
+        Plan een gesprek
+      </a>
+
+      <details class="menu relative lg:hidden">
+        <summary
+          class="kop-knop font-display flex cursor-pointer list-none items-center gap-2 rounded-full border px-4 py-2.5 text-base font-bold"
+        >
+          <span class="menu-open">Menu</span>
+          <span class="menu-close">Sluit</span>
+        </summary>
+
+        <nav
+          aria-label="Menu"
+          class="border-line-soft bg-paper shadow-lift absolute right-0 z-50 mt-3 w-60 rounded-lg border p-2"
+        >
+          <ul class="text-body text-base font-medium">
+            {
+              navigatie.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="hover:bg-sand hover:text-ink block rounded-md px-3 py-2.5 transition-colors duration-150 ease-soft"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+            <li class="border-line-soft mt-2 border-t pt-2">
+              <a
+                href="/#contact"
+                class="text-accent-ink hover:bg-sand block rounded-md px-3 py-2.5 font-semibold transition-colors duration-150 ease-soft"
+              >
+                Plan een gesprek
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Boven de hero: doorzichtig, witte inhoud. */
+  .kop {
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color 200ms var(--ease-soft),
+      border-color 200ms var(--ease-soft),
+      box-shadow 200ms var(--ease-soft);
+  }
+
+  .kop-logo {
+    color: #fff;
+    transition:
+      color 200ms var(--ease-soft),
+      transform 250ms var(--ease-soft);
+  }
+
+  /* Een graad of twee bij hover. Meer wordt een grap. */
+  .kop-logo-hover:hover {
+    transform: rotate(-2deg) scale(1.03);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kop-logo-hover:hover {
+      transform: none;
+    }
+  }
+
+  .kop-link {
+    color: rgb(255 255 255 / 0.85);
+    transition: color 200ms var(--ease-soft);
+  }
+  .kop-link:hover {
+    color: #fff;
+  }
+
+  .kop-knop {
+    color: #fff;
+    border-color: rgb(255 255 255 / 0.3);
+    transition:
+      color 200ms var(--ease-soft),
+      border-color 200ms var(--ease-soft);
+  }
+
+  /* Zodra je scrolt: wit, donkere inhoud. */
+  .kop.geschoven {
+    /* Bewust een letterlijke waarde en geen color-mix met een variabele:
+       die werd hier tot volledig doorzichtig uitgerekend. */
+    background-color: rgb(255 255 255 / 0.92);
+    border-bottom-color: var(--color-line-soft);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(12px);
+  }
+
+  .kop.geschoven .kop-logo {
+    color: var(--color-ink);
+  }
+
+  .kop.geschoven .kop-link {
+    color: var(--color-body);
+  }
+  .kop.geschoven .kop-link:hover {
+    color: var(--color-ink);
+  }
+
+  .kop.geschoven .kop-knop {
+    color: var(--color-ink);
+    border-color: var(--color-line);
+  }
+
+  .menu summary::-webkit-details-marker {
+    display: none;
+  }
+  .menu .menu-close,
+  .menu[open] .menu-open {
+    display: none;
+  }
+  .menu[open] .menu-close {
+    display: inline;
+  }
+</style>

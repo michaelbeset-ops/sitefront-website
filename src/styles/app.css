@@ -1,0 +1,346 @@
+/* =============================================================
+   APP.CSS
+
+   Tweede richting. De eerste was donker, scherp en typografisch,
+   en dat las als een designer-sjabloon. Deze is licht, zwaar en
+   warm, met ronde vormen en echte schaduw, in de geest van
+   afzetbak.nl: eerst duidelijk en concreet, dan pas mooi.
+
+   Volgorde: fonts, tailwind, tokens, eigen utilities, basis.
+   ============================================================= */
+
+@import './fonts.css';
+@import 'tailwindcss';
+
+@theme {
+  /* ---------- Kleur ----------
+     "--color-*: initial" gooit het complete standaardpalet van
+     Tailwind weg, zodat bg-blue-500 niet eens meer bestaat. */
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+
+  /* Vlakken */
+  --color-paper: #ffffff; /* pagina                              */
+  --color-sand: #f6f5f2; /* warm grijs, om secties te wisselen  */
+  --color-navy: #0a2a5e; /* het merkblauw, nu als massief vlak  */
+  --color-navy-deep: #071e44; /* donkerder eind van het blauw        */
+
+  /* Tekst */
+  --color-ink: #101725; /* koppen                              */
+  --color-body: #4b5568; /* lopende tekst, 7.4:1 op wit         */
+  --color-soft: #6b7484; /* bijschriften, 4.8:1 op wit          */
+
+  /* Merk */
+  --color-accent: #f87116; /* het Sitefront-oranje                */
+  --color-accent-ink: #b03e00; /* zelfde oranje, leesbaar op licht    */
+  --color-mint: #1f9d6b; /* alleen voor bevestigingen           */
+  --color-bad: #c1362a; /* foutmeldingen, 6.2:1 op wit         */
+
+  /* Lijnen */
+  --color-line: #10172514; /* haarlijn                            */
+  --color-line-soft: #1017250f; /* nog subtieler                       */
+  --color-line-strong: #10172538; /* zichtbaar grijs, voor bedieningen   */
+  --color-line-navy: #ffffff26; /* lijn op het blauw                   */
+
+  /* ---------- Typografie ----------
+     Twee families. Archivo voert het woord, Plex Sans praat. */
+  --font-*: initial;
+  --font-display: 'Archivo Variable', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans Variable', system-ui, -apple-system, sans-serif;
+  --default-font-family: var(--font-body);
+
+  /* ---------- Typeschaal ----------
+     Dichter bij elkaar dan de vorige versie. Koppen worden groot
+     door hun gewicht, niet door extreme afmetingen. */
+  --text-*: initial;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1rem;
+  --text-lg: 1.0625rem;
+  --text-xl: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --text-2xl: clamp(1.375rem, 1.25rem + 0.6vw, 1.75rem);
+  --text-3xl: clamp(1.75rem, 1.45rem + 1.3vw, 2.5rem);
+  --text-4xl: clamp(2.125rem, 1.7rem + 1.9vw, 3.25rem);
+  /* De ondergrens is afgestemd op 320px, de smalste telefoons: daar
+     past "Websites die werken." nog net op een regel, zodat de kop drie
+     regels blijft. Vanaf 360px wint de vloeiende waarde het toch al van
+     deze ondergrens, dus grotere schermen merken hier niets van. */
+  --text-hero: clamp(2.25rem, 1.734rem + 3.404vw, 4.5rem);
+
+  /* ---------- Gewichten ----------
+     Hier zit het verschil met de vorige poging. 800 en 900 geven
+     de koppen het zelfvertrouwen dat 620 miste. */
+  --font-weight-*: initial;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 800;
+  --font-weight-heavy: 900;
+
+  --tracking-*: initial;
+  --tracking-hero: -0.035em;
+  --tracking-head: -0.022em;
+  --tracking-normal: 0em;
+  --tracking-label: 0.06em;
+
+  --leading-hero: 1;
+  --leading-head: 1.12;
+  --leading-body: 1.65;
+
+  /* ---------- Vorm ----------
+     Rond en vriendelijk, en pillen voor alles waarop je klikt. */
+  --radius-*: initial;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  /* ---------- Schaduw ----------
+     Zacht en laag. Genoeg om een kaart van de pagina te tillen,
+     niet zoveel dat het opvalt. */
+  --shadow-*: initial;
+  --shadow-card: 0 1px 2px #1017250d, 0 8px 24px -8px #10172519;
+  --shadow-lift: 0 2px 4px #1017250d, 0 18px 40px -12px #10172526;
+  --shadow-btn: 0 1px 2px #10172514, 0 6px 16px -6px #f8711659;
+
+  --container-page: 78rem;
+
+  --ease-*: initial;
+  --ease-soft: cubic-bezier(0.22, 0.7, 0.2, 1);
+}
+
+/* ---------- Eigen utilities ---------- */
+
+/* Het merkblauw als massief blok met een subtiele diepte erin,
+   zoals de gekleurde vlakken op afzetbak. */
+@utility bg-brand {
+  /* Verloop plus een fijne ruislaag. Zonder die ruis is een groot
+     gekleurd vlak dood, en dat is precies waar een pagina goedkoop van
+     gaat ogen. De ruis is een SVG in de CSS zelf, dus geen extra
+     verzoek en geen afbeelding om te beheren. */
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23r)' opacity='0.055'/%3E%3C/svg%3E"),
+    linear-gradient(168deg, var(--color-navy) 0%, var(--color-navy-deep) 100%);
+  background-size:
+    140px 140px,
+    100% 100%;
+}
+
+/* Een klein etiket boven een kop. Geen mono, geen wijde spatiering:
+   gewoon klein, vet en in de huisletter. */
+@utility label {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-black);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100svh;
+    background-color: var(--color-paper);
+    color: var(--color-body);
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: var(--leading-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: var(--font-weight-black);
+    letter-spacing: var(--tracking-head);
+    line-height: var(--leading-head);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* =============================================================
+   BEWEGING
+
+   Twee dingen, allebei met een reden. Meer niet: te veel beweging
+   is precies wat een site goedkoop maakt.
+
+   1. Onderdelen komen bij het scrollen rustig omhoog in beeld.
+   2. De streep onder de kop tekent zichzelf, een keer, bij het laden.
+
+   De klasse "reveal-aan" wordt door een klein script in de <head>
+   gezet, en alleen als JavaScript aan staat en de bezoeker beweging
+   niet heeft uitgezet. Zonder die klasse verbergt de CSS hieronder
+   niets, dus zonder JavaScript staat alles er gewoon.
+   ============================================================= */
+
+.reveal-aan [data-reveal],
+.reveal-aan [data-reveal-groep] > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 500ms var(--ease-soft),
+    transform 500ms var(--ease-soft);
+}
+
+.reveal-aan [data-reveal].zichtbaar,
+.reveal-aan [data-reveal-groep].zichtbaar > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* De kaarten in een groep komen kort na elkaar, niet allemaal tegelijk. */
+.reveal-aan [data-reveal-groep] > *:nth-child(2) {
+  transition-delay: 90ms;
+}
+.reveal-aan [data-reveal-groep] > *:nth-child(3) {
+  transition-delay: 180ms;
+}
+.reveal-aan [data-reveal-groep] > *:nth-child(4) {
+  transition-delay: 270ms;
+}
+
+/* De handgetekende streep onder het oranje deel van de kop.
+   Met de hand uitgezet in plaats van een rechte rand, zodat er
+   ergens op de pagina iets staat dat geen enkel sjabloon heeft. */
+.onderstreep {
+  position: absolute;
+  inset-inline: -0.06em;
+  bottom: -0.16em;
+  width: calc(100% + 0.12em);
+  height: 0.19em;
+  overflow: visible;
+}
+
+.onderstreep path {
+  stroke-dasharray: 340;
+  stroke-dashoffset: 340;
+  animation: streep-tekenen 900ms var(--ease-soft) 400ms forwards;
+}
+
+@keyframes streep-tekenen {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onderstreep path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Het sitehoofd krijgt pas een schaduw zodra je gescrold hebt. */
+[data-header] {
+  transition: box-shadow 200ms var(--ease-soft);
+}
+[data-header].geschoven {
+  box-shadow: var(--shadow-card);
+}
+
+/* Stipjes onder de projectcarrousel. Ze staan hier en niet in het
+   component, omdat het script ze aanmaakt en ze dan geen scope-attribuut
+   van Astro meekrijgen. */
+/* Het bolletje is 10px, maar het klikvlak is 24px. Onder die maat is
+   een knop op een telefoon niet fatsoenlijk te raken, en dat is ook
+   precies wat de toegankelijkheidsnorm voorschrijft. */
+.stip {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-color: transparent;
+  border-radius: var(--radius-full);
+}
+
+.stip::before {
+  content: '';
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: var(--radius-full);
+  /* --color-line-strong stond hier eerst, maar dat token bestaat alleen
+     in het oude donkere palet. De inactieve stipjes waren daardoor
+     doorzichtig en zag je alleen de actieve. */
+  background-color: var(--color-line-strong);
+  transition: background-color 150ms var(--ease-soft);
+}
+
+.stip:hover::before {
+  background-color: var(--color-soft);
+}
+
+.stip[data-actief]::before {
+  background-color: var(--color-navy);
+}
+
+/* Kaarten die ergens heen leiden komen bij hover een paar pixels
+   omhoog. Globaal, want meerdere componenten gebruiken dit. */
+.kaart-lift {
+  transition:
+    transform 220ms var(--ease-soft),
+    box-shadow 220ms var(--ease-soft);
+}
+
+.kaart-lift:hover {
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kaart-lift,
+  .kaart-lift:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Koppen met VASTE regelafbrekingen. De langste regel moet dan passen,
+   anders breekt hij alsnog en klopt het ritme niet meer. --regel is de
+   breedte van de langste regel als veelvoud van de lettergrootte (in
+   Archivo 900 is dat ongeveer 0,53 per teken). De letter krimpt zover
+   mee dat die regel past; op brede schermen wint de normale schaal. */
+.kop-past {
+  font-size: min(var(--text-hero), calc((100vw - 2.5rem) / var(--regel, 10.6)));
+}

@@ -1,0 +1,132 @@
+---
+import '../styles/app.css';
+import Cookiemelding from '../components/Cookiemelding.astro';
+import { bedrijf } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.png', Astro.site);
+
+/**
+ * Bedrijfsgegevens voor Google, als JSON-LD. Hiermee begrijpt Google
+ * dat dit een lokaal bedrijf in Dordrecht is, wat helpt om gevonden te
+ * worden op zoekopdrachten uit de regio.
+ */
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: bedrijf.naam,
+  description:
+    'Freelance ontwikkelaar van software op maat en websites voor ondernemers in Dordrecht en omstreken.',
+  url: Astro.site?.toString(),
+  email: bedrijf.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: bedrijf.plaats,
+    addressCountry: 'NL',
+  },
+  areaServed: 'Dordrecht en omstreken',
+  sameAs: [bedrijf.instagram, bedrijf.linkedin],
+  knowsAbout: ['Software op maat', 'Webapplicaties', 'Websites', 'Koppelingen', 'Automatisering'],
+};
+---
+
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#0A2A5E" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- Voor het eerste schilderen: alleen als JavaScript aan staat en de
+         bezoeker beweging niet heeft uitgezet, mag de CSS onderdelen
+         verbergen tot ze in beeld komen. Zo staat er zonder JavaScript
+         nooit iets onzichtbaar op de pagina. -->
+    <script is:inline>
+      if (
+        !window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
+        'IntersectionObserver' in window
+      ) {
+        document.documentElement.classList.add('reveal-aan');
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Skip-link: bewust op :focus en niet op :focus-visible. Dit
+         element is alleen met het toetsenbord te bereiken, dus het moet
+         zichtbaar worden zodra het focus krijgt, zonder uitzonderingen. -->
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-5 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:font-display focus:text-base focus:font-bold focus:text-white"
+    >
+      Naar de inhoud
+    </a>
+    <slot />
+    <Cookiemelding />
+
+    <script>
+      const wortel = document.documentElement;
+
+      /* --- onderdelen in beeld laten komen --- */
+      if (wortel.classList.contains('reveal-aan')) {
+        const doelen = document.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-groep]');
+
+        const toon = (el: Element) => el.classList.add('zichtbaar');
+
+        const waarnemer = new IntersectionObserver(
+          (items) => {
+            for (const item of items) {
+              if (item.isIntersecting) {
+                toon(item.target);
+                waarnemer.unobserve(item.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+
+        for (const doel of doelen) waarnemer.observe(doel);
+
+        /* Vangnet. Een IntersectionObserver vuurt niet in een verborgen
+           tabblad, en ook niet altijd bij een schermafdruk of een trage
+           machine. Zonder dit ziet iemand een halve lege pagina. Anderhalve
+           seconde is ruim genoeg voor de waarnemer en kort genoeg om niet
+           op te vallen. */
+        setTimeout(() => {
+          for (const doel of doelen) toon(doel);
+        }, 1500);
+      }
+
+      /* --- schaduw onder het sitehoofd zodra je scrolt --- */
+      const kop = document.querySelector('[data-header]');
+      if (kop) {
+        const bijwerken = () => kop.classList.toggle('geschoven', window.scrollY > 8);
+        bijwerken();
+        window.addEventListener('scroll', bijwerken, { passive: true });
+      }
+    </script>
+  </body>
+</html>

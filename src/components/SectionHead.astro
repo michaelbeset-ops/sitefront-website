@@ -1,0 +1,25 @@
+---
+/**
+ * Sectiekop. Klein etiket, kop, en optioneel een lead.
+ * Geen volgnummers meer: die maakten elke sectie identiek van vorm.
+ */
+interface Props {
+  label: string;
+  titel: string;
+  lead?: string;
+  tone?: 'licht' | 'donker';
+  class?: string;
+}
+
+const { label, titel, lead, tone = 'licht', class: klasse = '' } = Astro.props;
+
+const etiket = tone === 'donker' ? 'text-accent' : 'text-accent-ink';
+const kop = tone === 'donker' ? 'text-white' : 'text-ink';
+const lees = tone === 'donker' ? 'text-white/75' : 'text-body';
+---
+
+<div data-reveal class={`max-w-2xl ${klasse}`}>
+  <p class={`label ${etiket}`}>{label}</p>
+  <h2 class={`text-4xl ${kop} mt-4 font-heavy`}>{titel}</h2>
+  {lead && <p class={`${lees} mt-5 text-xl leading-[1.55]`}>{lead}</p>}
+</div>

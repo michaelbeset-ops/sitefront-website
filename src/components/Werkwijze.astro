@@ -1,0 +1,28 @@
+---
+import SectionHead from './SectionHead.astro';
+import { werkwijze } from '../data/site';
+---
+
+<section id="werkwijze" class="bg-sand scroll-mt-24 py-20 md:py-28">
+  <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+    <SectionHead
+      label="Werkwijze"
+      titel="In vier stappen van idee naar live"
+      lead="Je weet op elk moment waar we staan en wat de volgende stap is. Geen verrassingen aan het eind."
+    />
+
+    <ol data-reveal-groep class="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      {
+        werkwijze.map((stap) => (
+          <li class="border-line-soft border-t pt-6">
+            <span class="bg-navy font-display grid size-10 place-items-center rounded-full text-base font-heavy text-white">
+              {stap.nummer.replace(/^0/, '')}
+            </span>
+            <h3 class="text-xl mt-4 font-black">{stap.titel}</h3>
+            <p class="text-body mt-2 text-base leading-[1.6]">{stap.tekst}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

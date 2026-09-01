@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" rx="6" fill="#111111"/>
+  <!-- 3 parallelogram bars, wit, compact -->
+  <polygon points="4,5 18,5 16,11 2,11" fill="#FFFFFF"/>
+  <polygon points="7,13 21,13 19,19 5,19" fill="#FFFFFF"/>
+  <polygon points="10,21 24,21 22,27 8,27" fill="#FFFFFF"/>
+</svg>

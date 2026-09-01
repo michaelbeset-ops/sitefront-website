@@ -1,0 +1,38 @@
+---
+import { citaat } from '../data/site';
+
+/**
+ * Aanbeveling van een klant. Rendert bewust alleen wanneer
+ * citaat.bevestigd op true staat: zolang de tekst een concept is dat
+ * de betrokkene nog niet gezien heeft, hoort hij niet op een pagina
+ * die naar buiten gaat. Zie de toelichting in src/data/site.ts.
+ */
+---
+
+{
+  citaat.bevestigd && (
+    <section class="bg-sand py-16 md:py-20">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <figure class="mx-auto max-w-3xl text-center">
+          <svg
+            viewBox="0 0 32 24"
+            class="text-accent mx-auto size-8"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M13 24V12C13 5.4 17.4 1 24 0v4c-3.6 1-6 3.6-6 8h6v12H13Zm-13 0V12C0 5.4 4.4 1 11 0v4C7.4 5 5 7.6 5 12h6v12H0Z" />
+          </svg>
+
+          <blockquote class="text-ink font-display mt-6 text-3xl font-black leading-[1.25]">
+            {citaat.tekst}
+          </blockquote>
+
+          <figcaption class="text-body mt-6 text-base">
+            <span class="text-ink font-semibold">{citaat.naam}</span>
+            {citaat.rol && <span class="text-soft">, {citaat.rol}</span>}
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  )
+}

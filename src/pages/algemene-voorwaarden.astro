@@ -1,0 +1,60 @@
+---
+import JuridischLayout from '../layouts/JuridischLayout.astro';
+import voorwaarden from '../data/voorwaarden.json';
+import { bedrijf } from '../data/site';
+
+/**
+ * De tekst komt woordelijk uit het Word-document van Michael zelf.
+ * Alleen de typografie is aangepast: gedachtestreepjes zijn komma's
+ * geworden. Er is niets aan de inhoud veranderd.
+ */
+---
+
+<JuridischLayout
+  titel="Algemene voorwaarden | Sitefront"
+  omschrijving="De algemene voorwaarden van Sitefront, van toepassing op alle offertes, overeenkomsten en leveringen."
+  kop="Algemene voorwaarden"
+  intro="Deze voorwaarden gelden voor alle offertes, overeenkomsten en leveringen van Sitefront."
+  bijgewerkt={voorwaarden.versie ?? undefined}
+>
+  <div class="border-line-soft bg-sand mb-10 rounded-xl border p-5">
+    <p class="text-body text-base">
+      <strong class="text-ink">Sitefront</strong>, {bedrijf.plaats}. KvK {bedrijf.kvk}.
+      <a href={`mailto:${bedrijf.email}`}>{bedrijf.email}</a>
+    </p>
+  </div>
+
+  <nav aria-label="Inhoud" class="border-line-soft mb-12 border-b pb-10">
+    <p class="label text-soft">Inhoud</p>
+    <ol class="mt-4 grid gap-x-8 gap-y-1.5 sm:grid-cols-2">
+      {
+        voorwaarden.artikelen.map((a) => (
+          <li>
+            <a href={`#artikel-${a.nummer}`} class="text-body hover:text-ink text-base">
+              {a.nummer}. {a.titel}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+
+  {
+    voorwaarden.artikelen.map((a) => (
+      <section id={`artikel-${a.nummer}`} class="scroll-mt-28">
+        <h2>
+          Artikel {a.nummer}. {a.titel}
+        </h2>
+        {a.leden.map((lid) => (
+          <p>{lid}</p>
+        ))}
+      </section>
+    ))
+  }
+
+  {
+    voorwaarden.slot.map((regel) => (
+      <p class="border-line-soft text-soft mt-12 border-t pt-8 text-base">{regel}</p>
+    ))
+  }
+</JuridischLayout>

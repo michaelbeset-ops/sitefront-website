@@ -1,0 +1,100 @@
+---
+/**
+ * Eén regel onder de knoppen die laat zien hoe snel deze pagina bij de
+ * bezoeker zelf geladen is.
+ *
+ * Dit is het enige element op de site dat bewijst wat de kop belooft.
+ * Iedereen kan "snelle websites" op zijn homepage zetten; hier staat
+ * het getal erbij, gemeten in de browser van degene die het leest.
+ *
+ * Geen API, geen sleutel, geen backend: de Performance API zit in elke
+ * browser. En geen verzonnen waarde, want als de meting niet lukt
+ * blijft de regel onzichtbaar.
+ */
+---
+
+<!--
+  De regel is onzichtbaar tot de meting er is, maar zijn hoogte staat
+  vanaf het begin gereserveerd (min-h). Eerst stond hier "hidden", en
+  dan duwt de regel bij verschijnen de hele pagina eronder omlaag: dat
+  gaf een layoutverschuiving van 0,11 op mobiel, boven de norm. Lukt de
+  meting niet, dan blijft er een lege regel staan; dat is de prijs.
+-->
+<p
+  data-snelheid
+  class="invisible mt-8 flex min-h-7 flex-wrap items-center gap-x-2.5 gap-y-1 text-base text-white/70"
+>
+  <span class="stip-live" aria-hidden="true"></span>
+
+  <span>
+    Deze pagina laadde bij jou in{' '}
+    <span data-snelheid-waarde class="font-display font-bold text-white tabular-nums"></span>
+  </span>
+
+</p>
+
+<style>
+  .stip-live {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-mint);
+    animation: kloppen 2.6s ease-in-out infinite;
+  }
+
+  @keyframes kloppen {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(0.75);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stip-live {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  const regel = document.querySelector<HTMLElement>('[data-snelheid]');
+  const waarde = document.querySelector<HTMLElement>('[data-snelheid-waarde]');
+
+  if (regel && waarde && 'performance' in window) {
+    const nl = (n: number, d = 0) =>
+      n.toLocaleString('nl-NL', { minimumFractionDigits: d, maximumFractionDigits: d });
+
+    /* Onder de seconde in milliseconden, daarboven in seconden. Dat
+       leest prettiger dan overal hetzelfde. */
+    const toon = (ms: number) => (ms < 1000 ? nl(ms) + ' ms' : nl(ms / 1000, 2) + ' s');
+
+    const meet = () => {
+      const nav = performance.getEntriesByType('navigation')[0] as
+        | PerformanceNavigationTiming
+        | undefined;
+      if (!nav) return;
+
+      /* domContentLoadedEventEnd: het moment dat de pagina bruikbaar is.
+         loadEventEnd wacht ook op afbeeldingen onderaan de pagina en
+         zegt dus minder over wat de bezoeker ervaart. */
+      const ms = nav.domContentLoadedEventEnd || nav.responseEnd;
+      if (!ms || ms < 1) return;
+
+      waarde.textContent = toon(ms);
+      regel.classList.remove('invisible');
+    };
+
+    /* De tijden staan pas vast na het load-event. */
+    if (document.readyState === 'complete') {
+      setTimeout(meet, 0);
+    } else {
+      window.addEventListener('load', () => setTimeout(meet, 0), { once: true });
+    }
+  }
+</script>

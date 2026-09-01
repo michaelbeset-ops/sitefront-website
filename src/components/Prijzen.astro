@@ -1,0 +1,63 @@
+---
+import Check from './Check.astro';
+import SectionHead from './SectionHead.astro';
+import { pakketten } from '../data/site';
+---
+
+<section id="prijzen" class="bg-sand scroll-mt-24 py-20 md:py-28">
+  <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+    <SectionHead
+      label="Prijzen"
+      titel="Wat het kost"
+      lead="Elk project is anders, dus er staat geen bedrag op deze pagina dat toch niet klopt. Na de kennismaking krijg je een offerte met een vaste omvang en prijs."
+    />
+
+    <div data-reveal-groep class="mt-12 grid items-start gap-6 lg:grid-cols-3">
+      {
+        pakketten.map((pakket) => (
+          <div
+            class:list={[
+              'bg-paper relative flex h-full flex-col rounded-xl p-7 md:p-8',
+              pakket.uitgelicht
+                ? 'border-navy shadow-lift border-2 lg:-mt-4 lg:pb-10'
+                : 'border-line-soft shadow-card border',
+            ]}
+          >
+            {pakket.uitgelicht && (
+              <span class="bg-accent text-ink font-display absolute -top-3 left-7 rounded-full px-3.5 py-1 text-xs font-black tracking-label uppercase">
+                Meest gekozen
+              </span>
+            )}
+
+            <h3 class="text-2xl font-black">{pakket.naam}</h3>
+            <p class="text-body mt-2.5 text-base leading-[1.6]">{pakket.voor}</p>
+
+            <p class="text-ink font-display mt-6 text-3xl font-heavy">{pakket.prijs}</p>
+            <p class="text-soft mt-1 text-sm">{pakket.prijsnoot}</p>
+
+            <ul class="border-line-soft mt-7 space-y-3 border-t pt-7 text-base">
+              {pakket.punten.map((punt) => (
+                <li class="text-body flex items-start gap-2.5">
+                  <Check class="text-mint mt-0.5" />
+                  {punt}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="/#contact"
+              class:list={[
+                'font-display mt-8 block rounded-full px-6 py-3.5 text-center text-base font-bold transition-colors duration-150 ease-soft',
+                pakket.uitgelicht
+                  ? 'bg-accent text-ink shadow-btn hover:bg-navy hover:text-white'
+                  : 'border-line text-ink border hover:bg-sand',
+              ]}
+            >
+              Vraag een offerte
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

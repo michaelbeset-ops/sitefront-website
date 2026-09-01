@@ -1,0 +1,62 @@
+---
+import ContactForm from './islands/ContactForm.vue';
+import { bedrijf, projectTypes } from '../data/site';
+
+const sleutel = import.meta.env.PUBLIC_WEB3FORMS_KEY;
+---
+
+<section id="contact" class="bg-brand scroll-mt-24 py-20 md:py-28">
+  <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,24rem)_1fr] lg:items-start lg:gap-16">
+      <div>
+        <p class="label text-accent">Contact</p>
+        <h2 class="text-4xl mt-4 font-heavy text-white">Vertel wat je wilt bouwen</h2>
+        <p class="mt-5 text-xl leading-[1.55] text-white/80">
+          Een gesprek kost je een half uur en verplicht je tot niets. Ik zeg het ook eerlijk als je
+          beter af bent zonder mij.
+        </p>
+
+        <dl class="mt-10 space-y-4">
+          <div>
+            <dt class="text-sm text-white/60">Mail</dt>
+            <dd class="mt-0.5">
+              <a
+                class="font-display text-lg font-bold text-white underline decoration-accent decoration-2 underline-offset-4"
+                href={`mailto:${bedrijf.email}`}
+              >
+                {bedrijf.email}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-sm text-white/60">Werkgebied</dt>
+            <dd class="mt-0.5 text-white">{bedrijf.plaats} en omstreken</dd>
+          </div>
+          <div>
+            <dt class="text-sm text-white/60">KvK</dt>
+            <dd class="mt-0.5 text-white">{bedrijf.kvk}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div data-reveal class="bg-paper shadow-lift rounded-xl p-6 md:p-9">
+        <!-- Het formulier hydrateert net voordat het in beeld komt, zodat
+             er geen moment is waarop het er wel staat maar niets doet. -->
+        <ContactForm
+          client:visible={{ rootMargin: '400px' }}
+          email={bedrijf.email}
+          types={projectTypes}
+          sleutel={sleutel}
+        />
+        <noscript>
+          <p class="border-line-soft bg-sand text-body mt-5 rounded-lg border p-4">
+            Het formulier heeft JavaScript nodig. Mail me anders rechtstreeks op
+            <a class="text-accent-ink underline underline-offset-4" href={`mailto:${bedrijf.email}`}>
+              {bedrijf.email}
+            </a>.
+          </p>
+        </noscript>
+      </div>
+    </div>
+  </div>
+</section>

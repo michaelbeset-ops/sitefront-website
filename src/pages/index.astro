@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import Hero from '../components/Hero.astro';
+import Diensten from '../components/Diensten.astro';
+import Werk from '../components/Werk.astro';
+import Citaat from '../components/Citaat.astro';
+import Werkwijze from '../components/Werkwijze.astro';
+import Waarom from '../components/Waarom.astro';
+import Prijzen from '../components/Prijzen.astro';
+import Faq from '../components/Faq.astro';
+import Contact from '../components/Contact.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<BaseLayout
+  title="Sitefront, software op maat en websites uit Dordrecht"
+  description="Freelance softwareontwikkelaar in Dordrecht. Systemen op maat met inlog, koppelingen en automatisering, plus snelle websites. Gebouwd met Laravel, Vue en Astro."
+>
+  <SiteHeader />
+  <main>
+    <Hero />
+    <Diensten />
+    <Werk />
+    <Citaat />
+    <Werkwijze />
+    <Waarom />
+    <Prijzen />
+    <Faq />
+    <Contact />
+  </main>
+  <SiteFooter />
+</BaseLayout>

@@ -1,0 +1,46 @@
+---
+/**
+ * Het Sitefront-logo.
+ *
+ * Het aangeleverde bestand was met imagetracer.js uit een PNG getrokken:
+ * 110 paden, waarvan er 97 ruis waren (haarlijntjes van de anti-aliasing)
+ * plus een dekkend vlak dat het logo onbruikbaar maakte op een donkere
+ * achtergrond. Hieronder staan alleen de 13 paden die het logo echt zijn.
+ *
+ * De vulling is currentColor, dus het logo neemt de tekstkleur over van
+ * waar het staat. Donker in de kop, wit in de voet, zonder tweede bestand.
+ *
+ * fill-rule evenodd is nodig voor de gaten in de e en de o.
+ */
+interface Props {
+  class?: string;
+  /** Zet op true wanneer er vlak ernaast al "Sitefront" staat. */
+  decoratief?: boolean;
+}
+
+const { class: klasse = '', decoratief = false } = Astro.props;
+---
+
+<svg
+  viewBox="16 17 284 85"
+  class={klasse}
+  fill="currentColor"
+  fill-rule="evenodd"
+  role={decoratief ? undefined : 'img'}
+  aria-hidden={decoratief ? 'true' : undefined}
+  aria-label={decoratief ? undefined : 'Sitefront'}
+>
+  <path d="M 24.5 18 L 62.5 18 L 63 19.5 L 56 40 L 17.5 40 L 17 37.5 L 24.5 18 Z" />
+  <path d="M 33 48 L 75.5 48 L 76 50.5 L 68.5 70 L 26 69.5 L 33 48 Z" />
+  <path d="M 119.5 55 Q 129.3 54.2 133 59.5 L 135 66 Q 129.6 67.5 128 64.5 L 125.5 61 Q 117 59 115 63.5 Q 114.5 67.5 117.5 68 L 126.5 70 L 134 74.5 Q 136.8 77.2 136 83.5 L 130.5 91 L 124.5 93 L 119.5 93 Q 112.1 91.9 109 86.5 L 108 81 L 113.5 80 L 116.5 86 L 125.5 87 L 129 84.5 L 130 81.5 L 127.5 78 L 118.5 76 L 111 71.5 Q 108.3 69.2 109 63.5 L 113.5 57 L 119.5 55 Z" />
+  <path d="M 142 56 L 147 56 L 147 62 L 142 62 L 142 56 Z" />
+  <path d="M 201.5 56 L 208 57 L 208 61 L 202 61 L 202 66 Q 209.5 63.5 207 71 L 202 71.5 L 202 92 L 196 92 L 196 71.5 L 192 71 L 192 66 L 196 66 L 196 59.5 L 201.5 56 Z" />
+  <path d="M 159.5 58 L 160 66 Q 167.5 63.5 165 71 L 160 71 L 160 85.5 Q 161.2 88 165 87 L 165 91 L 163.5 91 L 159.5 92 L 155 89.5 L 154 87.5 L 154 71 L 151 71 L 151 66 Q 155.9 67.8 154 61.5 L 159.5 58 Z" />
+  <path d="M 291.5 58 L 292 66 Q 299.5 63.5 297 71 L 292 71.5 L 292 87 Q 299.1 84.6 297 91 L 290.5 92 L 287 89.5 L 286 87.5 L 286 71 L 283 71 L 283 66 Q 287.9 67.8 286 61.5 L 291.5 58 Z" />
+  <path d="M 176.5 65 Q 184.8 64.8 188 69.5 Q 190.9 73.4 190 80 L 173.5 80 L 173 82.5 L 176.5 87 Q 181.8 88.3 183 85.5 L 184.5 83 L 189 84 Q 189.8 88.7 185.5 90 Q 182.6 92.6 176.5 92 L 170 88.5 Q 165.7 84.3 167 74.5 Q 168.4 68.4 173.5 66 L 176.5 65 Z M 177 70 L 174 71 L 173 74 L 174 76 L 184 76 L 183 72 Q 182 69 177 70 Z" />
+  <path d="M 220.5 65 L 225 66 L 224 71 Q 218.6 69.5 217 72.5 L 216 74.5 L 216 92 L 210.5 92 L 210 91.5 L 210 66 L 215 66 L 215 69.5 L 220.5 65 Z" />
+  <path d="M 237.5 65 Q 246.7 64.8 250 70.5 Q 252.9 74.1 252 81.5 L 247.5 89 Q 244.3 92.3 237.5 92 L 233.5 91 L 229 87.5 L 227 84.5 L 226 76.5 L 230.5 68 L 237.5 65 Z M 237 70 L 232 77 Q 231 85 237 87 Q 242 88 244 86 L 246 82 Q 247 74 244 71 Q 242 69 237 70 Z" />
+  <path d="M 269.5 65 Q 275.9 64.6 278 68.5 L 279 70.5 L 279 92 L 273.5 92 L 273 91.5 L 273 72.5 Q 271.8 68.8 265.5 70 L 262 77.5 L 262 92 L 257 91.5 L 257 66 L 262 66 L 262 69.5 L 265.5 67 L 269.5 65 Z" />
+  <path d="M 142 66 L 147 66.5 L 147 92 L 142 91.5 L 142 66 Z" />
+  <path d="M 43.5 79 L 90 79.5 L 83 101 L 36.5 101 L 36 98.5 L 43.5 79 Z" />
+</svg>
