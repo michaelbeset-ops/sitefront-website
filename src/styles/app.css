@@ -144,6 +144,17 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+
+    /* De kleur die je op een telefoon ziet als je voorbij de boven- of
+       onderrand veegt. Zonder dit is dat vlak wit en lijkt de pagina
+       daar los te komen van het blauw eronder. Elke pagina begint met
+       het blauwe vlak en eindigt met de blauwe voet, dus deze ene
+       kleur klopt aan allebei de kanten.
+
+       Let op: body houdt zijn eigen witte achtergrond. Zodra html een
+       achtergrond heeft, stopt die van body met doorvloeien naar het
+       hele venster, en dat is precies wat we hier willen. */
+    background-color: var(--color-navy);
   }
 
   body {

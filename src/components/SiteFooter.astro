@@ -5,7 +5,7 @@ import { bedrijf, navigatie } from '../data/site';
 const jaar = new Date().getFullYear();
 ---
 
-<footer class="bg-navy-deep py-14">
+<footer class="voet bg-navy-deep py-14">
   <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr]">
       <div>
@@ -119,3 +119,15 @@ const jaar = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<style>
+  /* Onder de voet ligt de achtergrond van html, en die is iets lichter
+     blauw omdat hij bij de bovenkant van de pagina hoort. Bij het
+     terugveren aan de onderkant van een telefoon zag je dat verschil.
+     Deze schaduw schildert de voetkleur een half scherm door naar
+     beneden. Het kost geen ruimte in de opmaak en geeft dus ook geen
+     extra schuifbalk. */
+  .voet {
+    box-shadow: 0 50vh 0 var(--color-navy-deep);
+  }
+</style>
