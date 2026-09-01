@@ -1,0 +1,57 @@
+# Zet de site live op GitHub Pages bij elke push naar main.
+#
+# Astro moet gebouwd worden, dus Pages kan de bestanden niet zomaar uit
+# de repo serveren. Deze workflow installeert Node, bouwt de site en
+# levert de map dist af bij Pages.
+
+name: Live zetten
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Nooit twee keer tegelijk uitrollen, wel de laatste push altijd afmaken.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bouwen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          # Staat als repository variable onder Settings, Secrets and
+          # variables, Actions, tabblad Variables.
+          PUBLIC_WEB3FORMS_KEY: ${{ vars.PUBLIC_WEB3FORMS_KEY }}
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  uitrollen:
+    needs: bouwen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - id: pages
+        uses: actions/deploy-pages@v4
