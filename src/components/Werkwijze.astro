@@ -1,6 +1,13 @@
 ---
 import SectionHead from './SectionHead.astro';
 import { werkwijze } from '../data/site';
+
+/**
+ * Op een telefoon stonden de vier stappen onder elkaar, samen ruim twee
+ * schermen lang. Nu is het een rij waar je doorheen veegt. Puur CSS met
+ * scroll-snap, dus geen JavaScript nodig, en de volgende kaart piept er
+ * altijd voor een deel in zodat je ziet dat er meer is.
+ */
 ---
 
 <section id="werkwijze" class="bg-sand scroll-mt-24 py-20 md:py-28">
@@ -11,7 +18,7 @@ import { werkwijze } from '../data/site';
       lead="Je weet op elk moment waar we staan en wat de volgende stap is. Geen verrassingen aan het eind."
     />
 
-    <ol data-reveal-groep class="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+    <ol data-schuif data-reveal-groep class="stappen mt-12">
       {
         werkwijze.map((stap) => (
           <li class="border-line-soft border-t pt-6">
@@ -26,3 +33,53 @@ import { werkwijze } from '../data/site';
     </ol>
   </div>
 </section>
+
+<style>
+  .stappen {
+    display: grid;
+    gap: 1.5rem;
+
+    /* Telefoon: een rij om doorheen te vegen. */
+    grid-auto-flow: column;
+    grid-auto-columns: 76%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+
+    /* Tot de schermrand doorlopen, maar wel netjes uitlijnen met de
+       tekst erboven. De negatieve marge en de padding heffen elkaar op. */
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    scroll-padding-inline: 1.25rem;
+
+    scrollbar-width: none;
+  }
+
+  .stappen::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stappen > li {
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  /* Vanaf een tablet is er ruimte genoeg, dan gewoon een raster. */
+  @media (min-width: 40rem) {
+    .stappen {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow-x: visible;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .stappen {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

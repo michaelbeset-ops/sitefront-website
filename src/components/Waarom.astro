@@ -17,7 +17,7 @@ import { bedrijf, waarom } from '../data/site';
       <div>
         <SectionHead
           label="Waarom Sitefront"
-          titel="Waarom ondernemers bij mij uitkomen"
+          titel="Wat je aan mij hebt"
           lead="Geen bureau met lagen ertussen, maar één iemand die het bouwt en er ook over vier jaar nog aan te herkennen is."
         />
 
@@ -30,10 +30,10 @@ import { bedrijf, waarom } from '../data/site';
         }
       </div>
 
-      <ul data-reveal-groep class="grid gap-x-10 gap-y-9 sm:grid-cols-2">
+      <ul data-reveal-groep class="grid gap-x-10 gap-y-8 self-start sm:grid-cols-2">
         {
           waarom.map((r) => (
-            <li>
+            <li class="border-line-soft border-t pt-5">
               <h3 class="text-xl font-black">{r.titel}</h3>
               <p class="text-body mt-2.5 text-base leading-[1.6]">{r.tekst}</p>
             </li>
