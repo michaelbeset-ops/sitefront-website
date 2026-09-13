@@ -243,18 +243,18 @@ export const waarom = [
  */
 export const projecten = [
   {
-    sleutel: 'b-advice',
-    // Vul in waarmee je dit gebouwd hebt, dan verschijnt het op de kaart.
-    // Leeg laten mag: dan toont de kaart het gewoon niet.
-    stack: [] as string[],
-    naam: 'B-Advice',
-    domein: 'b-advice.info',
-    url: 'https://b-advice.info',
-    soort: 'Website',
+    sleutel: 'playerpath',
+    stack: ['Laravel', 'Vue', 'Inertia'],
+    naam: 'PlayerPath',
+    domein: 'playerpath.nl',
+    // De kaart leidt naar het verslag, niet naar de site zelf. Op het
+    // verslag staat wat er achter de site zit, en daar staat ook de link.
+    url: '/werk/playerpath' as string | null,
+    soort: 'SaaS-platform',
     tekst:
-      'Specialist in ondergrondse afvalinfrastructuur, van plaatsing tot digitaal containerbeheer. De site moet in een oogopslag duidelijk maken wat ze doen voor gemeenten die daarover beslissen.',
-    feit: 'Actief in ruim veertig gemeenten',
-    alt: 'De website van B-Advice, specialist in ondergrondse afvalcontainers.',
+      'Een compleet platform voor keeper- en voetbalscholen. Inschrijven, trainingen, betalen, en een spelerskaart die meegroeit met elk rapport van de trainer.',
+    feit: 'Lees het verslag',
+    alt: 'De website van PlayerPath, software voor keeper- en voetbalscholen.',
   },
   {
     sleutel: 'slobtuinen',
@@ -271,9 +271,31 @@ export const projecten = [
     alt: 'De website van Slob Tuinen, grond groen en straat.',
   },
   {
+    sleutel: 'b-advice',
+    stack: [] as string[],
+    naam: 'B-Advice',
+    domein: 'b-advice.info',
+    url: 'https://b-advice.info',
+    soort: 'Website',
+    tekst:
+      'Specialist in ondergrondse afvalinfrastructuur, van plaatsing tot digitaal containerbeheer. De site moet in een oogopslag duidelijk maken wat ze doen voor gemeenten die daarover beslissen.',
+    feit: 'Actief in ruim veertig gemeenten',
+    alt: 'De website van B-Advice, specialist in ondergrondse afvalcontainers.',
+  },
+  {
+    sleutel: 'den-witten-haen',
+    stack: [] as string[],
+    naam: 'Den Witten Haen',
+    domein: 'denwittenhaen.com',
+    url: 'https://denwittenhaen.com',
+    soort: 'Website met reserveringssysteem',
+    tekst:
+      'Lunchroom in het hart van Dordrecht. Lunch, high tea en groepen, met een eigen reserveringssysteem zodat gasten meteen een tafel kunnen vastleggen.',
+    feit: 'Hart van Dordrecht',
+    alt: 'De website van Den Witten Haen in Dordrecht.',
+  },
+  {
     sleutel: 'aroma',
-    // Vul in waarmee je dit gebouwd hebt, dan verschijnt het op de kaart.
-    // Leeg laten mag: dan toont de kaart het gewoon niet.
     stack: [] as string[],
     naam: 'Aroma Lunchroom',
     domein: 'aromalunchroom.com',
@@ -285,24 +307,21 @@ export const projecten = [
     alt: 'De website van Aroma Lunchroom in Gorinchem.',
   },
   {
-    sleutel: 'den-witten-haen',
-    // Vul in waarmee je dit gebouwd hebt, dan verschijnt het op de kaart.
-    // Leeg laten mag: dan toont de kaart het gewoon niet.
+    sleutel: 'rosi',
     stack: [] as string[],
-    naam: 'Den Witten Haen',
-    domein: 'denwittenhaen.nl',
-    // Nog niet live: op denwittenhaen.nl staat op dit moment nog de oude
-    // site. Zet de url hier zodra de nieuwe online staat, dan wordt de
-    // kaart vanzelf klikbaar.
+    naam: 'Lunchroom Rosí',
+    // Het definitieve domein is nog niet bekend. Zet het hier neer, en de
+    // url eronder, zodra de site live staat. Haal dan ook status weg.
+    domein: 'binnenkort online',
     url: null as string | null,
-    soort: 'Website met reserveringssysteem',
+    soort: 'Website',
     // 'preview' legt een band over de schermafbeelding, zodat duidelijk
     // is dat dit nog niet de live site is.
     status: 'preview' as const,
     tekst:
-      'Lunchroom in het hart van Dordrecht. Lunch, high tea en groepen, met een eigen reserveringssysteem zodat gasten meteen een tafel kunnen vastleggen.',
+      'Lunchroom in het hart van Monster, begonnen als de droom van Fay. Verse koffie, huisgemaakte lunch, taart uit eigen oven en wine nights.',
     feit: 'Binnenkort live',
-    alt: 'De nieuwe website van Den Witten Haen in Dordrecht.',
+    alt: 'De nieuwe website van Lunchroom Rosí in Monster.',
   },
 ];
 
@@ -317,6 +336,193 @@ export const projecten = [
  *
  * Vul "rol" aan zodra je weet hoe hij genoemd wil worden.
  */
+/**
+ * PlayerPath: de tekst van het verslag op pages/werk/playerpath.astro.
+ * De kaart in de carrousel staat hierboven bij projecten.
+ *
+ * De stack komt uit composer.json en package.json van het project zelf
+ * (Herd/Voetbal systeem). Voeg je iets toe aan de app, werk het dan hier bij.
+ */
+export const playerpath = {
+  naam: 'PlayerPath',
+  site: 'https://playerpath.nl',
+  app: 'https://app.playerpath.nl',
+  soort: 'SaaS-platform voor keeper- en voetbalscholen',
+  kort:
+    'Van inschrijving tot incasso, en van trainersrapport tot spelerskaart. Een compleet platform waar meerdere voetbalscholen tegelijk in draaien, elk met strikt eigen data.',
+
+
+  demo: 'https://playerpath.nl/#proefperiode',
+
+  /** Wat het is, in gewone taal. Eén alinea per gedachte. */
+  watIsHet: [
+    'PlayerPath is software voor keeper- en voetbalscholen: de scholen die naast de club trainingen, kampen en privélessen geven, en daar hun brood mee verdienen. Het neemt alles over wat nu in Excel, WhatsApp en losse Tikkies zit, en voegt er iets aan toe wat die losse gereedschappen nooit konden: zichtbaar maken hoe een speler vooruitgaat.',
+    'Het is een SaaS-platform. Dat betekent dat elke school gewoon inlogt op app.playerpath.nl, zonder iets te installeren, en dat alle scholen in hetzelfde systeem draaien. Toch ziet een school nooit iets van een andere school. Die scheiding zit diep in de techniek, niet in een instelling die iemand per ongeluk verkeerd kan zetten.',
+    'Ik heb het van het eerste idee tot de live omgeving zelf bedacht, ontworpen en gebouwd: het datamodel, de schermen, de betalingen, de marketingsite en de server waar het op draait.',
+  ],
+
+  /** De vier mensen die het gebruiken, en wat het voor ieder doet. */
+  voorWie: [
+    {
+      rol: 'De eigenaar',
+      tekst:
+        'Eén dashboard met actieve spelers, omzet, openstaande rekeningen en wie er al een tijd geen rapport heeft gehad. Inschrijvingen komen binnen in een inbox, en met één klik op goedkeuren staan speler, ouderaccount en betaling klaar.',
+    },
+    {
+      rol: 'De trainer',
+      tekst:
+        'Ziet alleen zijn eigen groepen en trainingen. Vinkt op zijn telefoon naast het veld af wie er is, en vult na de training per speler in dertig seconden een rapport in, voorgevuld met het vorige.',
+    },
+    {
+      rol: 'De ouder',
+      tekst:
+        'Schrijft zijn kind in via één link, betaalt met iDEAL of incasso, meldt af voor een training en krijgt bericht zodra er een nieuw rapport is. In een tijdlijn ziet hij hoe zijn kind groeit, zonder ooit de cijfers van een ander kind te zien.',
+    },
+    {
+      rol: 'De speler',
+      tekst:
+        'Krijgt een eigen spelerskaart, zoals in een voetbalgame, die na elk rapport verandert. Een kind zonder e-mailadres krijgt een eigen link zonder inlog, die je als app op de tablet zet.',
+    },
+  ],
+
+  /** Van nieuwe school tot draaiende school, stap voor stap. */
+  hoeHetWerkt: [
+    {
+      titel: 'Een school start nooit met een leeg scherm',
+      tekst:
+        'Een nieuwe school krijgt meteen voorbeeldspelers met rapporten, een groep en trainingen, zodat je direct ziet wat het product doet. Een rondleiding loopt door de echte app, en een wizard van negen stappen richt daarna je eigen school in: naam, logo, kleur, locatie, aanbod en betalen. Zodra je klaar bent, verdwijnen de voorbeelden vanzelf.',
+    },
+    {
+      titel: 'Ouders schrijven zichzelf in',
+      tekst:
+        'Elke school heeft een eigen aanmeldpagina, die ook op de eigen website van de school past. Eerst het aanbod, met prijs, data, leeftijd en hoeveel plekken er nog zijn; pas daarna de gegevens. Is iets vol, dan komt er een wachtlijst, en schuift de volgende vanzelf door als er een plek vrijkomt.',
+    },
+    {
+      titel: 'Trainen, afvinken, beoordelen',
+      tekst:
+        'Trainingen herhalen wekelijks, met trainer en locatie. De trainer vinkt aanwezigheid af, de ouder meldt zelf af, en die twee worden apart bijgehouden. Na de training een rapport van zes categorieën, met keeper-onderdelen als reflexen, uitkomen en voetenwerk apart van die voor veldspelers.',
+    },
+    {
+      titel: 'Het geld komt vanzelf binnen',
+      tekst:
+        'Via Mollie: iDEAL, maandelijkse incasso met mandaat, of in termijnen. Veertien dagen voor een incasso krijgt de ouder een aankondiging. Mislukt een betaling, dan gaat er na drie, zeven en veertien dagen een herinnering met een nieuwe betaallink. De eigenaar hoeft niets na te lopen.',
+    },
+  ],
+
+  /** De spelerskaart, het deel waar kinderen en ouders voor terugkomen. */
+  kaart: [
+    'De spelerskaart is het hart van PlayerPath. Elke speler krijgt er een, met een overall rating, zes categorieën, badges en een level. Na elk rapport rekent het systeem de kaart opnieuw uit, en een kind ziet zijn eigen vooruitgang letterlijk groeien.',
+    'Er zitten drie getallen in die bewust los van elkaar staan. De rating zegt hoe goed je bent ten opzichte van je leeftijdsgroep en kan dalen. XP staat voor inzet: aanwezig zijn, rapporten, groei. Dat daalt nooit. En het level, van brons via zilver en goud naar elite, loopt op XP. Wie trouw komt trainen, komt dus op goud, ook zonder groot talent.',
+    'De kaart kantelt mee als je hem beweegt, het frame verandert per level, en elk seizoen blijft bewaard als verzamelkaart. Er zijn bewust geen ranglijsten: een kind van elf hoort niet op plek veertien van twintig te staan.',
+  ],
+
+  /** Keuzes die PlayerPath bewust anders maakt, van playerpath.nl. */
+  keuzes: [
+    { titel: 'Geen prijs per speler', tekst: 'Eén bedrag per maand. Groeit een school van veertig naar honderdveertig spelers, dan blijft de rekening gelijk.' },
+    { titel: 'Geen jaarcontract', tekst: 'Geen opstartkosten en maandelijks opzegbaar. Als het niet werkt, moet je weg kunnen zonder gedoe.' },
+    { titel: 'Geen ranglijsten', tekst: 'Groei ten opzichte van jezelf en je leeftijdsgroep, geen klassement waarin iemand altijd onderaan staat.' },
+    { titel: 'Gegevens blijven van de school', tekst: 'Het gaat om kinderen. Data blijft binnen de EU, gaat niet naar derden, en bij vertrek krijg je een export mee.' },
+  ],
+
+  /** Zoals op playerpath.nl/tarieven, exclusief btw. */
+  pakketten: [
+    { naam: 'Basic', prijs: 89, voor: 'Kleine scholen', tekst: 'Inschrijven, betalen, leden, rooster, aanwezigheid en mededelingen.' },
+    { naam: 'Pro', prijs: 119, voor: 'Groeiende scholen', tekst: 'Alles van Basic, plus spelerskaarten, rapporten, doelen en voortgang voor ouders.' },
+    { naam: 'Ultimate', prijs: 249, voor: 'Grote scholen', tekst: 'Alles van Pro, plus eigen logo en domein, meerdere vestigingen en exports.' },
+  ],
+
+  /** Per laag, zodat je ziet waarom elk stuk er zit. */
+  stack: [
+    {
+      laag: 'Backend',
+      items: ['Laravel 12', 'PHP 8.4'],
+      waarom: 'Routes, controllers, validatie en alle rekenregels. Wat mag en wat klopt, wordt hier beslist.',
+    },
+    {
+      laag: 'Frontend',
+      items: ['Vue 3', 'Inertia 2', 'TypeScript', 'Tailwind CSS'],
+      waarom: 'Voelt als een app, zonder losse API ertussen. De controller geeft data mee, Vue krijgt het als props.',
+    },
+    {
+      laag: 'Inloggen en rechten',
+      items: ['Laravel Fortify', 'Spatie Permission'],
+      waarom: 'Vier rollen: eigenaar, trainer, ouder en speler. Elk ziet alleen wat voor hem bedoeld is.',
+    },
+    {
+      laag: 'Betalen',
+      items: ['Mollie'],
+      waarom: 'iDEAL, doorlopende incasso met mandaat, termijnen, storno’s en herinneringen.',
+    },
+    {
+      laag: 'Data en achtergrond',
+      items: ['MySQL', 'Redis', 'Queues'],
+      waarom: 'Mails, maandoverzichten en facturen draaien op de achtergrond, zodat niemand op een scherm wacht.',
+    },
+    {
+      laag: 'Hosting en kwaliteit',
+      items: ['Hetzner (EU)', 'Nginx', 'PHPUnit', 'Astro'],
+      waarom: 'Kinderdata blijft binnen de EU. De marketingsite is apart gebouwd in Astro, net als deze site.',
+    },
+  ],
+
+  /** Het verslag: probleem, aanpak, wat het kan, wat ik leerde. */
+  verslag: {
+    probleem:
+      'Een keeper- of voetbalschool draait vaak op WhatsApp-groepen, een Excel-lijst en losse Tikkies. Ouders weten niet hoe hun kind vooruitgaat, trainers schrijven niets op, en de eigenaar zit ’s avonds betalingen na te lopen. Bestaande pakketten zijn gebouwd voor clubs met vrijwilligers, niet voor een school die ervan moet leven.',
+    aanpak: [
+      {
+        titel: 'Eerst het fundament, dan pas de features',
+        tekst:
+          'Meerdere scholen in één systeem betekent dat de ene school nooit de data van de andere mag zien. Dat is geregeld op één centrale plek aan de serverkant, en er zijn tests die dat bij elke wijziging opnieuw bewijzen.',
+      },
+      {
+        titel: 'Het onderscheidende deel als eerste werkend',
+        tekst:
+          'Een trainer vult in dertig seconden een rapport in, en de spelerskaart van het kind verandert zichtbaar mee. Rating, XP en level komen uit één rekenkern, zodat elk getal op de kaart altijd uit te leggen is.',
+      },
+      {
+        titel: 'Betalen bewust als laatste',
+        tekst:
+          'Het gevoeligste stuk kwam pas op een product dat al werkte. Geld staat overal in hele centen, nooit als kommagetal, en elke betaalstatus loopt via een vaste statusmachine.',
+      },
+      {
+        titel: 'In fasen, en elke fase getest',
+        tekst:
+          'Twaalf fasen, van datamodel tot productie. Een fase begon pas als de vorige werkte, en elke werkende stap staat in git. Daardoor kan er altijd terug.',
+      },
+    ],
+    functies: [
+      'Online inschrijven per school, met wachtlijst',
+      'Trainingen plannen en aanwezigheid afvinken',
+      'Rapport in 30 seconden, spelerskaart groeit mee',
+      'Voortgangsgrafieken en doelen per speler',
+      'iDEAL, incasso, termijnen en facturen via Mollie',
+      'Eigen logo en kleur per school',
+      'Mededelingen en meldingen naar ouders',
+      'Exports naar Excel voor leden en financiën',
+      'Installeerbaar op de telefoon als app',
+      'Platformbeheer: scholen, pakketten en logboek',
+    ],
+    geleerd: [
+      {
+        titel: 'Beveiliging hoort in de server, niet in het scherm',
+        tekst:
+          'Een knop verbergen is geen beveiliging. Wie wat mag zien, beslist de server, en een test controleert het.',
+      },
+      {
+        titel: 'Een getal moet uit te leggen zijn',
+        tekst:
+          'Elke XP-punt is een regel met een reden. Vraagt een ouder waarom de kaart zilver is, dan is daar een antwoord op.',
+      },
+      {
+        titel: 'Tests zijn wat je laat doorbouwen',
+        tekst:
+          'Bij bijna achthonderd tests durf je iets om te gooien. Zonder die tests was elke nieuwe functie een gok geweest.',
+      },
+    ],
+  },
+};
+
 export const citaat = {
   bevestigd: false,
   tekst:

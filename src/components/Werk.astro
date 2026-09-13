@@ -54,8 +54,13 @@ for (const [pad, mod] of Object.entries(bestanden)) {
         projecten.map((project) => {
           const beeld = beelden[project.sleutel];
           const Wrapper = project.url ? 'a' : 'div';
+          // Een link naar een andere site opent in een nieuw tabblad, een
+          // link naar een pagina van deze site (de casepagina) niet.
+          const extern = project.url?.startsWith('http');
           const linkProps = project.url
-            ? { href: project.url, target: '_blank', rel: 'noopener' }
+            ? extern
+              ? { href: project.url, target: '_blank', rel: 'noopener' }
+              : { href: project.url }
             : {};
 
           return (
@@ -95,10 +100,16 @@ for (const [pad, mod] of Object.entries(bestanden)) {
                     </div>
                   )}
 
+                  {/* Nog niet live: strepen en een waas over het beeld, zodat
+                      je ziet dat er iets aankomt maar de site nog niet
+                      helemaal prijsgeeft. */}
                   {project.status === 'preview' && (
-                    <p class="bg-accent text-ink tracking-label absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-black uppercase">
-                      Binnenkort live
-                    </p>
+                    <>
+                      <div class="preview-sluier absolute inset-0" aria-hidden="true" />
+                      <p class="bg-accent text-ink tracking-label absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-black uppercase">
+                        Binnenkort live
+                      </p>
+                    </>
                   )}
                 </div>
 
@@ -233,6 +244,18 @@ for (const [pad, mod] of Object.entries(bestanden)) {
      alles gewoon op volle sterkte staan. */
   html:not(.js-aan) .kaart {
     opacity: 1;
+  }
+
+  /* Diagonale witte strepen met een lichte waas eronder. Genoeg om de
+     sfeer te zien, te weinig om de site al echt te bekijken. */
+  .preview-sluier {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      #ffffff8c 0 12px,
+      transparent 12px 26px
+    );
+    backdrop-filter: blur(3px) saturate(0.8);
+    -webkit-backdrop-filter: blur(3px) saturate(0.8);
   }
 
   .kaart-lift {
