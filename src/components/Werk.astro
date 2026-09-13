@@ -36,6 +36,42 @@ for (const [pad, mod] of Object.entries(bestanden)) {
 ---
 
 <section id="werk" class="bg-sand scroll-mt-24 overflow-hidden py-20 md:py-28">
+  <!-- Keuzevenster voor kaarten met een verslag. Een native <dialog>:
+       Esc sluit hem, de focus blijft erin, en de achtergrond is gratis. -->
+  <dialog data-keuzevenster class="keuzevenster" aria-labelledby="keuze-titel">
+    <form method="dialog" class="relative p-7 sm:p-8">
+      <button
+        type="submit"
+        aria-label="Sluiten"
+        class="text-soft hover:text-ink hover:bg-sand ease-soft absolute top-4 right-4 grid size-9 place-items-center rounded-full transition-colors duration-150"
+      >
+        <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18"></path>
+        </svg>
+      </button>
+
+      <p class="label text-accent-ink">Wat wil je zien?</p>
+      <h3 id="keuze-titel" data-keuze-naam class="text-2xl mt-2 pr-8 font-black"></h3>
+
+      <div class="mt-6 grid gap-3">
+        <a data-keuze-site target="_blank" rel="noopener" class="keuze-optie">
+          <span>
+            <span class="text-ink font-display block font-black">Website bekijken</span>
+            <span data-keuze-domein class="text-soft block text-sm"></span>
+          </span>
+          <span class="text-accent-ink" aria-hidden="true">&nearr;</span>
+        </a>
+        <a data-keuze-verslag class="keuze-optie">
+          <span>
+            <span class="text-ink font-display block font-black">Verslag lezen</span>
+            <span class="text-soft block text-sm">Wat het is, hoe het werkt en hoe het gebouwd is</span>
+          </span>
+          <span class="text-accent-ink" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </form>
+  </dialog>
+
   <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
     <SectionHead
       label="Werk"
@@ -57,11 +93,23 @@ for (const [pad, mod] of Object.entries(bestanden)) {
           // Een link naar een andere site opent in een nieuw tabblad, een
           // link naar een pagina van deze site (de casepagina) niet.
           const extern = project.url?.startsWith('http');
-          const linkProps = project.url
-            ? extern
-              ? { href: project.url, target: '_blank', rel: 'noopener' }
-              : { href: project.url }
-            : {};
+          const verslag = 'verslag' in project ? project.verslag : null;
+          // Met een verslag erbij is de kaart een link naar het verslag,
+          // met de gegevens voor het keuzevenster erop. Zonder JavaScript
+          // blijft het gewoon die link.
+          const linkProps = verslag
+            ? {
+                href: verslag,
+                'data-keuze': '',
+                'data-naam': project.naam,
+                'data-site': project.url,
+                'data-domein': project.domein,
+              }
+            : project.url
+              ? extern
+                ? { href: project.url, target: '_blank', rel: 'noopener' }
+                : { href: project.url }
+              : {};
 
           return (
             <li class="kaart">
@@ -202,6 +250,44 @@ for (const [pad, mod] of Object.entries(bestanden)) {
 </section>
 
 <style>
+  .keuzevenster {
+    margin: auto;
+    width: min(28rem, calc(100vw - 2.5rem));
+    border-radius: var(--radius-xl);
+    background-color: var(--color-paper);
+    box-shadow: var(--shadow-lift);
+    color: var(--color-body);
+  }
+  .keuzevenster::backdrop {
+    background-color: #10172599;
+    backdrop-filter: blur(2px);
+  }
+  .keuzevenster[open] {
+    animation: keuze-in 200ms var(--ease-soft);
+  }
+  @keyframes keuze-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+  }
+  .keuze-optie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    transition:
+      border-color 150ms var(--ease-soft),
+      background-color 150ms var(--ease-soft);
+  }
+  .keuze-optie:hover {
+    border-color: var(--color-line-strong);
+    background-color: var(--color-sand);
+  }
+
   .bediening {
     display: none;
   }
@@ -296,6 +382,36 @@ for (const [pad, mod] of Object.entries(bestanden)) {
 </style>
 
 <script>
+  /* Keuzevenster: een klik op een kaart met een verslag vraagt of je
+     de website wilt zien of het verslag wilt lezen. */
+  const venster = document.querySelector<HTMLDialogElement>('[data-keuzevenster]');
+
+  if (venster && typeof venster.showModal === 'function') {
+    const naam = venster.querySelector<HTMLElement>('[data-keuze-naam]')!;
+    const domein = venster.querySelector<HTMLElement>('[data-keuze-domein]')!;
+    const site = venster.querySelector<HTMLAnchorElement>('[data-keuze-site]')!;
+    const verslag = venster.querySelector<HTMLAnchorElement>('[data-keuze-verslag]')!;
+
+    for (const kaart of document.querySelectorAll<HTMLAnchorElement>('[data-keuze]')) {
+      kaart.addEventListener('click', (e) => {
+        // Ctrl- of middelklik: laat de browser gewoon het verslag openen.
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        naam.textContent = kaart.dataset.naam ?? '';
+        domein.textContent = kaart.dataset.domein ?? '';
+        site.href = kaart.dataset.site ?? '#';
+        verslag.href = kaart.getAttribute('href') ?? '#';
+        venster.showModal();
+      });
+    }
+
+    // Klik naast het venster sluit het ook.
+    venster.addEventListener('click', (e) => {
+      if (e.target === venster) venster.close();
+    });
+    site.addEventListener('click', () => venster.close());
+  }
+
   const rij = document.querySelector<HTMLElement>('[data-rij]');
   const bediening = document.querySelector<HTMLElement>('[data-bediening]');
   const stippenBak = document.querySelector<HTMLElement>('[data-stippen]');

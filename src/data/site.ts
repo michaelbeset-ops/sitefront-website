@@ -247,13 +247,14 @@ export const projecten = [
     stack: ['Laravel', 'Vue', 'Inertia'],
     naam: 'PlayerPath',
     domein: 'playerpath.nl',
-    // De kaart leidt naar het verslag, niet naar de site zelf. Op het
-    // verslag staat wat er achter de site zit, en daar staat ook de link.
-    url: '/werk/playerpath' as string | null,
+    url: 'https://playerpath.nl' as string | null,
+    // Staat er een verslag bij, dan vraagt de kaart bij een klik waar je
+    // heen wilt: de website of het verslag. Zie Werk.astro.
+    verslag: '/werk/playerpath',
     soort: 'SaaS-platform',
     tekst:
       'Een compleet platform voor keeper- en voetbalscholen. Inschrijven, trainingen, betalen, en een spelerskaart die meegroeit met elk rapport van de trainer.',
-    feit: 'Lees het verslag',
+    feit: 'Website en verslag',
     alt: 'De website van PlayerPath, software voor keeper- en voetbalscholen.',
   },
   {
