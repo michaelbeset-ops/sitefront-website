@@ -324,6 +324,33 @@ export const projecten = [
     feit: 'Binnenkort live',
     alt: 'De nieuwe website van Lunchroom Rosí in Monster.',
   },
+  {
+    sleutel: 'donker-en-blond',
+    stack: [] as string[],
+    naam: 'Donker & Blond',
+    // Zet domein en url zodra de site live staat, en haal status weg.
+    domein: 'binnenkort online',
+    url: null as string | null,
+    soort: 'Website',
+    status: 'preview' as const,
+    tekst:
+      'Gezellige lunchroom in winkelstraat Hof van den Houte in Etten-Leur. Koffie, lekkernijen, lunch en op vrijdag burgers, met twee terrassen en een grote speelhoek.',
+    feit: 'Binnenkort live',
+    alt: 'De nieuwe website van lunchroom Donker & Blond in Etten-Leur.',
+  },
+  {
+    sleutel: 'zus-en-zo',
+    stack: [] as string[],
+    naam: 'Lunchcafé Zus & Zo',
+    domein: 'binnenkort online',
+    url: null as string | null,
+    soort: 'Website met reserveringssysteem',
+    status: 'preview' as const,
+    tekst:
+      'Lunchcafé aan het Raadhuisplein in Etten-Leur. Lunch, high tea en vrijdagavonddiner, met een eigen reserveringsmodule zodat gasten online een tafel vastleggen.',
+    feit: 'Binnenkort live',
+    alt: 'De nieuwe website van Lunchcafé Zus & Zo in Etten-Leur.',
+  },
 ];
 
 /**
