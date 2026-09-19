@@ -43,6 +43,9 @@ const structuredData = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#0A2A5E" />
+    <!-- Andere sites zien alleen dat iemand van sitefront.nl kwam, niet
+         van welke pagina. GitHub Pages laat geen headers toe, vandaar meta. -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />

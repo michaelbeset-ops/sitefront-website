@@ -589,5 +589,5 @@ export const techniek = [
  * Werk dan ook cookiebeleid.astro bij met welke cookies het zijn.
  */
 export const cookieInstellingen = {
-  melding: true,
+  melding: false,
 };
