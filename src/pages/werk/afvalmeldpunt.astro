@@ -1,0 +1,322 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Check from '../../components/Check.astro';
+import { afvalmeldpunt } from '../../data/site';
+
+import hero from '../../assets/verslag/afvalmeldpunt/hero.webp';
+import melden from '../../assets/verslag/afvalmeldpunt/melden.webp';
+import dashboard from '../../assets/verslag/afvalmeldpunt/dashboard.webp';
+
+/**
+ * De pagina over Afvalmeldpunt, in opdracht gebouwd. Zelfde opzet als het
+ * verslag van PlayerPath: één leeskolom met een paar beelden ertussen.
+ *
+ * De tekst staat in src/data/site.ts (export const afvalmeldpunt).
+ * Er staan bewust geen namen van gemeenten in: zolang dat niet rond is,
+ * claim je het niet.
+ */
+const a = afvalmeldpunt;
+
+const gegevens = [
+  { term: 'Soort', waarde: a.soort },
+  { term: 'Gebouwd met', waarde: 'Astro en Tailwind' },
+  { term: 'Rol', waarde: 'Ontwerp en ontwikkeling' },
+];
+---
+
+<BaseLayout
+  title="Afvalmeldpunt, melden met een QR-code op de container | Sitefront"
+  description="Afvalmeldpunt is een meldsysteem voor ondergrondse afvalcontainers: een aluminium plaatje met QR-code op de container, melden in de browser zonder app, en alle meldingen per container in een dashboard."
+>
+  <SiteHeader />
+
+  <main>
+    <!-- Kop -->
+    <section id="main" class="bg-brand rounded-b-[2rem] md:rounded-b-[3rem]">
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-40 md:px-8 md:pt-40 md:pb-56 xl:px-10">
+        <div class="mx-auto max-w-3xl">
+          <a href="/#werk" class="label text-white/60 ease-soft transition-colors duration-150 hover:text-white">
+            <span aria-hidden="true">&larr;</span> Terug naar het werk
+          </a>
+
+          <p class="label text-accent mt-8">Software, in opdracht gebouwd</p>
+          <h1 class="text-4xl mt-4 font-heavy text-white">
+            Afvalmeldpunt: melden bij de container zelf
+          </h1>
+          <p class="mt-5 text-xl leading-[1.55] text-white/75">{a.kort}</p>
+
+          <div class="mt-8">
+            <a
+              href={a.site}
+              target="_blank"
+              rel="noopener"
+              class="bg-accent text-ink shadow-btn font-display ease-soft rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 hover:bg-white"
+            >
+              Bekijk afvalmeldpunt.nl <span aria-hidden="true">&nearr;</span>
+            </a>
+          </div>
+
+          <dl class="border-line-navy mt-10 grid gap-x-8 gap-y-4 border-t pt-6 sm:grid-cols-3">
+            {
+              gegevens.map((g) => (
+                <div>
+                  <dt class="text-sm text-white/55">{g.term}</dt>
+                  <dd class="text-base font-medium text-white">{g.waarde}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- De site, over de rand van het blauw -->
+    <div class="relative z-10 mx-auto -mt-28 w-full max-w-page px-5 md:-mt-40 md:px-8 xl:px-10">
+      <figure class="mx-auto max-w-5xl">
+        <Image
+          src={hero}
+          alt="De homepage van afvalmeldpunt.nl, met een doorsnede van drie ondergrondse containers en het meldplaatje."
+          widths={[600, 1000, 1400, 1600]}
+          sizes="(min-width: 1024px) 64rem, 94vw"
+          class="shadow-lift border-line-soft block h-auto w-full rounded-2xl border"
+          loading="eager"
+        />
+        <figcaption class="text-soft mt-3 text-center text-sm">
+          De containers en het plaatje zijn met de hand getekend in SVG, geen foto's.
+        </figcaption>
+      </figure>
+    </div>
+
+    <article class="verslag mx-auto w-full max-w-3xl px-5 py-16 md:px-8 md:py-24">
+      <h2>Wat is Afvalmeldpunt?</h2>
+      {a.watIsHet.map((alinea) => <p>{alinea}</p>)}
+
+      <h2>Het probleem</h2>
+      <p>{a.probleem}</p>
+
+      <h2>Hoe het werkt</h2>
+      {
+        a.stappen.slice(0, 2).map((stap) => (
+          <>
+            <h3>{stap.titel}</h3>
+            <p>{stap.tekst}</p>
+          </>
+        ))
+      }
+
+      <figure class="breed">
+        <Image
+          src={melden}
+          alt="De meldpagina op een telefoon, met het plaatje in beeld en de vier stappen ernaast."
+          widths={[600, 1000, 1400]}
+          sizes="(min-width: 1024px) 56rem, 94vw"
+          class="shadow-card border-line-soft block h-auto w-full rounded-xl border"
+          loading="lazy"
+        />
+        <figcaption>Vier tikken: scannen, kiezen wat er is, eventueel een foto, versturen.</figcaption>
+      </figure>
+
+      {
+        a.stappen.slice(2).map((stap) => (
+          <>
+            <h3>{stap.titel}</h3>
+            <p>{stap.tekst}</p>
+          </>
+        ))
+      }
+
+      <figure class="breed">
+        <Image
+          src={dashboard}
+          alt="Het beheeroverzicht met open meldingen, bijna volle containers, bijplaatsing en defecten."
+          widths={[600, 1000, 1400]}
+          sizes="(min-width: 1024px) 56rem, 94vw"
+          class="shadow-card border-line-soft block h-auto w-full rounded-xl border"
+          loading="lazy"
+        />
+        <figcaption>Het beheeroverzicht: per container wat er gemeld is, en wat er nog openstaat.</figcaption>
+      </figure>
+
+      <h2>Waar een bewoner over kan melden</h2>
+      <ul class="functies">
+        {
+          a.melden.map((m) => (
+            <li>
+              <Check class="text-mint mt-1" />
+              {m}
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2>Keuzes die het verschil maken</h2>
+      <dl class="rollen">
+        {
+          a.keuzes.map((k) => (
+            <div>
+              <dt>{k.titel}</dt>
+              <dd>{k.tekst}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <h2>Hoe het gebouwd is</h2>
+      <dl class="stack">
+        {
+          a.gebouwd.map((laag) => (
+            <div>
+              <dt>{laag.laag}</dt>
+              <dd>
+                <span class="text-ink font-medium">{laag.items.join(', ')}</span>
+                <span class="text-body mt-1 block">{laag.waarom}</span>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <h2>Waar het nu staat</h2>
+      <p>{a.status}</p>
+
+      <div class="afsluiter">
+        <div>
+          <p class="font-display text-ink text-xl font-black">Beheert u containers?</p>
+          <p class="text-body mt-2 text-base">
+            Bekijk hoe het werkt en vraag een demo aan. Geheel vrijblijvend.
+          </p>
+          <a href={a.site} target="_blank" rel="noopener" class="knop">
+            Naar afvalmeldpunt.nl <span aria-hidden="true">&nearr;</span>
+          </a>
+        </div>
+        <div>
+          <p class="font-display text-ink text-xl font-black">Zelf software laten bouwen?</p>
+          <p class="text-body mt-2 text-base">
+            Van een idee naar een werkend product. Vertel waar het bij jou schuurt.
+          </p>
+          <a href="/#contact" class="knop">Plan een gesprek</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  /* Zelfde leesritme als het verslag van PlayerPath. */
+  .verslag :global(h2) {
+    font-size: var(--text-3xl);
+    margin-top: 3.5rem;
+  }
+  .verslag :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .verslag :global(h3) {
+    font-size: var(--text-xl);
+    margin-top: 1.75rem;
+  }
+  .verslag :global(p) {
+    line-height: 1.7;
+  }
+  .verslag :global(h2 + p),
+  .verslag :global(h3 + p) {
+    margin-top: 0.625rem;
+  }
+  .verslag :global(p + p) {
+    margin-top: 1rem;
+  }
+
+  .breed {
+    margin-block: 2.5rem;
+  }
+  @media (min-width: 64rem) {
+    .breed {
+      margin-inline: -5rem;
+    }
+  }
+  .breed :global(figcaption) {
+    margin-top: 0.75rem;
+    font-size: var(--text-sm);
+    color: var(--color-soft);
+  }
+
+  .rollen,
+  .stack {
+    margin-top: 1.25rem;
+  }
+  .rollen > div,
+  .stack > div {
+    display: grid;
+    gap: 0.25rem 1.5rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--color-line);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  @media (min-width: 40rem) {
+    .rollen > div,
+    .stack > div {
+      grid-template-columns: 11rem 1fr;
+    }
+  }
+  .rollen dt,
+  .stack dt {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-black);
+    color: var(--color-ink);
+  }
+
+  .functies {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.625rem 2rem;
+  }
+  @media (min-width: 40rem) {
+    .functies {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .functies li {
+    display: flex;
+    gap: 0.625rem;
+    color: var(--color-ink);
+    font-size: var(--text-base);
+  }
+
+  .afsluiter {
+    margin-top: 4rem;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 40rem) {
+    .afsluiter {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .afsluiter > div {
+    background-color: var(--color-sand);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .knop {
+    margin-top: 1.25rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-navy);
+    color: var(--color-white);
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-base);
+    padding: 0.5rem 1.125rem;
+    transition: background-color 150ms var(--ease-soft);
+  }
+  .knop:hover {
+    background-color: var(--color-ink);
+  }
+</style>

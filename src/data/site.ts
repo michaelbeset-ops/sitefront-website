@@ -243,13 +243,24 @@ export const waarom = [
  */
 export const projecten = [
   {
+    sleutel: 'afvalmeldpunt',
+    stack: ['Astro', 'Tailwind'],
+    naam: 'Afvalmeldpunt',
+    domein: 'afvalmeldpunt.nl',
+    url: 'https://afvalmeldpunt.nl' as string | null,
+    verslag: '/werk/afvalmeldpunt',
+    soort: 'Software',
+    tekst:
+      'Meldsysteem voor ondergrondse afvalcontainers. Een aluminium plaatje met QR-code op de container, bewoners melden in de browser, en de beheerder ziet alle meldingen per container.',
+    feit: 'Website en verslag',
+    alt: 'De website van Afvalmeldpunt, meldsysteem voor ondergrondse afvalcontainers.',
+  },
+  {
     sleutel: 'playerpath',
     stack: ['Laravel', 'Vue', 'Inertia'],
     naam: 'PlayerPath',
     domein: 'playerpath.nl',
     url: 'https://playerpath.nl' as string | null,
-    // Staat er een verslag bij, dan vraagt de kaart bij een klik waar je
-    // heen wilt: de website of het verslag. Zie Werk.astro.
     verslag: '/werk/playerpath',
     soort: 'SaaS-platform',
     tekst:
@@ -259,8 +270,6 @@ export const projecten = [
   },
   {
     sleutel: 'slobtuinen',
-    // Vul in waarmee je dit gebouwd hebt, dan verschijnt het op de kaart.
-    // Leeg laten mag: dan toont de kaart het gewoon niet.
     stack: [] as string[],
     naam: 'Slob Tuinen',
     domein: 'slobtuinen.nl',
@@ -308,16 +317,25 @@ export const projecten = [
     alt: 'De website van Aroma Lunchroom in Gorinchem.',
   },
   {
-    sleutel: 'rosi',
+    sleutel: 'zbn-ridderkerk',
     stack: [] as string[],
-    naam: 'Lunchroom Rosí',
-    // Het definitieve domein is nog niet bekend. Zet het hier neer, en de
-    // url eronder, zodra de site live staat. Haal dan ook status weg.
+    naam: 'Zonweringsbedrijf Noordenweg',
     domein: 'binnenkort online',
     url: null as string | null,
     soort: 'Website',
-    // 'preview' legt een band over de schermafbeelding, zodat duidelijk
-    // is dat dit nog niet de live site is.
+    status: 'preview' as const,
+    tekst:
+      'Zonwering, rolluiken, garagedeuren en terrasoverkappingen uit Ridderkerk. Eigen showroom, inmeten aan huis en montage door eigen monteurs.',
+    feit: 'Binnenkort live',
+    alt: 'De nieuwe website van Zonweringsbedrijf Noordenweg in Ridderkerk.',
+  },
+  {
+    sleutel: 'rosi',
+    stack: [] as string[],
+    naam: 'Lunchroom Rosí',
+    domein: 'binnenkort online',
+    url: null as string | null,
+    soort: 'Website',
     status: 'preview' as const,
     tekst:
       'Lunchroom in het hart van Monster, begonnen als de droom van Fay. Verse koffie, huisgemaakte lunch, taart uit eigen oven en wine nights.',
@@ -325,18 +343,17 @@ export const projecten = [
     alt: 'De nieuwe website van Lunchroom Rosí in Monster.',
   },
   {
-    sleutel: 'donker-en-blond',
+    sleutel: 'brillen-bij-u-thuis',
     stack: [] as string[],
-    naam: 'Donker & Blond',
-    // Zet domein en url zodra de site live staat, en haal status weg.
+    naam: 'Brillen bij u thuis',
     domein: 'binnenkort online',
     url: null as string | null,
     soort: 'Website',
     status: 'preview' as const,
     tekst:
-      'Gezellige lunchroom in winkelstraat Hof van den Houte in Etten-Leur. Koffie, lekkernijen, lunch en op vrijdag burgers, met twee terrassen en een grote speelhoek.',
+      'De opticien aan huis. Oogmeting en advies bij mensen thuis, door midden en zuid Nederland, voor wie niet makkelijk naar een winkel kan.',
     feit: 'Binnenkort live',
-    alt: 'De nieuwe website van lunchroom Donker & Blond in Etten-Leur.',
+    alt: 'De nieuwe website van Brillen bij u thuis, de opticien aan huis.',
   },
   {
     sleutel: 'zus-en-zo',
@@ -350,6 +367,19 @@ export const projecten = [
       'Lunchcafé aan het Raadhuisplein in Etten-Leur. Lunch, high tea en vrijdagavonddiner, met een eigen reserveringsmodule zodat gasten online een tafel vastleggen.',
     feit: 'Binnenkort live',
     alt: 'De nieuwe website van Lunchcafé Zus & Zo in Etten-Leur.',
+  },
+  {
+    sleutel: 'donker-en-blond',
+    stack: [] as string[],
+    naam: 'Donker & Blond',
+    domein: 'binnenkort online',
+    url: null as string | null,
+    soort: 'Website',
+    status: 'preview' as const,
+    tekst:
+      'Gezellige lunchroom in winkelstraat Hof van den Houte in Etten-Leur. Koffie, lekkernijen, lunch en op vrijdag burgers, met twee terrassen en een grote speelhoek.',
+    feit: 'Binnenkort live',
+    alt: 'De nieuwe website van lunchroom Donker & Blond in Etten-Leur.',
   },
 ];
 
@@ -549,6 +579,110 @@ export const playerpath = {
       },
     ],
   },
+};
+
+/**
+ * Afvalmeldpunt: in opdracht gebouwd. De tekst van het verslag
+ * op pages/werk/afvalmeldpunt.astro.
+ *
+ * Alles hieronder komt van afvalmeldpunt.nl zelf of uit de projectmap.
+ * Er staat bewust niet bij welke gemeenten meedoen: zolang dat niet
+ * rond is, claim je het niet.
+ */
+export const afvalmeldpunt = {
+  naam: 'Afvalmeldpunt',
+  site: 'https://afvalmeldpunt.nl',
+  soort: 'Meldsysteem met QR-code',
+  kort:
+    'Een aluminium plaatje met QR-code op elke ondergrondse afvalcontainer. Bewoners melden in de browser wat er mis is, zonder app of account, en de beheerder ziet alle meldingen per container in een dashboard.',
+
+  watIsHet: [
+    'Afvalmeldpunt is een meldsysteem voor ondergrondse afvalcontainers, bedoeld voor gemeenten, afvalinzamelaars en woningcorporaties. Elke container krijgt een eigen plaatje met een eigen QR-code en nummer.',
+    'Staat een bewoner bij een volle container, dan richt hij zijn camera op het plaatje en tikt op de link. De meldpagina weet dan al om welke container het gaat, dus niemand hoeft een straatnaam of containernummer op te zoeken.',
+    'In opdracht gebouwd: van het meldplaatje en de meldpagina tot het dashboard waarin de beheerder alles terugziet, plus de website eromheen.',
+  ],
+
+  probleem:
+    'Melden dat een container vol is, gaat nu via een algemeen meldformulier van de gemeente, een telefoonnummer of helemaal niet. De bewoner moet uitleggen wélke container hij bedoelt, en dat is precies het stuk dat misgaat. Intussen komt er afval naast de container te staan, en dat trekt meer bijplaatsing aan.',
+
+  stappen: [
+    {
+      titel: 'Op de container',
+      tekst:
+        'Een aluminium plaatje met de tekst en de QR-code erin gegraveerd, op de inworpzuil waar bewoners hun afval weggooien. Elke container heeft een eigen code en nummer.',
+    },
+    {
+      titel: 'Op de telefoon van de bewoner',
+      tekst:
+        'Scannen, kiezen wat er aan de hand is, eventueel een foto en een opmerking erbij, versturen. In de browser, zonder app en zonder account. Je krijgt een meldnummer terug.',
+    },
+    {
+      titel: 'In het dashboard',
+      tekst:
+        'De melding staat meteen bij de juiste container, met soort, tijdstip, foto en opmerking. Meldingen krijgen een status, van open via in behandeling tot afgehandeld, zodat zichtbaar blijft wat er nog openstaat.',
+    },
+    {
+      titel: 'En voordat hij vol is',
+      tekst:
+        'Als optie komt er een vulgraadsensor in de container. Die meldt dat de container bijna vol is, zodat hij geleegd kan worden voordat er iets naast komt te staan. Die melding staat gewoon tussen de meldingen van bewoners.',
+    },
+  ],
+
+  melden: [
+    'Container vol',
+    'Bijgeplaatst afval',
+    'Defect of kapot',
+    'Stank, ongedierte of overig',
+  ],
+
+  keuzes: [
+    {
+      titel: 'Geen app, geen account',
+      tekst:
+        'Een app downloaden om te melden dat een container vol is, doet niemand. Alles gebeurt in de browser, en de bewoner is in vier tikken klaar.',
+    },
+    {
+      titel: 'De container weet wie hij is',
+      tekst:
+        'Doordat de code in het plaatje aan één container hangt, hoeft de bewoner geen adres te kiezen. Dat scheelt de helft van het formulier en voorkomt meldingen die bij de verkeerde bak belanden.',
+    },
+    {
+      titel: 'Gegraveerd aluminium, geen sticker',
+      tekst:
+        'Een sticker laat na één winter los of is beklad. De tekst en de code zitten in het aluminium zelf.',
+    },
+    {
+      titel: 'Melden kan ook zonder scannen',
+      tekst:
+        'Is de code onleesbaar, dan kan iemand het containernummer intikken op de site. Zoeken op locatie komt later.',
+    },
+  ],
+
+  gebouwd: [
+    {
+      laag: 'De site',
+      items: ['Astro', 'Tailwind CSS'],
+      waarom: 'Statisch, dus snel, en volledig in eigen stijl. Lighthouse mobiel staat op 100 voor alle vier de onderdelen.',
+    },
+    {
+      laag: 'Het beeld',
+      items: ['SVG met de hand'],
+      waarom: 'De containers, het plaatje en de telefoon zijn getekend in code, op basis van hoe Nederlandse ondergrondse containers echt in elkaar zitten. Geen stockfoto en geen fabrikantenfoto.',
+    },
+    {
+      laag: 'De QR-codes',
+      items: ['Eigen generator'],
+      waarom: 'Foutcorrectie op het hoogste niveau, met een uitsparing voor het logo in het midden. Elke gegenereerde code wordt daarna automatisch teruggelezen met twee onafhankelijke scanners, zodat hij gegarandeerd leesbaar is.',
+    },
+    {
+      laag: 'Controle',
+      items: ['Playwright', 'Lighthouse'],
+      waarom: 'Scripts maken schermafbeeldingen, meten de breedte op een telefoon en controleren de scores, in plaats van dat ik het op het oog doe.',
+    },
+  ],
+
+  status:
+    'Het systeem is gebouwd en de site staat live. Afvalmeldpunt wordt nu bij de eerste gemeenten ingevoerd.',
 };
 
 export const citaat = {
