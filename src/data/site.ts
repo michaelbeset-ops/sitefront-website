@@ -269,6 +269,18 @@ export const projecten = [
     alt: 'De website van PlayerPath, software voor keeper- en voetbalscholen.',
   },
   {
+    sleutel: 'zbn-ridderkerk',
+    stack: [] as string[],
+    naam: 'Zonweringsbedrijf Noordenweg',
+    domein: 'zbnridderkerk.nl',
+    url: 'https://zbnridderkerk.nl',
+    soort: 'Website',
+    tekst:
+      'Zonwering, rolluiken, garagedeuren en terrasoverkappingen uit Ridderkerk. Eigen showroom, inmeten aan huis en montage door eigen monteurs.',
+    feit: 'Showroom in Ridderkerk',
+    alt: 'De website van Zonweringsbedrijf Noordenweg in Ridderkerk.',
+  },
+  {
     sleutel: 'slobtuinen',
     stack: [] as string[],
     naam: 'Slob Tuinen',
@@ -305,6 +317,18 @@ export const projecten = [
     alt: 'De website van Den Witten Haen in Dordrecht.',
   },
   {
+    sleutel: 'rosi',
+    stack: [] as string[],
+    naam: 'Lunchroom Rosí',
+    domein: 'lunchroomrosi.nl',
+    url: 'https://lunchroomrosi.nl',
+    soort: 'Website',
+    tekst:
+      'Lunchroom in het hart van Monster, begonnen als de droom van Fay. Verse koffie, huisgemaakte lunch, taart uit eigen oven en wine nights.',
+    feit: 'Molenstraat 35, Monster',
+    alt: 'De website van Lunchroom Rosí in Monster.',
+  },
+  {
     sleutel: 'aroma',
     stack: [] as string[],
     naam: 'Aroma Lunchroom',
@@ -316,32 +340,8 @@ export const projecten = [
     feit: 'Open maandag tot en met zaterdag',
     alt: 'De website van Aroma Lunchroom in Gorinchem.',
   },
-  {
-    sleutel: 'zbn-ridderkerk',
-    stack: [] as string[],
-    naam: 'Zonweringsbedrijf Noordenweg',
-    domein: 'binnenkort online',
-    url: null as string | null,
-    soort: 'Website',
-    status: 'preview' as const,
-    tekst:
-      'Zonwering, rolluiken, garagedeuren en terrasoverkappingen uit Ridderkerk. Eigen showroom, inmeten aan huis en montage door eigen monteurs.',
-    feit: 'Binnenkort live',
-    alt: 'De nieuwe website van Zonweringsbedrijf Noordenweg in Ridderkerk.',
-  },
-  {
-    sleutel: 'rosi',
-    stack: [] as string[],
-    naam: 'Lunchroom Rosí',
-    domein: 'binnenkort online',
-    url: null as string | null,
-    soort: 'Website',
-    status: 'preview' as const,
-    tekst:
-      'Lunchroom in het hart van Monster, begonnen als de droom van Fay. Verse koffie, huisgemaakte lunch, taart uit eigen oven en wine nights.',
-    feit: 'Binnenkort live',
-    alt: 'De nieuwe website van Lunchroom Rosí in Monster.',
-  },
+
+
   {
     sleutel: 'brillen-bij-u-thuis',
     stack: [] as string[],
