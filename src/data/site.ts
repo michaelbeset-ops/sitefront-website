@@ -346,14 +346,13 @@ export const projecten = [
     sleutel: 'brillen-bij-u-thuis',
     stack: [] as string[],
     naam: 'Brillen bij u thuis',
-    domein: 'binnenkort online',
-    url: null as string | null,
+    domein: 'brillenbijuthuis.nl',
+    url: 'https://brillenbijuthuis.nl',
     soort: 'Website',
-    status: 'preview' as const,
     tekst:
       'De opticien aan huis. Oogmeting en advies bij mensen thuis, door midden en zuid Nederland, voor wie niet makkelijk naar een winkel kan.',
-    feit: 'Binnenkort live',
-    alt: 'De nieuwe website van Brillen bij u thuis, de opticien aan huis.',
+    feit: 'Midden en zuid Nederland',
+    alt: 'De website van Brillen bij u thuis, de opticien aan huis.',
   },
   {
     sleutel: 'zus-en-zo',
@@ -380,7 +379,46 @@ export const projecten = [
       'Gezellige lunchroom in winkelstraat Hof van den Houte in Etten-Leur. Koffie, lekkernijen, lunch en op vrijdag burgers, met twee terrassen en een grote speelhoek.',
     feit: 'Binnenkort live',
     alt: 'De nieuwe website van lunchroom Donker & Blond in Etten-Leur.',
+  },  {
+    sleutel: 'hajdari-boten',
+    stack: [] as string[],
+    naam: 'Hajdari Boot en Polyester Service',
+    domein: 'binnenkort online',
+    url: null as string | null,
+    soort: 'Website',
+    status: 'preview' as const,
+    tekst:
+      'Boot- en polyesterservice in Kerkdriel. Schadeherstel, lakwerk, polijsten, onderwaterschip en polyesterwerk, met schade doorgeven via de site.',
+    feit: 'Binnenkort live',
+    alt: 'De nieuwe website van Hajdari Boot en Polyester Service in Kerkdriel.',
   },
+  {
+    sleutel: 'teakhuis',
+    stack: [] as string[],
+    naam: 'Teakhuis',
+    domein: 'binnenkort online',
+    url: null as string | null,
+    soort: 'Website met webshop',
+    status: 'preview' as const,
+    tekst:
+      'Handgemaakte teakhouten meubels van duurzaam hout. Kiezen uit de collectie of een meubel op maat laten tekenen, zonder meerprijs.',
+    feit: 'Binnenkort live',
+    alt: 'De nieuwe website van Teakhuis, teakhouten meubels op maat.',
+  },
+  {
+    sleutel: 'het-handelshuis',
+    stack: [] as string[],
+    naam: 'Het Handelshuis',
+    domein: 'binnenkort online',
+    url: null as string | null,
+    soort: 'Website',
+    status: 'preview' as const,
+    tekst:
+      'Meubelwinkel in Kaatsheuvel met 1500 m² aan hoekbanken, bankstellen, relaxstoelen en mango houten meubels. Veel op voorraad en direct mee.',
+    feit: 'Binnenkort live',
+    alt: 'De nieuwe website van Het Handelshuis in Kaatsheuvel.',
+  },
+
 ];
 
 /**
