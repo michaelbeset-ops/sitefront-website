@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { bedrijf } from '../data/site';
+
+/**
+ * GitHub Pages pakt dit bestand automatisch op voor elke URL die niet
+ * bestaat. Zonder deze pagina zie je de standaard foutpagina van GitHub,
+ * met hun logo en zonder weg terug.
+ *
+ * noindex: een foutpagina hoort niet in Google. Hij geeft op GitHub Pages
+ * een 404-status mee, dus Google haalt een verdwenen URL er netjes uit.
+ */
+
+const verder = [
+  { label: 'Naar de homepage', href: '/', beschrijving: 'Begin opnieuw bij het begin.' },
+  {
+    label: 'Software op maat',
+    href: '/software-op-maat/',
+    beschrijving: 'Wat ik bouw en hoe dat werkt.',
+  },
+  { label: 'Over ons', href: '/over-ons/', beschrijving: 'Wie er achter Sitefront zit.' },
+];
+---
+
+<BaseLayout
+  title="Deze pagina bestaat niet"
+  description="De pagina die je zocht bestaat niet of is verplaatst. Ga terug naar de homepage of mail even, dan zoek ik het voor je op."
+  noindex
+>
+  <SiteHeader />
+
+  <main>
+    <section id="main" class="bg-brand">
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-14 md:px-8 md:pt-40 md:pb-16 xl:px-10">
+        <div class="max-w-3xl">
+          <p class="label text-accent">Foutmelding 404</p>
+          <h1 class="text-4xl mt-6 font-heavy text-white">Deze pagina bestaat niet.</h1>
+          <p class="text-xl mt-5 max-w-2xl leading-[1.55] text-white/85">
+            Misschien is hij verplaatst, misschien staat er een typefout in het adres. Hieronder
+            kom je wel verder.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-paper py-16 md:py-20">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <ul class="grid max-w-3xl gap-4 sm:grid-cols-3">
+          {
+            verder.map((item) => (
+              <li>
+                <a
+                  class="group block h-full rounded-xl bg-white p-5 shadow-sm transition-shadow duration-200 hover:shadow-md"
+                  href={item.href}
+                >
+                  <span class="font-display block font-bold text-ink">{item.label}</span>
+                  <span class="mt-1 block text-base text-gray-600">{item.beschrijving}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <p class="mt-10 max-w-2xl text-base text-gray-600">
+          Zocht je iets wat er wel zou moeten zijn? Mail
+          <a class="text-accent-ink underline underline-offset-4" href={`mailto:${bedrijf.email}`}>
+            {bedrijf.email}
+          </a> en ik zoek het op.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

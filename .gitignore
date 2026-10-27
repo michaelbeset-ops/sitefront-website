@@ -11,3 +11,6 @@ dist/
 Thumbs.db
 .DS_Store
 .vscode/
+
+# SEO-rapporten blijven lokaal
+.seo/out/

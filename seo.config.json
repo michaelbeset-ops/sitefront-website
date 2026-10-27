@@ -1,0 +1,132 @@
+{
+  "slug": "sitefront",
+  "site": "https://sitefront.nl",
+  "base": "",
+  "githubPagesUrl": "https://michaelbeset-ops.github.io/sitefront-website/",
+  "mode": "klant",
+  "language": "nl-NL",
+  "branche": "webdesign-software",
+  "strategy": [
+    "lokaal",
+    "ai"
+  ],
+  "brandTerms": [
+    "sitefront",
+    "sitefront dordrecht",
+    "sitefront nl"
+  ],
+  "business": {
+    "schemaType": "ProfessionalService",
+    "name": "Sitefront",
+    "legalName": "",
+    "description": "Sitefront bouwt software op maat en websites voor ondernemers in Dordrecht en omstreken. Een vast aanspreekpunt, van eerste gesprek tot oplevering.",
+    "kvk": "42057398",
+    "vatID": "",
+    "foundingYear": "",
+    "founder": "Michael Beset",
+    "showAddress": false,
+    "street": "",
+    "postalCode": "",
+    "city": "Dordrecht",
+    "region": "Zuid-Holland",
+    "country": "NL",
+    "geo": {},
+    "phone": "",
+    "phoneDisplay": "",
+    "whatsapp": "",
+    "email": "info@sitefront.nl",
+    "priceRange": "",
+    "openingHours": [],
+    "specialHours": [],
+    "areaServed": [
+      "Dordrecht",
+      "Zwijndrecht",
+      "Papendrecht",
+      "Sliedrecht",
+      "Hendrik-Ido-Ambacht",
+      "Ridderkerk",
+      "Barendrecht",
+      "Rotterdam",
+      "Gorinchem",
+      "Breda"
+    ],
+    "gbpUrl": "",
+    "reviewLink": "",
+    "gbpPrimaryCategory": "Softwarebedrijf",
+    "sameAs": [
+      "https://www.instagram.com/sitefrontnl/",
+      "https://www.linkedin.com/in/michael-beset-25822240a/"
+    ],
+    "logo": "/favicon.svg",
+    "image": "/og.png",
+    "extra": {}
+  },
+  "services": [
+    {
+      "name": "Software op maat",
+      "path": "/software-op-maat/",
+      "summary": "Webapplicaties, dashboards, klantportalen en koppelingen, gebouwd rond de manier waarop een bedrijf werkt.",
+      "keywords": [
+        "software op maat dordrecht",
+        "webapplicatie laten bouwen",
+        "maatwerk software"
+      ]
+    },
+    {
+      "name": "Websites",
+      "path": "/#diensten",
+      "summary": "Snelle websites met technische SEO ingebouwd, op maat ontworpen in plaats van een sjabloon.",
+      "keywords": [
+        "website laten maken dordrecht",
+        "webdesign dordrecht",
+        "website laten bouwen"
+      ]
+    },
+    {
+      "name": "Koppelingen",
+      "path": "/#diensten",
+      "summary": "Boekhouding, voorraad, planning en webshop met elkaar laten praten via API-koppelingen.",
+      "keywords": [
+        "api koppeling laten maken",
+        "systemen koppelen"
+      ]
+    },
+    {
+      "name": "Processen automatiseren",
+      "path": "/#diensten",
+      "summary": "Terugkerende handmatige stappen laten uitvoeren door een systeem.",
+      "keywords": [
+        "processen automatiseren",
+        "bedrijfsprocessen automatiseren"
+      ]
+    }
+  ],
+  "llmsPages": [
+    {
+      "name": "Afvalmeldpunt, meldsysteem voor ondergrondse containers",
+      "path": "/werk/afvalmeldpunt/"
+    },
+    {
+      "name": "PlayerPath, software voor keeper- en voetbalscholen",
+      "path": "/werk/playerpath/"
+    },
+    {
+      "name": "Over Sitefront",
+      "path": "/over-ons/"
+    }
+  ],
+  "ignorePaths": [
+    "/privacybeleid/",
+    "/cookiebeleid/",
+    "/algemene-voorwaarden/"
+  ],
+  "gscProperty": "sc-domain:sitefront.nl",
+  "psiUrls": [
+    "/",
+    "/software-op-maat/",
+    "/over-ons/"
+  ],
+  "aiCrawlers": {
+    "training": "allow"
+  }
+}

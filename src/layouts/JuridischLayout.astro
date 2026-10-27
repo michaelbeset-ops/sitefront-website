@@ -18,7 +18,7 @@ interface Props {
 const { titel, omschrijving, kop, intro, bijgewerkt } = Astro.props;
 ---
 
-<BaseLayout title={titel} description={omschrijving}>
+<BaseLayout title={titel} description={omschrijving} pageType="WebPage">
   <SiteHeader />
 
   <main>

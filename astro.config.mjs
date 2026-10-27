@@ -3,14 +3,25 @@ import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import seo from './seo.config.json' with { type: 'json' };
 
 import vue from '@astrojs/vue';
 
+// ignorePaths uit seo.config.json: die pagina's krijgen noindex (SEO.astro leest dezelfde
+// lijst) en blijven uit de sitemap. Eén bron, dus de twee kunnen niet uit elkaar lopen.
+const negeer = (seo.ignorePaths ?? []).map((pad) => pad.replace(/\/?$/, '/'));
+
 export default defineConfig({
-  // Vervang dit door het echte domein zodra dat er is (nodig voor sitemap/canonical).
-  site: 'https://sitefront.nl',
+  site: seo.site,
+
+  // GitHub Pages serveert /pad/index.html op /pad/ en stuurt /pad met een 301 door.
+  // Met 'always' maakt Astro overal de slash-variant, dus geen enkele interne link
+  // kost nog een omleiding.
+  trailingSlash: 'always',
 
   build: {
+    format: 'directory',
+
     // De CSS is ~5 kB. Inline zetten scheelt een render-blocking request,
     // én de @font-face-regels staan meteen in de HTML, dus de browser
     // begint direct met het laden van de fonts.
@@ -60,5 +71,14 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [vue(), sitemap()],
+  integrations: [
+    vue(),
+    sitemap({
+      filter: (pagina) => {
+        const pad = new URL(pagina).pathname;
+        return !negeer.includes(pad) && pad !== '/404/';
+      },
+      // Geen lastmod: een builddatum zegt niets over de inhoud, en dan negeert Google hem.
+    }),
+  ],
 });

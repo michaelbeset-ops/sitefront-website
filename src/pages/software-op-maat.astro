@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { serviceNode, breadcrumbNode } from '../lib/schema';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SectionHead from '../components/SectionHead.astro';
@@ -54,8 +55,21 @@ const oplossingen = [
 ---
 
 <BaseLayout
-  title="Software op maat | Sitefront"
-  description="Webapplicaties, dashboards, klantportalen, koppelingen en automatisering. Op maat gebouwd rond de manier waarop jouw bedrijf werkt. Gebouwd met Laravel, Vue en Inertia."
+  title="Software op maat in Dordrecht"
+  description="Webapplicaties, dashboards, klantportalen, koppelingen en automatisering, gebouwd rond de manier waarop jouw bedrijf werkt. Met Laravel, Vue en Inertia."
+  schema={[
+    serviceNode({
+      name: 'Software op maat',
+      path: '/software-op-maat/',
+      description:
+        'Webapplicaties, dashboards, klantportalen, koppelingen en automatisering, gebouwd rond de manier waarop een bedrijf werkt.',
+      serviceType: 'Softwareontwikkeling',
+    }),
+    breadcrumbNode([
+      { name: 'Home', path: '/' },
+      { name: 'Software op maat', path: '/software-op-maat/' },
+    ]),
+  ]}
 >
   <SiteHeader />
 

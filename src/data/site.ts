@@ -7,15 +7,21 @@
  * ontwerpkeuzes: de antwoorden in de FAQ en de inhoud van de pakketten.
  */
 
+import { business } from '../lib/site';
+
+/**
+ * Bedrijfsgegevens. Naam, plaats, e-mail en KvK komen uit seo.config.json,
+ * want die staan ook in de JSON-LD, de footer en llms.txt. Eén bron, zodat
+ * ze nooit uit elkaar lopen zodra er iets verandert.
+ */
 export const bedrijf = {
-  naam: 'Sitefront',
-  plaats: 'Dordrecht',
-  email: 'info@sitefront.nl',
-  instagram: 'https://www.instagram.com/sitefrontnl/',
-  linkedin: 'https://www.linkedin.com/in/michael-beset-25822240a/',
-  kvk: '42057398',
-  // De live site toont hier nog "[nummer invullen]". Invullen of weglaten.
-  btw: null as string | null,
+  naam: business.name,
+  plaats: business.city,
+  email: business.email,
+  kvk: business.kvk,
+  btw: business.vatID || null,
+  instagram: business.sameAs.find((u) => u.includes('instagram.com')) ?? '',
+  linkedin: business.sameAs.find((u) => u.includes('linkedin.com')) ?? '',
 
   /**
    * Portretfoto. Zet hier het pad neer zodra je er een hebt, dan
@@ -35,7 +41,7 @@ export const bedrijf = {
 export const navigatie = [
   { label: 'Home', href: '/' },
   { label: 'Diensten', href: '/#diensten' },
-  { label: 'Over ons', href: '/over-ons' },
+  { label: 'Over ons', href: '/over-ons/' },
   { label: 'Werk', href: '/#werk' },
   { label: 'Contact', href: '/#contact' },
 ];
@@ -51,7 +57,7 @@ export const diensten = [
   {
     icoon: 'app' as const,
     titel: 'Software op maat',
-    link: '/software-op-maat',
+    link: '/software-op-maat/',
     haak: 'Een systeem dat om jouw werk heen past.',
     tekst:
       'Inloggen, rollen en rechten, dashboards, rapportages. Gebouwd rond de manier waarop jij werkt, in plaats van dat jij je aanpast aan een pakket.',
@@ -248,7 +254,7 @@ export const projecten = [
     naam: 'Afvalmeldpunt',
     domein: 'afvalmeldpunt.nl',
     url: 'https://afvalmeldpunt.nl' as string | null,
-    verslag: '/werk/afvalmeldpunt',
+    verslag: '/werk/afvalmeldpunt/',
     soort: 'Software',
     tekst:
       'Meldsysteem voor ondergrondse afvalcontainers. Een aluminium plaatje met QR-code op de container, bewoners melden in de browser, en de beheerder ziet alle meldingen per container.',
@@ -261,7 +267,7 @@ export const projecten = [
     naam: 'PlayerPath',
     domein: 'playerpath.nl',
     url: 'https://playerpath.nl' as string | null,
-    verslag: '/werk/playerpath',
+    verslag: '/werk/playerpath/',
     soort: 'SaaS-platform',
     tekst:
       'Een compleet platform voor keeper- en voetbalscholen. Inschrijven, trainingen, betalen, en een spelerskaart die meegroeit met elk rapport van de trainer.',

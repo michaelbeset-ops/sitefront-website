@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { personNode, breadcrumbNode } from '../lib/schema';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SectionHead from '../components/SectionHead.astro';
@@ -42,8 +43,21 @@ const overtuigingen = [
 ---
 
 <BaseLayout
-  title="Over ons | Sitefront"
+  title="Over Sitefront, software uit Dordrecht"
   description="Sitefront, dat ben ik: Michael. Software op maat en websites, gebouwd door een persoon die luistert, meedenkt en zelf bouwt. Geen tussenlagen, geen tickets."
+  pageType="AboutPage"
+  schema={[
+    personNode({
+      name: 'Michael Beset',
+      jobTitle: 'Softwareontwikkelaar',
+      sameAs: [bedrijf.linkedin, bedrijf.instagram].filter(Boolean),
+      knowsAbout: ['Laravel', 'Vue', 'Astro', 'Software op maat', 'Webapplicaties', 'Websites'],
+    }),
+    breadcrumbNode([
+      { name: 'Home', path: '/' },
+      { name: 'Over ons', path: '/over-ons/' },
+    ]),
+  ]}
 >
   <SiteHeader />
 

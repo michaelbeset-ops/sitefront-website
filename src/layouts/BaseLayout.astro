@@ -1,39 +1,23 @@
 ---
 import '../styles/app.css';
 import Cookiemelding from '../components/Cookiemelding.astro';
-import { bedrijf } from '../data/site';
+import SEO from '../components/SEO.astro';
 
 interface Props {
   title: string;
   description: string;
+  /** true = de title precies zo gebruiken, zonder "| Sitefront" erachter. */
+  fullTitle?: boolean;
+  /** Schema-type van de pagina: AboutPage, ContactPage, CollectionPage, ... */
+  pageType?: string;
+  /** Extra JSON-LD-nodes (dienst, kruimelpad, FAQ) uit src/lib/schema.ts. */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+  /** Eigen og-afbeelding; standaard de og.png uit seo.config.json. */
+  image?: string;
 }
 
-const { title, description } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL('/og.png', Astro.site);
-
-/**
- * Bedrijfsgegevens voor Google, als JSON-LD. Hiermee begrijpt Google
- * dat dit een lokaal bedrijf in Dordrecht is, wat helpt om gevonden te
- * worden op zoekopdrachten uit de regio.
- */
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: bedrijf.naam,
-  description:
-    'Freelance ontwikkelaar van software op maat en websites voor ondernemers in Dordrecht en omstreken.',
-  url: Astro.site?.toString(),
-  email: bedrijf.email,
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: bedrijf.plaats,
-    addressCountry: 'NL',
-  },
-  areaServed: 'Dordrecht en omstreken',
-  sameAs: [bedrijf.instagram, bedrijf.linkedin],
-  knowsAbout: ['Software op maat', 'Webapplicaties', 'Websites', 'Koppelingen', 'Automatisering'],
-};
+const { title, description, fullTitle, pageType, schema, noindex, image } = Astro.props;
 ---
 
 <!doctype html>
@@ -46,23 +30,15 @@ const structuredData = {
     <!-- Andere sites zien alleen dat iemand van sitefront.nl kwam, niet
          van welke pagina. GitHub Pages laat geen headers toe, vandaar meta. -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="nl_NL" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    <SEO
+      title={title}
+      description={description}
+      fullTitle={fullTitle}
+      pageType={pageType}
+      schema={schema}
+      noindex={noindex}
+      image={image}
+    />
 
     <!-- Voor het eerste schilderen: alleen als JavaScript aan staat en de
          bezoeker beweging niet heeft uitgezet, mag de CSS onderdelen
@@ -83,6 +59,7 @@ const structuredData = {
          zichtbaar worden zodra het focus krijgt, zonder uitzonderingen. -->
     <a
       href="#main"
+      aria-label="Naar de inhoud"
       class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-5 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:font-display focus:text-base focus:font-bold focus:text-white"
     >
       Naar de inhoud

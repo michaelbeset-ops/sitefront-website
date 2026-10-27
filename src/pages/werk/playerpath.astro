@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbNode } from '../../lib/schema';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import Check from '../../components/Check.astro';
@@ -32,8 +33,13 @@ const gegevens = [
 ---
 
 <BaseLayout
-  title="PlayerPath, software voor voetbalscholen | Sitefront"
-  description="PlayerPath is software voor keeper- en voetbalscholen: inschrijven, trainingen, betalen via Mollie en een spelerskaart die meegroeit. Bedacht en gebouwd door Sitefront met Laravel, Vue en Inertia."
+  title="PlayerPath, software voor voetbalscholen"
+  description="Software voor keeper- en voetbalscholen: inschrijven, trainingen, betalen via Mollie en een spelerskaart die meegroeit. Bedacht en gebouwd door Sitefront."
+  schema={breadcrumbNode([
+    { name: 'Home', path: '/' },
+    { name: 'Werk', path: '/#werk' },
+    { name: 'PlayerPath', path: '/werk/playerpath/' },
+  ])}
 >
   <SiteHeader />
 
@@ -94,7 +100,7 @@ const gegevens = [
           widths={[600, 1000, 1400, 2000]}
           sizes="(min-width: 1024px) 64rem, 94vw"
           class="shadow-lift border-line-soft block h-auto w-full rounded-2xl border"
-          loading="eager"
+          priority
         />
         <figcaption class="text-soft mt-3 text-center text-sm">
           Het dashboard van de eigenaar, met de gegevens van de voorbeeldschool.

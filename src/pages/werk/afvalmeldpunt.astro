@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbNode } from '../../lib/schema';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import Check from '../../components/Check.astro';
@@ -28,8 +29,13 @@ const gegevens = [
 ---
 
 <BaseLayout
-  title="Afvalmeldpunt, melden met een QR-code op de container | Sitefront"
-  description="Afvalmeldpunt is een meldsysteem voor ondergrondse afvalcontainers: een aluminium plaatje met QR-code op de container, melden in de browser zonder app, en alle meldingen per container in een dashboard."
+  title="Afvalmeldpunt, melden via QR op de container"
+  description="Meldsysteem voor ondergrondse afvalcontainers: QR-code op de container, melden in de browser zonder app, alle meldingen in één dashboard."
+  schema={breadcrumbNode([
+    { name: 'Home', path: '/' },
+    { name: 'Werk', path: '/#werk' },
+    { name: 'Afvalmeldpunt', path: '/werk/afvalmeldpunt/' },
+  ])}
 >
   <SiteHeader />
 
@@ -82,7 +88,7 @@ const gegevens = [
           widths={[600, 1000, 1400, 1600]}
           sizes="(min-width: 1024px) 64rem, 94vw"
           class="shadow-lift border-line-soft block h-auto w-full rounded-2xl border"
-          loading="eager"
+          priority
         />
         <figcaption class="text-soft mt-3 text-center text-sm">
           De containers en het plaatje zijn met de hand getekend in SVG, geen foto's.
