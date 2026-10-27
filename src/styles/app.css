@@ -35,6 +35,7 @@
   --color-accent: #f87116; /* het Sitefront-oranje                */
   --color-accent-ink: #b03e00; /* zelfde oranje, leesbaar op licht    */
   --color-mint: #1f9d6b; /* alleen voor bevestigingen           */
+  --color-mint-ink: #18815a; /* zelfde groen, leesbaar op wit (4.9:1) */
   --color-bad: #c1362a; /* foutmeldingen, 6.2:1 op wit         */
 
   /* Lijnen */
