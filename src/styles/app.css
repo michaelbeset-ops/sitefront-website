@@ -9,7 +9,6 @@
    Volgorde: fonts, tailwind, tokens, eigen utilities, basis.
    ============================================================= */
 
-@import './fonts.css';
 @import 'tailwindcss';
 
 @theme {
@@ -47,8 +46,10 @@
   /* ---------- Typografie ----------
      Twee families. Archivo voert het woord, Plex Sans praat. */
   --font-*: initial;
-  --font-display: 'Archivo Variable', system-ui, sans-serif;
-  --font-body: 'IBM Plex Sans Variable', system-ui, -apple-system, sans-serif;
+  /* Deze twee komen uit de fonts-sectie van astro.config.mjs. Daar staat
+     ook de fallback-stack, inclusief het doorgemeten systeemfont. */
+  --font-display: var(--font-archivo);
+  --font-body: var(--font-plex);
   --default-font-family: var(--font-body);
 
   /* ---------- Typeschaal ----------

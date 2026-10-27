@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
@@ -31,6 +31,37 @@ export default defineConfig({
   },
 
   devToolbar: { enabled: false },
+
+  // Fonts via Astro in plaats van losse @font-face-regels in fonts.css.
+  // De winst zit in optimizedFallbacks: Astro meet het echte font door en
+  // maakt een fallback van een systeemfont met dezelfde verhoudingen. Tot
+  // het webfont binnen is staat de tekst dus al op de goede hoogte, en
+  // verspringt de pagina niet zodra hij omwisselt. Dat verspringen was op
+  // de trage machine in de CI 0,12, boven de norm van 0,1.
+  fonts: [
+    {
+      // Koppen, knoppen en labels.
+      name: 'Archivo',
+      cssVariable: '--font-archivo',
+      provider: fontProviders.fontsource(),
+      weights: ['100 900'],
+      styles: ['normal'],
+      subsets: ['latin'],
+      optimizedFallbacks: true,
+      fallbacks: ['system-ui', 'sans-serif'],
+    },
+    {
+      // Lopende tekst.
+      name: 'IBM Plex Sans',
+      cssVariable: '--font-plex',
+      provider: fontProviders.fontsource(),
+      weights: ['100 700'],
+      styles: ['normal'],
+      subsets: ['latin'],
+      optimizedFallbacks: true,
+      fallbacks: ['system-ui', '-apple-system', 'sans-serif'],
+    },
+  ],
 
   // Content-Security-Policy. GitHub Pages laat geen eigen headers toe,
   // dus Astro zet hem als <meta> in elke pagina, met een hash per inline

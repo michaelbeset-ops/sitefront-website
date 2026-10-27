@@ -2,6 +2,7 @@
 import '../styles/app.css';
 import Cookiemelding from '../components/Cookiemelding.astro';
 import SEO from '../components/SEO.astro';
+import { Font } from 'astro:assets';
 
 interface Props {
   title: string;
@@ -30,6 +31,12 @@ const { title, description, fullTitle, pageType, schema, noindex, image } = Astr
     <!-- Andere sites zien alleen dat iemand van sitefront.nl kwam, niet
          van welke pagina. GitHub Pages laat geen headers toe, vandaar meta. -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <!-- Alleen Archivo vooraf laden: de kop in de hero is het grootste
+         element op het scherm en bepaalt wanneer de pagina 'geladen'
+         lijkt. Plex Sans komt met de rest mee; die heeft nu een fallback
+         met dezelfde verhoudingen, dus wachten kost geen verspringing. -->
+    <Font cssVariable="--font-archivo" preload />
+    <Font cssVariable="--font-plex" />
     <SEO
       title={title}
       description={description}
