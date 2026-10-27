@@ -14,3 +14,4 @@ Thumbs.db
 
 # SEO-rapporten blijven lokaal
 .seo/out/
+.lighthouseci/

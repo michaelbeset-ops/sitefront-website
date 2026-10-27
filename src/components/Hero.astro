@@ -14,13 +14,22 @@ import Snelheidsregel from './Snelheidsregel.astro';
 
 <section id="main" class="bg-brand relative isolate overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
   <!-- Eén zachte lichtplek, en die staat stil. Een bewegende gradient is
-       precies waar een pagina goedkoop van gaat ogen. -->
+       precies waar een pagina goedkoop van gaat ogen.
+
+       De bovenkant staat in rem en niet op -top-1/3. Een derde van de
+       sectiehoogte klinkt logisch, maar die hoogte verandert nog terwijl
+       het webfont inlaadt: de kop wordt een paar pixels hoger of lager.
+       Deze plek is 1120 bij 1120, dus dan verschuift er een enorm vlak
+       en dat tikt aan in de layoutverschuiving. Op de trage machine in
+       de CI kwam het op 0,23, ruim boven de norm van 0,1. De breedte
+       van de sectie staat tijdens het laden wel vast, dus -right-1/4
+       mag blijven. -->
   <div
     class="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
     aria-hidden="true"
   >
     <div
-      class="absolute -top-1/3 -right-1/4 h-[70rem] w-[70rem] rounded-full opacity-40"
+      class="absolute -top-[18rem] -right-1/4 h-[70rem] w-[70rem] rounded-full opacity-40"
       style="background: radial-gradient(closest-side, #14418f 0%, transparent 70%)"
     >
     </div>
