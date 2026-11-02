@@ -122,17 +122,26 @@ const veldClasses =
     </div>
 
     <!--
-      onsubmit="return false" staat er bewust naast @submit.prevent.
-      Het island hydrateert pas als het in beeld komt, en in dat korte
-      venster is dit gewone server-HTML. Zonder deze rem doet de browser
-      dan een normale GET en komen naam, e-mail en bericht in de URL
-      terecht, en dus in de geschiedenis en de referrer.
+      method="dialog" staat er bewust naast @submit.prevent. Het island
+      hydrateert pas als het in beeld komt, en in dat korte venster is dit
+      gewone server-HTML. Zonder rem doet de browser dan een normale GET
+      en komen naam, e-mail en bericht in de URL terecht, en dus in de
+      geschiedenis en de referrer.
+
+      Hier stond onsubmit="return false", maar dat is een inline event
+      handler en die voert de browser niet uit onder onze CSP: script-src
+      staat alleen hashes toe, geen 'unsafe-hashes'. De rem werkte dus
+      niet, en de fout kostte ook nog zeven punten op best practices.
+
+      Een form met method="dialog" dat niet in een <dialog> staat, breekt
+      de verzending af zonder te navigeren. Dat is precies de bedoeling,
+      en het is gewone HTML, dus de CSP heeft er niets op aan te merken.
     -->
     <form
       v-else
       class="grid gap-5"
       novalidate
-      onsubmit="return false"
+      method="dialog"
       @submit.prevent="verstuur"
     >
       <!-- Bots vullen alles in wat ze tegenkomen. Dit veld staat buiten

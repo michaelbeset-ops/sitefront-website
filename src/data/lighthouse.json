@@ -1,5 +1,5 @@
 {
-  "_comment": "Echte Lighthouse-uitslag van de volledige pagina. Alleen invullen met cijfers uit een daadwerkelijke run, nooit met een schatting. Null = nog niet gemeten, dan toont de meter streepjes. Wordt gelezen door src/components/Meter.astro. Bijwerken: npx lighthouse https://sitefront.nl/ --output=json, drie keer, en de mediaan hier neerzetten.",
+  "_comment": "Wordt wekelijks automatisch bijgewerkt door .github/workflows/lighthouse-cijfers.yml, dat het live domein meet en de mediaan van drie mobiele runs neerzet. Met de hand kan ook: python3 .seo/lighthouse_cijfers.py --url https://sitefront.nl/. Nooit met een schatting vullen; null betekent niet gemeten en dan toont de meter streepjes. Gelezen door src/components/Meter.astro.",
   "measuredAt": "2026-10-27T18:58:00.000Z",
   "url": "https://sitefront.nl/",
   "isPublicUrl": true,

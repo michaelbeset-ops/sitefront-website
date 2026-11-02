@@ -1,0 +1,89 @@
+# Houdt de Lighthouse-cijfers in de meter op de homepage actueel.
+#
+# De meter (src/components/Meter.astro) toont twee soorten cijfers. De live
+# meting komt uit de browser van de bezoeker zelf, maar de Lighthouse-uitslag
+# staat in src/data/lighthouse.json en verouderde tot nu toe met de hand.
+#
+# Deze workflow meet elke maandag het live domein, neemt de mediaan van drie
+# runs en schrijft die weg. Alleen als de cijfers echt veranderen volgt er een
+# commit, dus geen wekelijkse ruis in de geschiedenis.
+#
+# Let op de laatste stap: een commit met de standaard GITHUB_TOKEN start geen
+# nieuwe workflows. Zonder die handmatige aanzet zouden de nieuwe cijfers in
+# de repo staan maar niet op de site.
+
+name: Lighthouse-cijfers
+
+on:
+  schedule:
+    # Maandagochtend, na het weekend en voor de week begint.
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Te meten pagina'
+        required: false
+        default: 'https://sitefront.nl/'
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: lighthouse-cijfers
+  cancel-in-progress: false
+
+jobs:
+  meten:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Meten en bijwerken
+        id: meting
+        run: |
+          set +e
+          python3 .seo/lighthouse_cijfers.py --url "${URL}" --runs 3
+          code=$?
+          set -e
+          case "$code" in
+            0) echo "gewijzigd=true"  >> "$GITHUB_OUTPUT" ;;
+            1) echo "gewijzigd=false" >> "$GITHUB_OUTPUT" ;;
+            *) echo "De meting is niet gelukt."; exit 1 ;;
+          esac
+        env:
+          URL: ${{ inputs.url || 'https://sitefront.nl/' }}
+
+      - name: Vastleggen
+        if: steps.meting.outputs.gewijzigd == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/lighthouse.json
+          git commit -m "Lighthouse-cijfers bijgewerkt
+
+          Automatisch gemeten op het live domein, mediaan van drie mobiele runs.
+          Zie .github/workflows/lighthouse-cijfers.yml."
+          git push
+
+      - name: Site opnieuw uitrollen
+        if: steps.meting.outputs.gewijzigd == 'true'
+        run: gh workflow run "Live zetten" --ref main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Samenvatting
+        if: always()
+        run: |
+          if [ "${{ steps.meting.outputs.gewijzigd }}" = "true" ]; then
+            echo "Cijfers gewijzigd en uitgerold." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Cijfers ongewijzigd, niets gedaan." >> "$GITHUB_STEP_SUMMARY"
+          fi
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat src/data/lighthouse.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
