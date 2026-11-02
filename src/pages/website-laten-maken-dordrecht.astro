@@ -1,0 +1,373 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { serviceNode, breadcrumbNode, faqNode } from '../lib/schema';
+import { business } from '../lib/site';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Beeldmerk from '../components/Beeldmerk.astro';
+import Check from '../components/Check.astro';
+import { projecten, werkwijze } from '../data/site';
+
+/**
+ * De pagina voor "website laten maken Dordrecht".
+ *
+ * Waarom deze pagina er is: van de vier diensten in seo.config.json had
+ * alleen Software op maat een eigen pagina. Websites verwees naar
+ * /#diensten, een stuk van de homepage. Op de term waarvoor dit bedrijf
+ * bestaat was er dus niets om te ranken, en dat is precies wat Search
+ * Console liet zien: alleen merkverkeer, geen enkele niet-merkterm.
+ *
+ * Geen bedragen op deze pagina. De pakketten op de homepage staan op
+ * "op aanvraag", en een prijs die ik hier zou verzinnen zou daarmee in
+ * tegenspraak staan. Zodra er echte bandbreedtes zijn horen ze hier,
+ * en dan ook in offers van het serviceNode hieronder.
+ *
+ * Eén pagina voor de hele regio, geen losse pagina per dorp. Dunne
+ * plaatspagina's die alleen in de plaatsnaam verschillen worden door
+ * Google als doublures behandeld en helpen niemand.
+ */
+
+/**
+ * Lokaal bewijs. Alleen klanten die echt in de buurt zitten: Den Witten
+ * Haen in Dordrecht, ZBN in Ridderkerk, Aroma in Gorinchem. Lunchroom
+ * Rosi staat er bewust niet bij, die zit in Monster.
+ */
+const dichtbij = ['den-witten-haen', 'zbn-ridderkerk', 'aroma']
+  .map((sleutel) => projecten.find((p) => p.sleutel === sleutel)!)
+  .filter(Boolean);
+
+const bestanden = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/werk/*.{png,jpg,jpeg,webp,avif}',
+  { eager: true },
+);
+const beelden: Record<string, ImageMetadata> = {};
+for (const [pad, mod] of Object.entries(bestanden)) {
+  const naam = pad.split('/').pop()!.replace(/\.\w+$/, '');
+  beelden[naam] = mod.default;
+}
+
+const watErinZit = [
+  {
+    titel: 'Een ontwerp dat alleen van jou is',
+    tekst:
+      'Ik begin bij jouw zaak, niet bij een sjabloon. Kleur, typografie en indeling komen uit wat je verkoopt en wie je wil bereiken. Je komt je eigen site dus nooit ergens anders tegen met een andere naam erboven.',
+  },
+  {
+    titel: 'Snel, en dat is te meten',
+    tekst:
+      'Elke site gaat mobiel door Lighthouse voordat hij live mag. Niet omdat een cijfer leuk staat, maar omdat bezoekers op een telefoon met een matig signaal afhaken bij een pagina die blijft hangen.',
+  },
+  {
+    titel: 'Technische SEO zit er al in',
+    tekst:
+      'Titels, beschrijvingen, schema, sitemap, robots.txt en een logische URL-structuur zijn onderdeel van het bouwen, geen los traject dat je er later bij koopt.',
+  },
+  {
+    titel: 'Vindbaar in Dordrecht en omstreken',
+    tekst:
+      'De site vertelt zoekmachines waar je zit en wat je waar doet. Wat daarbij hoort en wat je zelf moet regelen, zoals een Google Bedrijfsprofiel en reviews, zeg ik erbij.',
+  },
+  {
+    titel: 'Formulieren die aankomen',
+    tekst:
+      'Een contact-, aanvraag- of reserveringsformulier dat werkt, met de velden die jij nodig hebt om iemand terug te kunnen bellen. Bij ZBN kunnen er foto’s mee, bij Den Witten Haen reserveren gasten meteen een tafel.',
+  },
+  {
+    titel: 'Alles op jouw naam',
+    tekst:
+      'Broncode, domein en hosting staan op jouw naam. Wil je ooit verder met iemand anders, dan kan diegene er direct mee uit de voeten. Je zit nooit aan mij vast omdat je er niet meer bij kunt.',
+  },
+];
+
+const vragenHier = [
+  {
+    q: 'Wat kost een website laten maken?',
+    a: 'Dat hangt af van wat hij moet doen. Na de kennismaking krijg je een offerte met een vaste omvang en een vaste prijs, zodat je weet waar je aan toe bent voordat er iets gebouwd wordt. Geen nacalculatie zonder overleg.',
+  },
+  {
+    q: 'Zit ik vast aan maandelijkse kosten?',
+    a: 'Niet aan mij. Domein en hosting staan op jouw naam en betaal je zelf, en dat is bij een statische site weinig. Voor doorlopend onderhoud kunnen we een afspraak maken, met updates en back-ups, maar het is geen voorwaarde om met me te werken.',
+  },
+  {
+    q: 'Werk je ook buiten Dordrecht?',
+    a: `Ja. Ik werk in ${business.areaServed.slice(0, -1).join(', ')} en ${business.areaServed.at(-1)}. Opgeleverde sites staan onder andere in Dordrecht, Ridderkerk, Gorinchem en Leerdam. Verder weg kan ook, dan doen we het gesprek digitaal.`,
+  },
+  {
+    q: 'Kan ik tussendoor meekijken?',
+    a: 'Ja, op een testadres. Zo zie je de site groeien en kunnen we bijsturen zolang dat nog goedkoop is. Dat werkt beter dan aan het eind een verrassing uitpakken.',
+  },
+  {
+    q: 'Ik heb al een website. Kun je die verbeteren?',
+    a: 'Soms. Staat hij op WordPress met een thema dat nog wordt bijgehouden, dan is opknappen vaak zinnig. Is hij traag, slecht vindbaar en moeilijk aan te passen, dan ben je met opnieuw bouwen meestal sneller en goedkoper uit. Ik zeg welke van de twee het is, ook als dat betekent dat je niets hoeft te doen.',
+  },
+  {
+    q: 'Praat ik met jou of met een accountmanager?',
+    a: 'Met mij. Ik doe het gesprek, het ontwerp en het bouwen zelf. Er zit geen tussenlaag die jouw wensen moet doorgeven aan iemand die je nooit spreekt.',
+  },
+];
+---
+
+<BaseLayout
+  title="Website laten maken in Dordrecht | Sitefront"
+  description="Website laten maken in Dordrecht en omstreken. Op maat ontworpen, snel, met technische SEO ingebouwd. Broncode en domein staan op jouw naam."
+  schema={[
+    serviceNode({
+      name: 'Website laten maken',
+      path: '/website-laten-maken-dordrecht/',
+      description:
+        'Websites op maat voor ondernemers in Dordrecht en omstreken: eigen ontwerp, gemeten op snelheid en toegankelijkheid, met technische SEO ingebouwd.',
+      serviceType: 'Webdesign',
+      areaServed: business.areaServed,
+    }),
+    breadcrumbNode([
+      { name: 'Home', path: '/' },
+      { name: 'Website laten maken in Dordrecht', path: '/website-laten-maken-dordrecht/' },
+    ]),
+    faqNode(vragenHier),
+  ]}
+>
+  <SiteHeader />
+
+  <main>
+    <section id="main" class="bg-brand relative isolate overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
+      <Beeldmerk
+        class="pointer-events-none absolute -top-16 -right-24 -z-10 hidden h-[38rem] w-auto text-white opacity-[0.05] sm:block lg:-right-16 lg:h-[46rem]"
+      />
+
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-20 md:px-8 md:pt-44 md:pb-28 xl:px-10">
+        <div class="max-w-3xl">
+          <p class="label text-accent">Website laten maken</p>
+
+          <h1 class="text-4xl mt-6 font-heavy text-white">
+            Een website die bij jouw zaak hoort, uit Dordrecht
+          </h1>
+
+          <p class="text-lg mt-8 max-w-[52ch] leading-[1.6] text-white/75">
+            Geen sjabloon met jouw logo erin, en geen bureau waar je met een accountmanager praat.
+            Ik ontwerp en bouw de site zelf, rond wat jij verkoopt en wie je wil bereiken. Snel,
+            vindbaar, en op jouw naam.
+          </p>
+
+          <ul class="mt-9 grid gap-2.5 sm:grid-cols-2">
+            {
+              [
+                'Eigen ontwerp, geen thema',
+                'Mobiel gemeten voordat het live gaat',
+                'Technische SEO ingebouwd',
+                'Broncode en domein op jouw naam',
+              ].map((punt) => (
+                <li class="flex gap-2.5 text-base text-white/85">
+                  <Check class="text-accent mt-1 shrink-0" />
+                  {punt}
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="/#contact"
+              class="bg-accent text-ink shadow-btn font-display rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 ease-soft hover:bg-white"
+            >
+              Plan een gesprek
+            </a>
+            <a
+              href="/werk/"
+              class="border-line-navy font-display rounded-full border px-5 py-2.5 text-base font-bold text-white transition-colors duration-150 ease-soft hover:bg-white/10"
+            >
+              Bekijk het werk
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="wat" class="bg-paper scroll-mt-24 py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <SectionHead
+          label="Wat je krijgt"
+          titel="Wat er in elke site zit"
+          lead="Niet als pakket met sterretjes, maar als uitgangspunt. Dit hoort er gewoon bij, ongeacht hoe groot de opdracht is."
+        />
+
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 md:gap-7 xl:grid-cols-3">
+          {
+            watErinZit.map((item) => (
+              <li class="bg-paper border-line-soft shadow-sm flex h-full flex-col rounded-xl border p-7">
+                <h3 class="text-xl font-black">{item.titel}</h3>
+                <p class="text-body mt-3 text-base leading-[1.65]">{item.tekst}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <section class="bg-sand py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <SectionHead
+          label="Dichtbij"
+          titel="Sites die hier in de buurt draaien"
+          lead="Geen portfolio met voorbeeldplaatjes. Dit zijn zaken uit de regio die hun site dagelijks gebruiken, met het adres erbij zodat je zelf kunt kijken."
+        />
+
+        <ul class="mt-12 grid gap-6 md:grid-cols-3 md:gap-7">
+          {
+            dichtbij.map((project) => {
+              const beeld = beelden[project.sleutel];
+              const verslag = 'verslag' in project ? (project.verslag as string) : null;
+              return (
+                <li>
+                  <a
+                    href={verslag ?? project.url!}
+                    {...(verslag ? {} : { target: '_blank', rel: 'noopener' })}
+                    class="group bg-paper border-line-soft shadow-card kaart-lift hover:shadow-lift flex h-full flex-col overflow-hidden rounded-2xl border"
+                  >
+                    <div class="bg-sand relative aspect-16/10 overflow-hidden">
+                      {beeld && (
+                        <Image
+                          src={beeld}
+                          alt={project.alt}
+                          widths={[420, 620, 900]}
+                          sizes="(min-width: 768px) 24rem, 88vw"
+                          class="ease-soft size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                          loading="lazy"
+                        />
+                      )}
+                    </div>
+                    <div class="flex flex-1 flex-col p-6">
+                      <p class="label text-accent-ink">{project.domein}</p>
+                      <h3 class="text-xl mt-2 font-black">
+                        {project.naam}
+                        <span
+                          class="text-accent-ink ease-soft ml-1 inline-block transition-transform duration-200 group-hover:translate-x-1"
+                          aria-hidden="true"
+                        >
+                          &rarr;
+                        </span>
+                      </h3>
+                      <p class="text-body mt-2.5 text-base leading-[1.6]">{project.tekst}</p>
+                    </div>
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+
+        <p class="mt-9">
+          <a href="/werk/" class="text-accent-ink font-display ease-soft text-base font-bold underline decoration-2 underline-offset-4 transition-colors duration-150 hover:text-ink">
+            Al het werk bekijken <span aria-hidden="true">&rarr;</span>
+          </a>
+        </p>
+      </div>
+    </section>
+
+    <section class="bg-paper py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <SectionHead
+          label="Hoe het gaat"
+          titel="Van gesprek naar live in vier stappen"
+          lead="Dezelfde route voor elke opdracht, zodat je van tevoren weet wat er gebeurt en wanneer je iets van mij hoort."
+        />
+
+        <ol class="mt-12 grid gap-6 md:grid-cols-2 md:gap-7 xl:grid-cols-4">
+          {
+            werkwijze.map((stap) => (
+              <li class="border-line-soft bg-paper flex h-full flex-col rounded-xl border p-7">
+                <p class="font-display text-accent-ink text-3xl font-black">{stap.nummer}</p>
+                <h3 class="text-xl mt-3 font-black">{stap.titel}</h3>
+                <p class="text-body mt-2.5 text-base leading-[1.65]">{stap.tekst}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="bg-sand py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="grid gap-12 lg:grid-cols-[22rem_1fr] lg:gap-16">
+          <SectionHead
+            label="Werkgebied"
+            titel="Waar ik kom"
+            lead="Dordrecht en omstreken, en ver genoeg om bij je aan tafel te zitten in plaats van alleen te videobellen."
+          />
+
+          <ul class="flex flex-wrap content-start gap-2.5">
+            {
+              business.areaServed.map((plaats) => (
+                <li class="bg-paper border-line-soft text-ink rounded-full border px-4 py-1.5 text-base font-medium">
+                  {plaats}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="vragen" class="bg-paper scroll-mt-24 py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <SectionHead
+          label="Vragen"
+          titel="Wat mensen meestal eerst willen weten"
+          lead="Inclusief de vraag die iedereen stelt en bijna niemand antwoordt."
+        />
+
+        <dl class="mt-12 max-w-3xl">
+          {
+            vragenHier.map((v) => (
+              <div class="border-line-soft border-t py-6">
+                <dt class="font-display text-ink text-xl font-black">{v.q}</dt>
+                <dd class="text-body mt-2.5 text-base leading-[1.7]">{v.a}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="bg-brand relative isolate overflow-hidden py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="max-w-2xl">
+          <p class="label text-accent">Beginnen</p>
+          <h2 class="text-4xl mt-4 font-heavy text-white">Vertel wat je nodig hebt</h2>
+          <p class="mt-5 text-xl leading-[1.55] text-white/75">
+            Een half uur is genoeg om te weten of dit past. Je krijgt in elk geval een eerlijk
+            antwoord, ook als dat is dat je beter iets anders moet doen.
+          </p>
+          <a
+            href="/#contact"
+            class="bg-accent text-ink shadow-btn font-display ease-soft mt-10 inline-block rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 hover:bg-white"
+          >
+            Plan een gesprek
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .kaart-lift {
+    transition:
+      transform 220ms var(--ease-soft),
+      box-shadow 220ms var(--ease-soft);
+  }
+  .kaart-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kaart-lift,
+    .kaart-lift:hover {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

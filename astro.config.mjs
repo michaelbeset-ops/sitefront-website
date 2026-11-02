@@ -36,13 +36,10 @@ export default defineConfig({
   // Astro bouwt hiervoor een pagina met een meta-refresh en een canonical naar
   // het doel; GitHub Pages kan geen echte 301 geven.
   //
-  // /werk/ gaf 404 terwijl /werk/afvalmeldpunt/ en /werk/playerpath/ bestaan.
-  // Google crawlt zo'n bovenliggende map vanzelf, dus dat was een 404 die we
-  // zelf hadden gemaakt. Zolang er geen overzichtspagina is, gaat hij naar de
-  // werksectie op de homepage.
-  redirects: {
-    '/werk': '/#werk',
-  },
+  // De omleiding van /werk/ naar /#werk staat hier niet meer: dat pad is sinds
+  // 02-11-2026 een echte overzichtspagina (src/pages/werk/index.astro).
+  // Zet hier de 404's uit Search Console neer die een logische opvolger hebben.
+  redirects: {},
 
 
   // Fonts via Astro in plaats van losse @font-face-regels in fonts.css.

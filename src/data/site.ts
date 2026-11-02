@@ -42,7 +42,7 @@ export const navigatie = [
   { label: 'Home', href: '/' },
   { label: 'Diensten', href: '/#diensten' },
   { label: 'Over ons', href: '/over-ons/' },
-  { label: 'Werk', href: '/#werk' },
+  { label: 'Werk', href: '/werk/' },
   { label: 'Contact', href: '/#contact' },
 ];
 
@@ -66,6 +66,7 @@ export const diensten = [
   {
     icoon: 'site' as const,
     titel: 'Websites',
+    link: '/website-laten-maken-dordrecht/',
     haak: 'Snel, vindbaar en van jou.',
     tekst:
       'Een site die laadt voordat iemand afhaakt en die gevonden wordt door de mensen die je zoekt. Op maat ontworpen, geen sjabloon met een ander logo erop.',
@@ -279,7 +280,10 @@ export const projecten = [
     stack: [] as string[],
     naam: 'Zonweringsbedrijf Noordenweg',
     domein: 'zbnridderkerk.nl',
-    url: 'https://zbnridderkerk.nl',
+    // Met www: zbnridderkerk.nl stuurt met een 301 door naar www, en een
+    // uitgaande link hoort niet via een omleiding te gaan.
+    url: 'https://www.zbnridderkerk.nl/',
+    verslag: '/werk/zbn-ridderkerk/',
     soort: 'Website',
     tekst:
       'Zonwering, rolluiken, garagedeuren en terrasoverkappingen uit Ridderkerk. Eigen showroom, inmeten aan huis en montage door eigen monteurs.',
@@ -768,4 +772,78 @@ export const techniek = [
  */
 export const cookieInstellingen = {
   melding: false,
+};
+
+/**
+ * Het verslag van ZBN Zonwering (Zonweringsbedrijf Noordenweg vof) in
+ * Ridderkerk, op /werk/zbn-ridderkerk/.
+ *
+ * Alles hieronder is na te lopen: de feiten komen uit PLAN.md van die
+ * opdracht en uit de site zelf, en de Lighthouse-cijfers zijn op
+ * 2 november 2026 gemeten op www.zbnridderkerk.nl. Het aantal aanvragen
+ * na livegang is wat de klant zelf heeft doorgegeven.
+ *
+ * De contactpersoon staat er bewust niet met naam in: het bedrijf noemen
+ * mag, een persoon noemen is iets om eerst te vragen.
+ */
+export const zbn = {
+  site: 'https://www.zbnridderkerk.nl/',
+  domein: 'www.zbnridderkerk.nl',
+  soort: 'Website',
+  plaats: 'Ridderkerk',
+  kort:
+    'Zonwering, rolluiken, garagedeuren en terrasoverkappingen uit Ridderkerk, met een eigen showroom. De nieuwe site moest het hele assortiment tonen en bezoekers naar een offerteaanvraag brengen.',
+
+  resultaat: {
+    cijfer: '4 aanvragen',
+    periode: 'in de eerste anderhalve week',
+    toelichting:
+      'Doorgegeven door ZBN zelf, kort na livegang. Een klein getal met een grote betekenis voor een bedrijf dat het daarvoor van langsrijdend verkeer en mond-tot-mondreclame moest hebben.',
+  },
+
+  opdracht: [
+    'ZBN verkoopt producten die mensen zelden kopen en nauwelijks kunnen vergelijken. Wie zoekt wil weten of iets leverbaar is, hoe het eruitziet en of er iemand komt inmeten. Dat moest de site in een paar tellen duidelijk maken, en daarna de stap naar een aanvraag zo klein mogelijk.',
+    'De tweede opgave was de showroom. Die is het sterkste argument van het bedrijf, en juist het moeilijkst over te brengen op een scherm.',
+  ],
+
+  keuzes: [
+    {
+      titel: 'Zesentwintig producten, twee categorieen',
+      tekst:
+        'Buitenzonwering en binnenzonwering kregen elk een eigen pagina, met daaronder elk product apart. Zo is er voor elke zoekterm een pagina, in plaats van een lijst op de homepage waar niemand op uitkomt.',
+    },
+    {
+      titel: 'Eigen foto\u2019s, geen stock en geen AI',
+      tekst:
+        'ZBN stuurde 134 eigen foto\u2019s. Daarvan zijn er 83 gebruikt, verdeeld over negentien producten, verkleind en met de EXIF- en GPS-gegevens eruit. De gegenereerde beelden die er eerst stonden zijn weg: bij zonwering wil je zien wat er echt hangt.',
+    },
+    {
+      titel: 'De showroom als rondloop',
+      tekst:
+        'Eerst stond er een stockfoto. Die is vervangen door een echte rondgang: twaalf foto\u2019s vanaf een punt in de showroom, aan elkaar gezet tot een panorama dat helemaal rond loopt. Slepen met de muis, de pijltjes of het toetsenbord. Geen vervangende werkelijkheid, maar de ruimte zoals hij is.',
+    },
+    {
+      titel: 'Een formulier waar foto\u2019s bij kunnen',
+      tekst:
+        'Wie zonwering wil, heeft een raam. Een foto daarvan zegt meer dan drie alinea\u2019s uitleg, dus het aanvraagformulier accepteert bijlagen tot tien megabyte. Verplicht zijn alleen naam, adres, plaats en telefoonnummer: alles wat nodig is om terug te bellen, en niets meer.',
+    },
+    {
+      titel: 'Geen cookiemelding, want geen cookies',
+      tekst:
+        'De kaart laadt pas als je erop klikt, er zijn geen statistieken en de lettertypen komen van de site zelf. Dan is er niets om toestemming voor te vragen. Dat staat zo in de privacyverklaring, en bezoekers hebben er geen balk voor hun neus.',
+    },
+  ],
+
+  techniek: {
+    stack: ['Astro', 'Tailwind CSS', 'GitHub Pages'],
+    waarom:
+      'Astro levert statische HTML op: er staat geen database achter die om onderhoud of beveiligingsupdates vraagt. Dat houdt de site snel en de doorlopende kosten laag, en het werkt precies zo lang als het domein doorloopt.',
+  },
+
+  meting: {
+    datum: '2 november 2026',
+    scores: { performance: 97, toegankelijkheid: 100, praktijk: 100, seo: 100 },
+    lcp: '2,4 s',
+    cls: '0,000',
+  },
 };

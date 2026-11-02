@@ -1,0 +1,316 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbNode } from '../../lib/schema';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Check from '../../components/Check.astro';
+import { zbn } from '../../data/site';
+
+import beeld from '../../assets/werk/zbn-ridderkerk.webp';
+
+/**
+ * Het verslag van ZBN Zonwering in Ridderkerk. Zelfde opzet als de
+ * verslagen van Afvalmeldpunt en PlayerPath: een kop op het blauw, de
+ * schermafbeelding over de rand, daaronder een leeskolom.
+ *
+ * Korter dan die twee, en dat hoort zo: dit was een website en geen
+ * platform. De tekst staat in src/data/site.ts (export const zbn), met
+ * daar ook de herkomst van elk cijfer.
+ */
+const gegevens = [
+  { term: 'Soort', waarde: zbn.soort },
+  { term: 'Gebouwd met', waarde: 'Astro en Tailwind' },
+  { term: 'Rol', waarde: 'Ontwerp en ontwikkeling' },
+];
+
+const m = zbn.meting;
+---
+
+<BaseLayout
+  title="ZBN Zonwering Ridderkerk, 360 graden showroom"
+  description="De site van ZBN Zonwering in Ridderkerk: zesentwintig producten, eigen foto's, een showroom om in rond te kijken, en 4 aanvragen in anderhalve week."
+  schema={breadcrumbNode([
+    { name: 'Home', path: '/' },
+    { name: 'Werk', path: '/werk/' },
+    { name: 'ZBN Zonwering', path: '/werk/zbn-ridderkerk/' },
+  ])}
+>
+  <SiteHeader />
+
+  <main>
+    <section id="main" class="bg-brand rounded-b-[2rem] md:rounded-b-[3rem]">
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-40 md:px-8 md:pt-40 md:pb-56 xl:px-10">
+        <div class="mx-auto max-w-3xl">
+          <a href="/werk/" class="label text-white/60 ease-soft transition-colors duration-150 hover:text-white">
+            <span aria-hidden="true">&larr;</span> Terug naar het werk
+          </a>
+
+          <p class="label text-accent mt-8">Website, in opdracht gebouwd</p>
+          <h1 class="text-4xl mt-4 font-heavy text-white">
+            ZBN Zonwering: de showroom op het scherm
+          </h1>
+          <p class="mt-5 text-xl leading-[1.55] text-white/75">{zbn.kort}</p>
+
+          <div class="mt-8">
+            <a
+              href={zbn.site}
+              target="_blank"
+              rel="noopener"
+              class="bg-accent text-ink shadow-btn font-display ease-soft rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 hover:bg-white"
+            >
+              Bekijk {zbn.domein} <span aria-hidden="true">&nearr;</span>
+            </a>
+          </div>
+
+          <dl class="border-line-navy mt-10 grid gap-x-8 gap-y-4 border-t pt-6 sm:grid-cols-3">
+            {
+              gegevens.map((g) => (
+                <div>
+                  <dt class="text-sm text-white/55">{g.term}</dt>
+                  <dd class="text-base font-medium text-white">{g.waarde}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <div class="relative z-10 mx-auto -mt-28 w-full max-w-page px-5 md:-mt-40 md:px-8 xl:px-10">
+      <figure class="mx-auto max-w-5xl">
+        <Image
+          src={beeld}
+          alt="De homepage van www.zbnridderkerk.nl, met een foto van een terrasoverkapping over de volle breedte."
+          widths={[600, 1000, 1400, 1600]}
+          sizes="(min-width: 1024px) 64rem, 94vw"
+          class="shadow-lift border-line-soft block h-auto w-full rounded-2xl border"
+          priority
+        />
+        <figcaption class="text-soft mt-3 text-center text-sm">
+          De beelden op de site zijn de eigen foto's van ZBN, geen stock.
+        </figcaption>
+      </figure>
+    </div>
+
+    <article class="verslag mx-auto w-full max-w-3xl px-5 py-16 md:px-8 md:py-24">
+      <h2>Wat er terugkwam</h2>
+      <div class="cijfer">
+        <p class="font-display text-ink text-4xl font-black">{zbn.resultaat.cijfer}</p>
+        <p class="text-ink mt-1 text-lg font-medium">{zbn.resultaat.periode}</p>
+        <p class="text-body mt-3 text-base leading-[1.6]">{zbn.resultaat.toelichting}</p>
+      </div>
+
+      <h2>De opdracht</h2>
+      {zbn.opdracht.map((alinea) => <p>{alinea}</p>)}
+
+      <h2>Keuzes die het verschil maken</h2>
+      <dl class="rollen">
+        {
+          zbn.keuzes.map((k) => (
+            <div>
+              <dt>{k.titel}</dt>
+              <dd>{k.tekst}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <h2>Hoe het gebouwd is</h2>
+      <p>{zbn.techniek.waarom}</p>
+      <ul class="functies">
+        {
+          zbn.techniek.stack.map((t) => (
+            <li>
+              <Check class="text-mint mt-1" />
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2>En wat het scoort</h2>
+      <p>
+        Gemeten op {m.datum} op de live site, mobiel, met Lighthouse. Mobiel is de strengere
+        meting: processor en netwerk worden dan afgeremd zodat je ziet wat een bezoeker met een
+        gewone telefoon krijgt.
+      </p>
+      <dl class="cijfers">
+        <div>
+          <dt>Prestaties</dt>
+          <dd>{m.scores.performance}</dd>
+        </div>
+        <div>
+          <dt>Toegankelijkheid</dt>
+          <dd>{m.scores.toegankelijkheid}</dd>
+        </div>
+        <div>
+          <dt>Best practices</dt>
+          <dd>{m.scores.praktijk}</dd>
+        </div>
+        <div>
+          <dt>SEO</dt>
+          <dd>{m.scores.seo}</dd>
+        </div>
+      </dl>
+      <p class="text-soft text-sm">
+        Grootste element in beeld na {m.lcp}, en de pagina verspringt tijdens het laden niet
+        (CLS {m.cls}).
+      </p>
+
+      <div class="afsluiter">
+        <div>
+          <p class="font-display text-ink text-xl font-black">Zelf kijken?</p>
+          <p class="text-body mt-2 text-base">
+            De showroom staat online. Je kunt er rondkijken zonder naar Ridderkerk te rijden.
+          </p>
+          <a href={zbn.site} target="_blank" rel="noopener" class="knop">
+            Naar {zbn.domein} <span aria-hidden="true">&nearr;</span>
+          </a>
+        </div>
+        <div>
+          <p class="font-display text-ink text-xl font-black">Ook een site die werkt?</p>
+          <p class="text-body mt-2 text-base">
+            Vertel wat je verkoopt en wie je wil bereiken, dan kijk ik wat er nodig is.
+          </p>
+          <a href="/website-laten-maken-dordrecht/" class="knop">Website laten maken</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  /* Zelfde leesritme als de verslagen van Afvalmeldpunt en PlayerPath. */
+  .verslag :global(h2) {
+    font-size: var(--text-3xl);
+    margin-top: 3.5rem;
+  }
+  .verslag :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .verslag :global(p) {
+    line-height: 1.7;
+  }
+  .verslag :global(h2 + p) {
+    margin-top: 0.625rem;
+  }
+  .verslag :global(p + p) {
+    margin-top: 1rem;
+  }
+
+  /* Het resultaat krijgt een eigen vlak: het is de enige claim op deze
+     pagina die van de klant komt in plaats van uit de code. */
+  .cijfer {
+    margin-top: 1.25rem;
+    background-color: var(--color-sand);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+  }
+
+  .rollen {
+    margin-top: 1.25rem;
+  }
+  .rollen > div {
+    display: grid;
+    gap: 0.25rem 1.5rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--color-line);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  @media (min-width: 40rem) {
+    .rollen > div {
+      grid-template-columns: 13rem 1fr;
+    }
+  }
+  .rollen dt {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-black);
+    color: var(--color-ink);
+  }
+
+  .functies {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.625rem 2rem;
+  }
+  @media (min-width: 40rem) {
+    .functies {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .functies li {
+    display: flex;
+    gap: 0.625rem;
+    color: var(--color-ink);
+    font-size: var(--text-base);
+  }
+
+  .cijfers {
+    margin-top: 1.25rem;
+    margin-bottom: 1rem;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (min-width: 40rem) {
+    .cijfers {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .cijfers > div {
+    background-color: var(--color-sand);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.125rem;
+  }
+  .cijfers dt {
+    font-size: var(--text-sm);
+    /* Niet --color-soft: dat is 4,8:1 op wit maar 4,3:1 op dit zandvlak,
+       en daarmee onder de 4,5:1 die tekst van deze grootte nodig heeft.
+       --color-body haalt 6,9:1. */
+    color: var(--color-body);
+  }
+  .cijfers dd {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-black);
+    font-size: var(--text-3xl);
+    color: var(--color-ink);
+    line-height: 1.1;
+  }
+
+  .afsluiter {
+    margin-top: 4rem;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 40rem) {
+    .afsluiter {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .afsluiter > div {
+    background-color: var(--color-sand);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .knop {
+    margin-top: 1.25rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-navy);
+    color: var(--color-white);
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-base);
+    padding: 0.5rem 1.125rem;
+    transition: background-color 150ms var(--ease-soft);
+  }
+  .knop:hover {
+    background-color: var(--color-ink);
+  }
+</style>
