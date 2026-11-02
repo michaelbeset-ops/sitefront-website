@@ -15,3 +15,4 @@ Thumbs.db
 # SEO-rapporten blijven lokaal
 .seo/out/
 .lighthouseci/
+__pycache__/
