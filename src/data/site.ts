@@ -365,6 +365,21 @@ export const projecten = [
     alt: 'De website van Brillen bij u thuis, de opticien aan huis.',
   },
   {
+    sleutel: 'bei-couture',
+    stack: [] as string[],
+    naam: 'Bei Couture',
+    // Zet domein en url op beicouture.nl zodra de DNS verwijst naar de
+    // nieuwe site, en haal status weg.
+    domein: 'binnenkort online',
+    url: null as string | null,
+    soort: 'Website',
+    status: 'preview' as const,
+    tekst:
+      'Bruidsatelier aan de Hoogstraat in Rotterdam. Bruidsjurken op maat, trouwjurken vermaken en jurken voor bruidsmoeder, bruidsmeisjes en bruidsjonkers, gemaakt door Bei zelf.',
+    feit: 'Binnenkort live',
+    alt: 'De nieuwe website van bruidsatelier Bei Couture in Rotterdam.',
+  },
+  {
     sleutel: 'zus-en-zo',
     stack: [] as string[],
     naam: 'Lunchcafé Zus & Zo',
