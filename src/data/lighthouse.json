@@ -6,10 +6,10 @@
   "tool": "Lighthouse 12.8.2",
   "strategy": "mobile",
   "scores": {
-    "performance": 99,
+    "performance": 94,
     "accessibility": 100,
     "bestPractices": 100,
     "seo": 100
   },
-  "note": "Mediaan van drie mobiele runs op het live domein. Mobiel is de strengere meting: Lighthouse remt processor en netwerk af. LCP 1,8 s, CLS 0,000."
+  "note": "Tijdelijke testwaarde; de workflow hoort dit te overschrijven."
 }
