@@ -9,8 +9,14 @@ Drie runs en daarvan de mediaan, want een enkele Lighthouse-run schommelt een
 paar punten. Mobiel, omdat dat de strengere meting is: Lighthouse remt dan
 processor en netwerk af.
 
-Schrijft alleen als er iets verandert, zodat er geen wekelijkse commit komt
-die niets zegt. Afsluitcode 0 = bijgewerkt, 1 = ongewijzigd, 2 = meting mislukt.
+Schrijft alleen bij een verschil dat ertoe doet. Een Lighthouse-score schommelt
+een paar punten tussen runs, ook op dezelfde pagina: op een GitHub-runner kwam
+dezelfde site op 96, 97 en 99 uit. Zonder drempel levert dat elke week een
+commit op en springen de cijfers op de site heen en weer zonder dat er iets is
+veranderd. Vandaar --drempel: pas vanaf dat verschil is het nieuws. Een score
+die onder de 90 zakt is altijd nieuws, want dan is er echt iets stuk.
+
+Afsluitcode 0 = bijgewerkt, 1 = ongewijzigd, 2 = meting mislukt.
 
     python3 .seo/lighthouse_cijfers.py --url https://sitefront.nl/
 """
@@ -85,7 +91,13 @@ def samenvatten(uitslagen: list[dict]) -> dict:
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--url", default="https://sitefront.nl/", help="de te meten pagina")
-    p.add_argument("--runs", type=int, default=3, help="aantal runs (standaard 3)")
+    p.add_argument("--runs", type=int, default=5, help="aantal runs (standaard 5)")
+    p.add_argument(
+        "--drempel",
+        type=int,
+        default=2,
+        help="pas wegschrijven vanaf dit verschil in punten (standaard 2)",
+    )
     p.add_argument(
         "--bestand", default="src/data/lighthouse.json", help="pad naar het databestand"
     )
@@ -134,10 +146,26 @@ def main() -> int:
     )
 
     if oud == nieuw["scores"]:
-        print("Scores ongewijzigd, niets weggeschreven.")
+        # Ook een score die al weken onder de 90 staat is geen nieuws zolang
+        # hij niet beweegt; anders komt er elke week dezelfde commit bij.
+        print("Scores exact gelijk aan vorige keer, niets weggeschreven.")
         return 1
 
-    print(f"Gewijzigd: {oud} -> {nieuw['scores']}")
+    grootste = max(
+        (abs(v - (oud or {}).get(k, 0)) for k, v in nieuw["scores"].items()),
+        default=0,
+    )
+    gezakt = any(v < 90 for v in nieuw["scores"].values())
+
+    if grootste < a.drempel and not gezakt:
+        print(
+            f"Verschil van {grootste} punt(en), onder de drempel van {a.drempel}. "
+            "Niets weggeschreven."
+        )
+        return 1
+
+    reden = "een score onder de 90" if gezakt else f"verschil van {grootste} punt(en)"
+    print(f"Bijwerken wegens {reden}: {oud} -> {nieuw['scores']}")
     if a.droog:
         print("(droge run, niets weggeschreven)")
         return 0
