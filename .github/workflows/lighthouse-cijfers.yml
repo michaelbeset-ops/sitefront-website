@@ -4,9 +4,10 @@
 # meting komt uit de browser van de bezoeker zelf, maar de Lighthouse-uitslag
 # staat in src/data/lighthouse.json en verouderde tot nu toe met de hand.
 #
-# Deze workflow meet elke maandag het live domein, neemt de mediaan van drie
-# runs en schrijft die weg. Alleen als de cijfers echt veranderen volgt er een
-# commit, dus geen wekelijkse ruis in de geschiedenis.
+# Deze workflow meet elke maandag het live domein, neemt de mediaan van vijf
+# runs en schrijft die weg. Pas bij een verschil van twee punten of meer volgt
+# een commit: een Lighthouse-score schommelt tussen runs, en zonder die drempel
+# zou er elke week een commit komen die niets zegt.
 #
 # Let op de laatste stap: een commit met de standaard GITHUB_TOKEN start geen
 # nieuwe workflows. Zonder die handmatige aanzet zouden de nieuwe cijfers in
