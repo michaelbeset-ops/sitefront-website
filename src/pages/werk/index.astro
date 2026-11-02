@@ -1,0 +1,270 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbNode } from '../../lib/schema';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import Beeldmerk from '../../components/Beeldmerk.astro';
+import { projecten } from '../../data/site';
+
+/**
+ * Overzicht van al het werk.
+ *
+ * Waarom deze pagina er is: /werk/ gaf een 404 terwijl /werk/afvalmeldpunt/
+ * en /werk/playerpath/ er wel waren. Een crawler die de bovenliggende map
+ * probeert kwam dus op een fout uit. Daarnaast stonden dertien opgeleverde
+ * projecten alleen in een schuifrij op de homepage: zichtbaar voor wie
+ * doorveegt, onvindbaar voor wie zoekt.
+ *
+ * De homepage toont een selectie om te laten zien dat er werk is. Deze
+ * pagina toont alles, zonder schuiven, en is de bovenliggende pagina van de
+ * verslagen eronder.
+ *
+ * De beelden komen uit src/assets/werk, net als in Werk.astro: de
+ * bestandsnaam zonder extensie is gelijk aan "sleutel" in src/data/site.ts.
+ */
+const bestanden = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/werk/*.{png,jpg,jpeg,webp,avif}',
+  { eager: true },
+);
+
+const beelden: Record<string, ImageMetadata> = {};
+for (const [pad, mod] of Object.entries(bestanden)) {
+  const naam = pad.split('/').pop()!.replace(/\.\w+$/, '');
+  beelden[naam] = mod.default;
+}
+
+/**
+ * Twee groepen, want het zijn twee soorten opdrachten en mensen zoeken op
+ * de ene of de andere. Software eerst: dat is het zwaarste werk.
+ */
+const software = projecten.filter((p) => p.soort === 'Software' || p.soort === 'SaaS-platform');
+const websites = projecten.filter((p) => !software.includes(p));
+
+const live = projecten.filter((p) => p.status !== 'preview').length;
+const groepen = [
+  {
+    id: 'software',
+    label: 'Software',
+    titel: 'Software en platformen',
+    lead: 'Systemen die een bedrijf elke dag gebruikt. Bij deze twee staat een verslag: wat het is, hoe het werkt en hoe het gebouwd is.',
+    items: software,
+  },
+  {
+    id: 'websites',
+    label: 'Websites',
+    titel: 'Websites',
+    lead: 'Elke site is apart ontworpen rond het bedrijf erachter. Geen sjabloon dat je bij de volgende opdracht weer terugziet.',
+    items: websites,
+  },
+];
+---
+
+<BaseLayout
+  title="Werk van Sitefront, opgeleverd en in gebruik"
+  description={`Alle ${live} opgeleverde projecten van Sitefront: websites en software op maat voor ondernemers in Dordrecht en omstreken. Met verslagen van hoe ze gebouwd zijn.`}
+  schema={breadcrumbNode([
+    { name: 'Home', path: '/' },
+    { name: 'Werk', path: '/werk/' },
+  ])}
+>
+  <SiteHeader />
+
+  <main>
+    <section id="main" class="bg-brand relative isolate overflow-hidden rounded-b-[2rem] md:rounded-b-[3rem]">
+      <Beeldmerk
+        class="pointer-events-none absolute -top-16 -right-24 -z-10 hidden h-[38rem] w-auto text-white opacity-[0.05] sm:block lg:-right-16 lg:h-[46rem]"
+      />
+
+      <div class="mx-auto w-full max-w-page px-5 pt-32 pb-20 md:px-8 md:pt-44 md:pb-28 xl:px-10">
+        <div class="max-w-3xl">
+          <p class="label text-accent">Werk</p>
+
+          <h1 class="text-4xl mt-6 font-heavy text-white">
+            Sites en systemen die draaien
+          </h1>
+
+          <p class="text-lg mt-8 max-w-[52ch] leading-[1.6] text-white/75">
+            Geen voorbeeldplaatjes. Dit zijn opdrachten die zijn opgeleverd en in gebruik zijn, met
+            het adres erbij zodat je zelf kunt kijken. Van een lunchroom met een
+            reserveringssysteem tot een meldsysteem voor afvalcontainers.
+          </p>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href="/#contact"
+              class="bg-accent text-ink shadow-btn font-display rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 ease-soft hover:bg-white"
+            >
+              Plan een gesprek
+            </a>
+            <a
+              href="/website-laten-maken-dordrecht/"
+              class="border-line-navy font-display rounded-full border px-5 py-2.5 text-base font-bold text-white transition-colors duration-150 ease-soft hover:bg-white/10"
+            >
+              Website laten maken
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {
+      groepen.map((groep, i) => (
+        <section id={groep.id} class:list={[i === 0 ? 'bg-paper' : 'bg-sand', 'scroll-mt-24 py-20 md:py-28']}>
+          <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+            <SectionHead label={groep.label} titel={groep.titel} lead={groep.lead} />
+
+            <ul class="mt-12 grid gap-6 md:grid-cols-2 md:gap-7 xl:grid-cols-3">
+              {groep.items.map((project) => {
+                const beeld = beelden[project.sleutel];
+                const verslag = 'verslag' in project ? (project.verslag as string) : null;
+                // Met een verslag wordt de hele kaart een link daarheen. Zonder
+                // verslag maar met een site gaat hij naar de site zelf, in een
+                // nieuw tabblad. Zonder beide is het geen link.
+                const Wrapper = verslag || project.url ? 'a' : 'div';
+                const linkProps = verslag
+                  ? { href: verslag }
+                  : project.url
+                    ? { href: project.url, target: '_blank', rel: 'noopener' }
+                    : {};
+
+                return (
+                  <li>
+                    <Wrapper
+                      {...linkProps}
+                      class:list={[
+                        'group bg-paper border-line-soft shadow-card flex h-full flex-col overflow-hidden rounded-2xl border',
+                        (verslag || project.url) && 'kaart-lift hover:shadow-lift',
+                      ]}
+                    >
+                      <div class="border-line-soft bg-sand flex items-center gap-2 border-b px-4 py-2.5">
+                        <span class="flex gap-1.5" aria-hidden="true">
+                          <span class="bg-line-strong size-2.5 rounded-full" />
+                          <span class="bg-line-strong size-2.5 rounded-full" />
+                          <span class="bg-line-strong size-2.5 rounded-full" />
+                        </span>
+                        <span class="bg-paper border-line-soft text-soft mx-auto rounded-full border px-3 py-0.5 text-xs">
+                          {project.domein}
+                        </span>
+                      </div>
+
+                      <div class="bg-sand relative aspect-16/10 overflow-hidden">
+                        {beeld ? (
+                          <Image
+                            src={beeld}
+                            alt={project.alt}
+                            widths={[420, 620, 900]}
+                            sizes="(min-width: 1280px) 24rem, (min-width: 768px) 44vw, 88vw"
+                            class="ease-soft size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div class="text-soft grid h-full place-items-center text-sm">
+                            Schermafbeelding volgt
+                          </div>
+                        )}
+
+                        {project.status === 'preview' && (
+                          <>
+                            <div class="preview-sluier absolute inset-0" aria-hidden="true" />
+                            <p class="bg-accent text-ink tracking-label absolute top-4 left-4 rounded-full px-3 py-1 text-xs font-black uppercase">
+                              Binnenkort live
+                            </p>
+                          </>
+                        )}
+                      </div>
+
+                      <div class="flex flex-1 flex-col p-6">
+                        <p class="label text-accent-ink">{project.soort}</p>
+
+                        <h3 class="text-2xl mt-2.5 font-black">
+                          {project.naam}
+                          {(verslag || project.url) && (
+                            <span
+                              class="text-accent-ink ease-soft ml-1 inline-block transition-transform duration-200 group-hover:translate-x-1"
+                              aria-hidden="true"
+                            >
+                              &rarr;
+                            </span>
+                          )}
+                        </h3>
+
+                        <p class="text-body mt-2.5 text-base leading-[1.6]">{project.tekst}</p>
+
+                        <div class="border-line-soft mt-auto flex flex-wrap items-baseline gap-x-3 gap-y-2 border-t pt-4">
+                          <p class="text-soft text-sm">{verslag ? 'Lees het verslag' : project.feit}</p>
+                          {project.stack.length > 0 && (
+                            <ul class="flex flex-wrap gap-1.5">
+                              {project.stack.map((t) => (
+                                <li class="bg-sand text-body rounded-full px-2.5 py-0.5 text-xs font-medium">
+                                  {t}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                    </Wrapper>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+      ))
+    }
+
+    <section class="bg-brand relative isolate overflow-hidden py-20 md:py-28">
+      <div class="mx-auto w-full max-w-page px-5 md:px-8 xl:px-10">
+        <div class="max-w-2xl">
+          <p class="label text-accent">Volgende</p>
+          <h2 class="text-4xl mt-4 font-heavy text-white">Staat jouw bedrijf er straks bij?</h2>
+          <p class="mt-5 text-xl leading-[1.55] text-white/75">
+            Vertel wat er nu niet goed loopt. Een gesprek kost je een half uur en levert in elk
+            geval een eerlijk antwoord op, ook als dat is dat je mij niet nodig hebt.
+          </p>
+          <a
+            href="/#contact"
+            class="bg-accent text-ink shadow-btn font-display ease-soft mt-10 inline-block rounded-full px-5 py-2.5 text-base font-bold transition-colors duration-150 hover:bg-white"
+          >
+            Plan een gesprek
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .kaart-lift {
+    transition:
+      transform 220ms var(--ease-soft),
+      box-shadow 220ms var(--ease-soft);
+  }
+  .kaart-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Zelfde sluier als in de schuifrij op de homepage: genoeg om de sfeer te
+     zien, te weinig om de site die nog niet live staat al prijs te geven. */
+  .preview-sluier {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      #ffffff8c 0 12px,
+      transparent 12px 26px
+    );
+    backdrop-filter: blur(3px) saturate(0.8);
+    -webkit-backdrop-filter: blur(3px) saturate(0.8);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kaart-lift,
+    .kaart-lift:hover {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>
