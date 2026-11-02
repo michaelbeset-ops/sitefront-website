@@ -32,6 +32,19 @@ export default defineConfig({
 
   devToolbar: { enabled: false },
 
+  // Omleidingen voor URL's die Google kent maar die hier niet bestaan.
+  // Astro bouwt hiervoor een pagina met een meta-refresh en een canonical naar
+  // het doel; GitHub Pages kan geen echte 301 geven.
+  //
+  // /werk/ gaf 404 terwijl /werk/afvalmeldpunt/ en /werk/playerpath/ bestaan.
+  // Google crawlt zo'n bovenliggende map vanzelf, dus dat was een 404 die we
+  // zelf hadden gemaakt. Zolang er geen overzichtspagina is, gaat hij naar de
+  // werksectie op de homepage.
+  redirects: {
+    '/werk': '/#werk',
+  },
+
+
   // Fonts via Astro in plaats van losse @font-face-regels in fonts.css.
   // De winst zit in optimizedFallbacks: Astro meet het echte font door en
   // maakt een fallback van een systeemfont met dezelfde verhoudingen. Tot
