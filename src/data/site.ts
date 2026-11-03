@@ -368,16 +368,14 @@ export const projecten = [
     sleutel: 'bei-couture',
     stack: [] as string[],
     naam: 'Bei Couture',
-    // Zet domein en url op beicouture.nl zodra de DNS verwijst naar de
-    // nieuwe site, en haal status weg.
-    domein: 'binnenkort online',
-    url: null as string | null,
+    domein: 'beicouture.nl',
+    // Met www: beicouture.nl stuurt met een 301 door naar www.
+    url: 'https://www.beicouture.nl/',
     soort: 'Website',
-    status: 'preview' as const,
     tekst:
       'Bruidsatelier aan de Hoogstraat in Rotterdam. Bruidsjurken op maat, trouwjurken vermaken en jurken voor bruidsmoeder, bruidsmeisjes en bruidsjonkers, gemaakt door Bei zelf.',
-    feit: 'Binnenkort live',
-    alt: 'De nieuwe website van bruidsatelier Bei Couture in Rotterdam.',
+    feit: 'Bruidsatelier in Rotterdam',
+    alt: 'De website van bruidsatelier Bei Couture in Rotterdam.',
   },
   {
     sleutel: 'zus-en-zo',
