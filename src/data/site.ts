@@ -315,18 +315,6 @@ export const projecten = [
     alt: 'De website van B-Advice, specialist in ondergrondse afvalcontainers.',
   },
   {
-    sleutel: 'den-witten-haen',
-    stack: [] as string[],
-    naam: 'Den Witten Haen',
-    domein: 'denwittenhaen.com',
-    url: 'https://denwittenhaen.com',
-    soort: 'Website met reserveringssysteem',
-    tekst:
-      'Lunchroom in het hart van Dordrecht. Lunch, high tea en groepen, met een eigen reserveringssysteem zodat gasten meteen een tafel kunnen vastleggen.',
-    feit: 'Hart van Dordrecht',
-    alt: 'De website van Den Witten Haen in Dordrecht.',
-  },
-  {
     sleutel: 'rosi',
     stack: [] as string[],
     naam: 'Lunchroom Rosí',
@@ -339,30 +327,20 @@ export const projecten = [
     alt: 'De website van Lunchroom Rosí in Monster.',
   },
   {
-    sleutel: 'aroma',
+    sleutel: 'kastvanklaas',
     stack: [] as string[],
-    naam: 'Aroma Lunchroom',
-    domein: 'aromalunchroom.com',
-    url: 'https://aromalunchroom.com',
+    naam: 'Kast van Klaas',
+    // Nog geen link: kastvanklaas.nl wijst op dit moment nog naar de oude
+    // WordPress-site. Zonder url is de kaart geen link, en dat is hier de
+    // bedoeling: de nieuwe site is er wel, maar staat nog niet op het
+    // eigen domein.
+    domein: 'kastvanklaas.nl',
+    url: null as string | null,
     soort: 'Website',
     tekst:
-      'Lunchroom in hartje Gorinchem met Grieks ontbijt, verse lunch en specialty koffie. Een site die de sfeer van de zaak laat zien en meteen duidelijk maakt wanneer je terecht kunt.',
-    feit: 'Open maandag tot en met zaterdag',
-    alt: 'De website van Aroma Lunchroom in Gorinchem.',
-  },
-
-
-  {
-    sleutel: 'brillen-bij-u-thuis',
-    stack: [] as string[],
-    naam: 'Brillen bij u thuis',
-    domein: 'brillenbijuthuis.nl',
-    url: 'https://brillenbijuthuis.nl',
-    soort: 'Website',
-    tekst:
-      'De opticien aan huis. Oogmeting en advies bij mensen thuis, door midden en zuid Nederland, voor wie niet makkelijk naar een winkel kan.',
-    feit: 'Midden en zuid Nederland',
-    alt: 'De website van Brillen bij u thuis, de opticien aan huis.',
+      'Oude kasten van teakhout uit India, persoonlijk uitgezocht door Klaas Hoekstra en rechtstreeks geimporteerd. Zestig tot meer dan honderd jaar oud, en elke kast is een ander exemplaar.',
+    feit: 'Winkel op de Kaasmarkt in Leiden',
+    alt: 'De nieuwe website van Kast van Klaas, oude India-kasten in Leiden.',
   },
   {
     sleutel: 'bei-couture',
@@ -376,6 +354,42 @@ export const projecten = [
       'Bruidsatelier aan de Hoogstraat in Rotterdam. Bruidsjurken op maat, trouwjurken vermaken en jurken voor bruidsmoeder, bruidsmeisjes en bruidsjonkers, gemaakt door Bei zelf.',
     feit: 'Bruidsatelier in Rotterdam',
     alt: 'De website van bruidsatelier Bei Couture in Rotterdam.',
+  },
+  {
+    sleutel: 'den-witten-haen',
+    stack: [] as string[],
+    naam: 'Den Witten Haen',
+    domein: 'denwittenhaen.com',
+    url: 'https://denwittenhaen.com',
+    soort: 'Website met reserveringssysteem',
+    tekst:
+      'Lunchroom in het hart van Dordrecht. Lunch, high tea en groepen, met een eigen reserveringssysteem zodat gasten meteen een tafel kunnen vastleggen.',
+    feit: 'Hart van Dordrecht',
+    alt: 'De website van Den Witten Haen in Dordrecht.',
+  },
+  {
+    sleutel: 'brillen-bij-u-thuis',
+    stack: [] as string[],
+    naam: 'Brillen bij u thuis',
+    domein: 'brillenbijuthuis.nl',
+    url: 'https://brillenbijuthuis.nl',
+    soort: 'Website',
+    tekst:
+      'De opticien aan huis. Oogmeting en advies bij mensen thuis, door midden en zuid Nederland, voor wie niet makkelijk naar een winkel kan.',
+    feit: 'Midden en zuid Nederland',
+    alt: 'De website van Brillen bij u thuis, de opticien aan huis.',
+  },
+  {
+    sleutel: 'aroma',
+    stack: [] as string[],
+    naam: 'Aroma Lunchroom',
+    domein: 'aromalunchroom.com',
+    url: 'https://aromalunchroom.com',
+    soort: 'Website',
+    tekst:
+      'Lunchroom in hartje Gorinchem met Grieks ontbijt, verse lunch en specialty koffie. Een site die de sfeer van de zaak laat zien en meteen duidelijk maakt wanneer je terecht kunt.',
+    feit: 'Open maandag tot en met zaterdag',
+    alt: 'De website van Aroma Lunchroom in Gorinchem.',
   },
   {
     sleutel: 'zus-en-zo',
@@ -441,7 +455,6 @@ export const projecten = [
     feit: 'Binnenkort live',
     alt: 'De nieuwe website van Het Handelshuis in Kaatsheuvel.',
   },
-
 ];
 
 /**
