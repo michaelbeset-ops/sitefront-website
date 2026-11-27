@@ -392,6 +392,18 @@ export const projecten = [
     alt: 'De website van Aroma Lunchroom in Gorinchem.',
   },
   {
+    sleutel: 'teakhuis',
+    stack: [] as string[],
+    naam: 'Teakhuis',
+    domein: 'teakhuis.nl',
+    url: 'https://teakhuis.nl' as string | null,
+    soort: 'Website met webshop',
+    tekst:
+      'Handgemaakte teakhouten meubels van duurzaam hout. Kiezen uit de collectie of een meubel op maat laten tekenen, zonder meerprijs.',
+    feit: 'Teakhouten meubels sinds 2007',
+    alt: 'De nieuwe website van Teakhuis, teakhouten meubels op maat.',
+  },
+  {
     sleutel: 'zus-en-zo',
     stack: [] as string[],
     naam: 'Lunchcafé Zus & Zo',
@@ -428,19 +440,6 @@ export const projecten = [
       'Boot- en polyesterservice in Kerkdriel. Schadeherstel, lakwerk, polijsten, onderwaterschip en polyesterwerk, met schade doorgeven via de site.',
     feit: 'Binnenkort live',
     alt: 'De nieuwe website van Hajdari Boot en Polyester Service in Kerkdriel.',
-  },
-  {
-    sleutel: 'teakhuis',
-    stack: [] as string[],
-    naam: 'Teakhuis',
-    domein: 'binnenkort online',
-    url: null as string | null,
-    soort: 'Website met webshop',
-    status: 'preview' as const,
-    tekst:
-      'Handgemaakte teakhouten meubels van duurzaam hout. Kiezen uit de collectie of een meubel op maat laten tekenen, zonder meerprijs.',
-    feit: 'Binnenkort live',
-    alt: 'De nieuwe website van Teakhuis, teakhouten meubels op maat.',
   },
   {
     sleutel: 'het-handelshuis',
